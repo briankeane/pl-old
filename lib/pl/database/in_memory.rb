@@ -4,7 +4,7 @@ module PL
   module Database
 
     def self.db
-      @@db != InMemory.new
+      @@db ||= InMemory.new
     end
 
     class InMemory
@@ -88,6 +88,10 @@ module PL
       def get_station(id)
         @stations[id]
       end
+
+      ####################
+      #  Scheduled Play  #
+      ####################
 
 
     end

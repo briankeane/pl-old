@@ -97,6 +97,9 @@ describe 'a badass database' do
     before do
       @user = db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
       @station = db.create_station({ user_id: @user.id })
+      @song = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                   audio_id: 2 })
+
     end
 
     it "creates a station" do
@@ -107,5 +110,16 @@ describe 'a badass database' do
     it "gets a station" do
       expect(db.get_station(@station.id).user_id).to eq(@user.id)
     end
+
+    ####################
+    #  Scheduled Play  #
+    ####################
+
+    it "schedules a play" do
+      play = db.schedule_play({ song_id: @song.id, station_id: @station.id, date: Date.new(2014, 4, 12), time: 6000 })
+      expect(play.song_id).to eq(@song.id)
+    end
+
   end
+
 end
