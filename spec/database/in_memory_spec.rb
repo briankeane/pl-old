@@ -89,4 +89,23 @@ describe 'a badass database' do
     end
   end
 
+  ##############
+  #   Station  #
+  ##############
+
+  describe 'a station' do
+    before do
+      @user = db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
+      @station = db.create_station({ user_id: @user.id })
+    end
+
+    it "creates a station" do
+      expect(@station.user_id).to eq(@user.id)
+      expect(@station.id).to_not be_nil
+    end
+
+    it "gets a station" do
+      expect(db.get_station(@station.id).user_id).to eq(@user.id)
+    end
+  end
 end

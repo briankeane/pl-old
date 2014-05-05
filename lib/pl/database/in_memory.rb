@@ -14,13 +14,18 @@ module PL
       end
 
       def clear_everything
+        @station_id_counter = 500
         @user_id_counter = 200
         @song_id_counter = 300
         @users = {}
         @songs = {}
-
-
+        @stations = {}
       end
+
+
+      ##############
+      #   Users    #
+      ##############
 
       def create_user(attr)
         attr[:id] = (@user_id_counter += 1)
@@ -46,6 +51,10 @@ module PL
         @users.values.find { |x| x.twitter == twitter }
       end
 
+      ##############
+      #   Songs    #
+      ##############
+
       def create_song(attrs)
         attrs[:id] = (@song_id_counter += 1)
         song = Song.new(attrs)
@@ -64,6 +73,22 @@ module PL
       def get_songs_by_artist(artist)
         @songs.values.select { |song| song.artist.match(/^#{artist}/) }.sort_by { |x| x.title }
       end
+
+      ##############
+      #   Station  #
+      ##############
+
+      def create_station(attrs)
+        attrs[:id] = (@station_id_counter += 1)
+        station = Station.new(attrs)
+        @stations[station.id] = station
+        station
+      end
+
+      def get_station(id)
+        @stations[id]
+      end
+
 
     end
   end
