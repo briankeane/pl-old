@@ -19,6 +19,7 @@ module PL
         @users = {}
         @songs = {}
 
+
       end
 
       def create_user(attr)
@@ -63,7 +64,6 @@ module PL
       def get_songs_by_artist(artist)
         @songs.values.select { |song| song.artist.match(/^#{artist}/) }.sort_by { |x| x.title }
       end
-
 
     end
   end
