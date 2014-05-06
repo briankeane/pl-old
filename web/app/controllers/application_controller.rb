@@ -1,8 +1,12 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :signed_in?
+  helper_method :current_user, :signed_in?, :current_station
 
   def current_user
-    PL::Database.db.get_user(PL::Database.db.get_uid_from_sid(session[:pl_session_id]))
+    @current_user ||= PL::Database.db.get_user(PL::Database.db.get_uid_from_sid(session[:pl_session_id]))
+  end
+
+  def current_station
+    @@current_station ||= PL::Database.db.get_station_by_uid(current_user.id)
   end
 
   def signed_in?
