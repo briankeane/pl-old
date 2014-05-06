@@ -105,6 +105,7 @@ songs.each do |song|
   end
 end
 
+station1.create_playlist
 
 
 station2 = PL::Database.db.create_station({ user_id: user2.id })

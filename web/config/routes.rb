@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   get 'users/new'
 
   get 'users/create'
@@ -13,15 +14,16 @@ Rails.application.routes.draw do
   get 'users/show'
 
   root :to => 'welcome_pages#home'
-  match '/about',         to:   'welcome_pages#about',      via: 'get'
+  match '/about',         to:   'welcome_pages#about',        via: 'get'
 
-  match '/sign_in',       to:   'sessions#new',         via: 'get'
-  match '/sign_in',       to:   'sessions#create',          via: 'post'
-  match '/sign_out',      to:   'sessions#destroy',        via: 'get'
+  match '/sign_in',       to:   'sessions#new',               via: 'get'
+  match '/sign_in',       to:   'sessions#create',            via: 'post'
+  match '/sign_out',      to:   'sessions#destroy',           via: 'get'
 
-  match '/sign_up',       to:   'users#new',                via: 'get'
-  match '/sign_up',       to:   'users#create',             via: 'post'
-  match '/select_artist', to:   'users#select_artist',      via: 'get'
+  match '/sign_up',       to:   'users#new',                  via: 'get'
+  match '/sign_up',       to:   'users#create',               via: 'post'
+  match 'dj_booth',         to:   'station#dj_booth',          via: 'get'
+  match 'playlist_editor',  to: 'station#playlist_editor',      via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     result = PL::SignIn.run({ twitter: params[:twitter], password: params[:password] })
     if result.success?
       session[:pl_session_id] = result.session_id
-      return redirect_to select_artist_path
+      return redirect_to dj_booth_path
     else
       flash[:notice] = "you messed up somewhere, mf"
       return redirect_to sign_in_path

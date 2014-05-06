@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     if result.success?
       result = PL::SignIn.run({ twitter: params[:twitter], password: params[:password] })
       session[:pl_session_id] = result.session_id
+      return redirect_to dj_booth_path
     elsif result.error == :twitter_taken
       flash[:notice] = "that twitter is taken, mf."
       return redirect_to sign_up_path
