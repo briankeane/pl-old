@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def full_title(page_title)
-    base_title = "BA Tour Manager"
+    base_title = "PlayolaRadio 1.0"
     if page_title.empty?
       base_title
     else

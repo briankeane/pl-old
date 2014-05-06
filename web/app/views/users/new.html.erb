@@ -1,5 +1,5 @@
-<% provide(:title, 'Sign In') %>
-<h1>Sign In</h1>
+<% provide(:title, 'Sign up') %>
+<h1>Sign up</h1>
 
 <div class="row">
   <div class="span6 offset3">
@@ -9,14 +9,17 @@
         </h2>
       <% end %>
 
-    <%= form_tag sign_in_path do %>
+    <%= form_tag sign_up_path do %>
       <%= label_tag :twitter %>
       <%= text_field_tag :twitter %>
 
       <%= label_tag :password %>
       <%= password_field_tag :password %>
 
-      <%= submit_tag "Sign In", class: "btn btn-large btn-primary" %>
+      <%= label_tag :password_confirmation, "Confirmation" %>
+      <%= password_field_tag :password_confirmation %>
+
+      <%= submit_tag "Create my account", class: "btn btn-large btn-primary" %>
     <% end %>
   </div>
 </div>

@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  get 'users/new'
+
+  get 'users/create'
+
+  get 'users/update'
+
+  get 'users/destroy'
+
+  get 'users/index'
+
+  get 'users/show'
+
   root :to => 'welcome_pages#home'
   match '/about',         to:   'welcome_pages#about',      via: 'get'
 
