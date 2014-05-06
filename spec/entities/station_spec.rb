@@ -16,6 +16,14 @@ describe 'station' do
     PL::SeedDB.run
     station = PL::SeedDB.station1
     station.create_playlist
-    binding.pry
+    expect(PL::Database.db.get_current_playlist(station.id).size > 2000).to eq(true)
   end
+
+  it "provides the current playlist" do
+    PL::SeedDB.run
+    station = PL::SeedDB.station1
+    station.create_playlist
+    expect(PL::Database.db.get_current_playlist(station.id).size > 2000).to eq(true)
+  end
+
 end

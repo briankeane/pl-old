@@ -10,7 +10,7 @@ module PL
       super(attrs)
     end
 
-    def compare_password(password)
+    def password_correct?(password)
       @password_digest == password
     end
   end

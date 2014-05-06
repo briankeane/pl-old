@@ -10,8 +10,8 @@ module PL
 
     it "creates a secure password and tests it" do
       user = User.new({ twitter: 'bob', email: 'bob@bob.com', password: 'password' })
-      expect(user.compare_password('password')).to eq(true)
-      expect(user.compare_password('not_password')).to eq(false)
+      expect(user.password_correct?('password')).to eq(true)
+      expect(user.password_correct?('not_password')).to eq(false)
     end
 
   end

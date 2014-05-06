@@ -22,6 +22,7 @@ module PL
         @songs = {}
         @stations = {}
         @scheduled_plays = []
+        @sessions = {}
 
       end
 
@@ -30,9 +31,10 @@ module PL
       #   Users    #
       ##############
 
-      def create_user(attr)
-        attr[:id] = (@user_id_counter += 1)
-        user = User.new(attr)
+      def create_user(attrs)
+        id = (@user_id_counter += 1)
+        attrs[:id] = id
+        user = User.new(attrs)
         @users[user.id] = user
         user
       end
@@ -59,7 +61,8 @@ module PL
       ##############
 
       def create_song(attrs)
-        attrs[:id] = (@song_id_counter += 1)
+        id = (@song_id_counter += 1)
+        attrs[:id] = id
         song = Song.new(attrs)
         @songs[song.id] = song
         song
@@ -82,7 +85,8 @@ module PL
       ##############
 
       def create_station(attrs)
-        attrs[:id] = (@station_id_counter += 1)
+        id = (@station_id_counter += 1)
+        attrs[:id] = id
         station = Station.new(attrs)
         @stations[station.id] = station
         station
@@ -106,6 +110,30 @@ module PL
         play = ScheduledPlay.new(attrs)
         @scheduled_plays << play
         play
+      end
+
+
+      ##############
+      #  Sessions  #
+      ##############
+
+      def create_session(user_id)
+        session_id = SecureRandom.uuid
+        @sessions[session_id] = user_id
+        return session_id
+      end
+
+      def get_uid_from_sid(session_id)
+        @sessions[session_id]
+      end
+
+      def delete_session(session_id)
+        if @sessions[session_id]
+          @sessions.delete(session_id)
+          return true
+        else
+          return false
+        end
       end
 
     end
