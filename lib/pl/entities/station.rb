@@ -59,7 +59,5 @@ module PL
     def playlist
       PL::Database.db.get_current_playlist(@id)
     end
-
-
   end
 end

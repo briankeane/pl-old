@@ -1,0 +1,16 @@
+<div class="center hero-unit">
+  <h1>Playola Radio</h1>
+
+  <h2>
+    This is Playola Radio. It's pretty badass.
+  </h2>
+  <h3>
+    Or it will be anyways.
+  </h3>
+
+  <% if flash[:notice] %>
+    <h3><%= flash[:notice] %></h3>
+  <% end %>
+
+  <%= link_to "Sign Up", sign_up_path, class: "btn btn-large btn-primary" %>
+</div>

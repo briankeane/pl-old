@@ -1,0 +1,23 @@
+/home/vagrant/.rbenv/versions/2.1.1/bin/ruby extconf.rb 
+checking for ruby/util.h... yes
+creating Makefile
+
+make "DESTDIR=" clean
+make: Warning: File `Makefile' has modification time 13 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+make "DESTDIR="
+make: Warning: File `Makefile' has modification time 13 s in the future
+compiling bcrypt_ext.c
+compiling crypt.c
+compiling crypt_blowfish.c
+compiling crypt_gensalt.c
+compiling wrapper.c
+linking shared-object bcrypt_ext.so
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+make "DESTDIR=" install
+make: Warning: File `Makefile' has modification time 11 s in the future
+/usr/bin//install -c -m 0755 bcrypt_ext.so ./.gem.20140506-2763-cj2cpl
+installing default bcrypt_ext libraries
+make: warning:  Clock skew detected.  Your build may be incomplete.

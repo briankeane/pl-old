@@ -1,1 +1,1 @@
-require_relative '../lib/pl.rb'
+require_relative '../../../lib/pl.rb'
