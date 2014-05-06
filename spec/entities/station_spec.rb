@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'pry-debugger'
 
 describe 'station' do
   it "is created with id, user_id, heavy, medium, light" do
@@ -16,6 +16,6 @@ describe 'station' do
     PL::SeedDB.run
     station = PL::SeedDB.station1
     station.create_playlist
-    expect()
+    binding.pry
   end
 end

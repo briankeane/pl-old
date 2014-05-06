@@ -9,9 +9,9 @@ describe 'ScheduledPlay' do
   end
 
   it "is created with an id, song_id, station_id, current_position" do
-    play = PL::ScheduledPlay.new({ id: 1, song_id: @song.id, station_id: @station.id, current_position: 3 })
+    play = PL::ScheduledPlay.new({ id: 1, song: @song, station_id: @station.id, current_position: 3 })
     expect(play.id).to_not be_nil
-    expect(play.song_id).to eq(@song.id)
+    expect(play.song.id).to eq(@song.id)
     expect(play.station_id).to eq(@station.id)
     expect(play.current_position).to eq(3)
   end

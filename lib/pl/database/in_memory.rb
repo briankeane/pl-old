@@ -17,9 +17,12 @@ module PL
         @station_id_counter = 500
         @user_id_counter = 200
         @song_id_counter = 300
+        @scheduled_play_counter = 700
         @users = {}
         @songs = {}
         @stations = {}
+        @scheduled_plays = []
+
       end
 
 
@@ -93,6 +96,17 @@ module PL
       #  Scheduled Play  #
       ####################
 
+      def get_current_playlist(station_id)
+        station_plays = @scheduled_plays.select { |play| play.station_id == station_id }
+        station_plays.select { |play| play.current_position != nil }.sort_by { |x| x.current_position }
+      end
+
+      def schedule_play(attrs)
+        attrs[:id] = (@scheduled_play_counter += 1)
+        play = ScheduledPlay.new(attrs)
+        @scheduled_plays << play
+        play
+      end
 
     end
   end

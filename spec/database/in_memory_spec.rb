@@ -115,10 +115,24 @@ describe 'a badass database' do
     #  Scheduled Play  #
     ####################
 
-    it "schedules a play" do
-      play = db.schedule_play({ song_id: @song.id, station_id: @station.id, date: Date.new(2014, 4, 12), time: 6000 })
-      expect(play.song_id).to eq(@song.id)
+    it "returns an empty array for an empty playlist" do
+      playlist = db.get_current_playlist(@station.id)
+      expect(playlist.size).to eq(0)
     end
+
+    it "creates a playlist and return it in the right order" do
+      db.schedule_play({ station_id: @station.id, song: @song, current_position: 5 })
+      db.schedule_play({ station_id: @station.id, song: @song, current_position: 6 })
+      db.schedule_play({ station_id: @station.id, song: @song, current_position: 7 })
+      db.schedule_play({ station_id: @station.id, song: @song, current_position: 8 })
+      db.schedule_play({ station_id: @station.id, song: @song, current_position: 9 })
+      db.schedule_play({ station_id: @station.id, song: @song, current_position: 10 })
+      expect(db.get_current_playlist(@station.id).size).to eq(6)
+      expect(db.get_current_playlist(@station.id)[0].current_position).to eq(5)
+      expect(db.get_current_playlist(@station.id)[4].current_position).to eq(9)
+      expect(db.get_current_playlist(@station.id)[5].current_position).to eq(10)
+    end
+
 
   end
 

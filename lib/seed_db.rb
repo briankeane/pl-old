@@ -87,7 +87,7 @@ module PL
       while counter <= 12
         random_song = @@songs.sample
         if !used[random_song.id]
-          @@station1.heavy.push(random_song.id)
+          @@station1.heavy.push(random_song)
           used[random_song.id] =  random_song
           counter += 1
         end
@@ -98,7 +98,7 @@ module PL
       while counter <= 29
         random_song = @@songs.sample
         if !used[random_song.id]
-          @@station1.medium.push(random_song.id)
+          @@station1.medium.push(random_song)
           used[random_song.id] =  random_song
           counter += 1
         end

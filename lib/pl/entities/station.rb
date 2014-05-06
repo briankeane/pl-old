@@ -36,19 +36,26 @@ module PL
         end
       end
 
-
-      while sum < 500000   #604.8e+6 #milliseconds in a week
-        song = db.get_song(sample_array.sample)
-        playlist.push(song.id)
+      current_playlist = PL::Database.db.get_current_playlist(@id)
+      sum = current_playlist.inject(0) { |sum, play| sum + play.song.duration }
+      if current_playlist.size == 0
+        max_position = 0
+      else
+        max_position = current_playlist.max_by { |play| play.current_position }
+      end
+      binding.pry
+      while sum < 604.8e+6 #milliseconds in a week
+        song = PL::Database.db.get_song(sample_array.sample)
+        PL::Database.db.schedule_play({ station_id: @id, song: song, current_position: (max_position += 1) })
         sum += song.duration
       end
 
       # store playlist to scheduled_play table
-      playlist.each do |play|
-        PL::Database.db.add_to_playlist
 
-
-
+      playlist.each_with_index do |play|
+        song = PL::Database.db.get_song(play)
+        PL::Database.db.add_play({ station_id: @id, song: song })
+      end
     end
   end
 end
