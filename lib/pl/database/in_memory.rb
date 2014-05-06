@@ -96,6 +96,12 @@ module PL
         @stations[id]
       end
 
+      def get_station_by_uid(user_id)
+        @stations.values.find { |station| station.user_id == user_id }
+      end
+
+
+
       ####################
       #  Scheduled Play  #
       ####################

@@ -111,6 +111,11 @@ describe 'a badass database' do
       expect(db.get_station(@station.id).user_id).to eq(@user.id)
     end
 
+    it "gets a station by user_id" do
+      expect(db.get_station_by_uid(@user.id).id).to eq(@station.id)
+    end
+
+
     ####################
     #  Scheduled Play  #
     ####################
