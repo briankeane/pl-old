@@ -1,3 +1,33 @@
 // Place all the styles related to the station controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.songlist {
+  border: 5px;
+  margin-left: 10px;
+}
+
+#songlist li {
+  background-color: #8FCFFF;
+  height: 50px;
+  border: 1px solid black;
+  margin-bottom: 2px;
+}
+
+
+.scroll{
+    position: relative;
+    overflow: scroll;
+    border:1px solid red;
+    height: 400px;
+}
+
+
+#songlist_container {
+  height:700px;
+}
+
+.container {
+  margin-left: 10px;
+}

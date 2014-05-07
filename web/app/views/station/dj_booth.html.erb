@@ -1,0 +1,21 @@
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+
+<div class="span6" id="songlist_container">
+
+  <ul id="songlist" class="scroll">
+
+    <% 30.times do |i| %>
+      <li class="scheduled_play"><%= current_station.playlist[i].song.title %></li>
+    <% end %>
+
+  </ul>
+</div>
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+
+  djBooth();
+
+</script>
+<% end %>
