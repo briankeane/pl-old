@@ -89,6 +89,22 @@ describe 'a badass database' do
     end
   end
 
+  ####################
+  # Commercial Block #
+  ####################
+  describe 'CommercialBlock' do
+    it "creates a commercial block" do
+      commercial = db.create_commercial_block
+      expect(commercial.id).to_not be_nil
+    end
+
+    it "gets a commercial block" do
+      commercial = db.create_commercial_block
+      expect(db.get_commercial_block(commercial.id).id).to eq(commercial.id)
+    end
+  end
+
+
   ##############
   #   Station  #
   ##############
@@ -117,7 +133,7 @@ describe 'a badass database' do
 
 
     ####################
-    #  Scheduled Play  #
+    #        Spin      #
     ####################
 
     it "returns an empty array for an empty playlist" do
@@ -126,17 +142,38 @@ describe 'a badass database' do
     end
 
     it "creates a playlist and return it in the right order" do
-      db.schedule_play({ station_id: @station.id, song: @song, current_position: 5 })
-      db.schedule_play({ station_id: @station.id, song: @song, current_position: 6 })
-      db.schedule_play({ station_id: @station.id, song: @song, current_position: 7 })
-      db.schedule_play({ station_id: @station.id, song: @song, current_position: 8 })
-      db.schedule_play({ station_id: @station.id, song: @song, current_position: 9 })
-      db.schedule_play({ station_id: @station.id, song: @song, current_position: 10 })
+      spin = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 5 })
+      spin = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 6 })
+      spin = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 7 })
+      spin = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 8 })
+      spin = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 9 })
+      spin = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 10 })
       expect(db.get_current_playlist(@station.id).size).to eq(6)
       expect(db.get_current_playlist(@station.id)[0].current_position).to eq(5)
       expect(db.get_current_playlist(@station.id)[4].current_position).to eq(9)
       expect(db.get_current_playlist(@station.id)[5].current_position).to eq(10)
     end
+
+    it "gets a spin by current_position & station_id" do
+      spin1 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 5 })
+      spin2 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 6 })
+      expect(db.get_spin({ station_id: @station.id, current_position: 5 }).id).to eq(spin1.id)
+    end
+
+    it "creates a playlist and returns the entire thing" do
+      spin1 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 5 })
+      spin2 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 6 })
+      spin3 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 7 })
+      spin4 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 8 })
+      spin5 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 9 })
+      spin6 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 10 })
+      spin1.played_at = Time.now
+      spin2.played_at = Time.now
+
+    end
+
+
+
 
     ##############
     #  Sessions  #

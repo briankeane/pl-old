@@ -10,6 +10,6 @@ var djBooth = function () {
         items: ".scheduled_play",
         forcePlaceholderSize: true
     }).disableSelection();
-    $(".content").disableSelection();
+    $(".commercial_block").sortable("option", "disabled", true);
 
 };

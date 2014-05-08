@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'pry-debugger'
 
 module PL
   module Database
@@ -17,12 +18,14 @@ module PL
         @station_id_counter = 500
         @user_id_counter = 200
         @song_id_counter = 300
-        @scheduled_play_counter = 700
+        @spin_counter = 700
+        @commercial_block_counter = 800
         @users = {}
         @songs = {}
         @stations = {}
-        @scheduled_plays = []
+        @spins = {}
         @sessions = {}
+        @commercial_blocks = {}
 
       end
 
@@ -100,22 +103,60 @@ module PL
         @stations.values.find { |station| station.user_id == user_id }
       end
 
+      def update_station_a(station)
+        # Grab the data by station.id
+        attrs = @stations[station.id]
+        attrs[:user_id] = station.user_id
+
+        # Merge in the changes (station.whatever)
+      end
 
 
       ####################
-      #  Scheduled Play  #
+      # Commercial Block #
+      ####################
+
+      def create_commercial_block(attrs = {})
+        id = (@commercial_block_counter += 1)
+        attrs[:id] = id
+        commercial_block = PL::CommercialBlock.new(attrs)
+        @commercial_blocks[id] = commercial_block
+        commercial_block
+      end
+
+      def get_commercial_block(id)
+        @commercial_blocks[id]
+      end
+
+      ####################
+      #     Spin         #
       ####################
 
       def get_current_playlist(station_id)
-        station_plays = @scheduled_plays.select { |play| play.station_id == station_id }
-        station_plays.select { |play| play.current_position != nil }.sort_by { |x| x.current_position }
+        spins = @spins.values.select { |spin| spin.station_id == station_id }
+        spins.select { |spin| spin.current_position != nil }.sort_by { |x| x.current_position }
       end
 
-      def schedule_play(attrs)
-        attrs[:id] = (@scheduled_play_counter += 1)
-        play = ScheduledPlay.new(attrs)
-        @scheduled_plays << play
-        play
+      def get_full_platylist(station_id)
+        @spins.values.select { |spin| spin.station_id == station_id }
+      end
+
+      def schedule_spin(attrs) # :id, :audio_block, :station_id, :current_position, :played_at
+        id = (@spin_counter += 1)
+        attrs[:id] = id
+        spin = Spin.new(attrs)
+        @spins[spin.id] = spin
+        spin
+      end
+
+      def get_spin(attrs)  # current_position, station_id
+        spins = @spins.values.select { |spin| spin.station_id == attrs[:station_id] }
+        spins.find { |spin| spin.current_position == attrs[:current_position] }
+      end
+
+      def mark_spin_as_played(attrs)
+        @spins[id].played_at = attrs[:played_at]
+        @spins[id]
       end
 
 
@@ -141,7 +182,6 @@ module PL
           return false
         end
       end
-
     end
   end
 end

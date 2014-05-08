@@ -2,13 +2,16 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 
 <div class="span6" id="songlist_container">
-
+  <label><h3>Current Playlist</h3></label>
   <ul id="songlist" class="scroll">
 
     <% 30.times do |i| %>
-      <li class="scheduled_play"><%= current_station.playlist[i].song.title %></li>
+      <% if current_station.playlist[i].audio_block.is_a?(PL::CommercialBlock) %>
+        <li class="scheduled_play commercial_block">Commercial Block</li>
+      <% else %>
+        <li class="scheduled_play song"><%= current_station.playlist[i].audio_block.title %></li>
+      <% end %>
     <% end %>
-
   </ul>
 </div>
 

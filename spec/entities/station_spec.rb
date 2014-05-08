@@ -7,4 +7,10 @@ describe 'a station' do
     expect(station.user_id).to eq(19)
   end
 
+  it "starts with a playlist that lasts through the next Thursday midnight" do
+
+
+
+  end
+
 end

@@ -13,6 +13,7 @@
   height: 50px;
   border: 1px solid black;
   margin-bottom: 2px;
+  border-radius: 10px;
 }
 
 
@@ -20,7 +21,7 @@
     position: relative;
     overflow: scroll;
     border:1px solid red;
-    height: 400px;
+    height: 500px;
 }
 
 
@@ -30,4 +31,8 @@
 
 .container {
   margin-left: 10px;
+}
+
+.commercial_block {
+  background-color: yellow !important;
 }
