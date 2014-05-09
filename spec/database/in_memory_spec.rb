@@ -122,7 +122,7 @@ describe 'a badass database' do
     it "creates a station" do
       expect(@station.user_id).to eq(@user.id)
       expect(@station.id).to_not be_nil
-    end
+    sing_end
 
     it "gets a station" do
       expect(db.get_station(@station.id).user_id).to eq(@user.id)
@@ -143,18 +143,28 @@ describe 'a badass database' do
     before do
       @user = db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
       @station = db.create_station({ user_id: @user.id })
-      @song = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+      @song1 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                   audio_id: 2 })
+      @song2 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                   audio_id: 2 })
+      @song3 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                   audio_id: 2 })
+      @song4 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                   audio_id: 2 })
+      @song5 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                   audio_id: 2 })
+      @song6 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
 
       @playlist = db.get_current_playlist(@station.id)
       expect(@playlist.size).to eq(0)
 
-      @spin1 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 5 })
-      @spin2 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 6 })
-      @spin3 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 7 })
-      @spin4 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 8 })
-      @spin5 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 9 })
-      @spin6 = db.schedule_spin({ station_id: @station.id, song: @song, current_position: 10 })
+      @spin1 = db.schedule_spin({ station_id: @station.id, audio_block: @song1, current_position: 5 })
+      @spin2 = db.schedule_spin({ station_id: @station.id, audio_block: @song2, current_position: 6 })
+      @spin3 = db.schedule_spin({ station_id: @station.id, audio_block: @song3, current_position: 7 })
+      @spin4 = db.schedule_spin({ station_id: @station.id, audio_block: @song4, current_position: 8 })
+      @spin5 = db.schedule_spin({ station_id: @station.id, audio_block: @song5, current_position: 9 })
+      @spin6 = db.schedule_spin({ station_id: @station.id, audio_block: @song6, current_position: 10 })
       @spin1.played_at = Time.local(2014, 5, 9, 9, 30)
       @spin2.played_at = Time.local(2014, 5, 9, 9, 33)
     end
@@ -185,9 +195,28 @@ describe 'a badass database' do
       result = db.get_next_spin(@station.id)
       expect(result.current_position).to eq(7)
 
-      db.record_spin_time({ id: result.id, played_at: Time.local(2014, 5, 9, 9, 36) })
+      db.record_spin_time({ spin_id: result.id, played_at: Time.local(2014, 5, 9, 9, 36) })
       new_result = db.get_next_spin(@station.id)
       expect(new_result.current_position).to eq(8)
+    end
+
+    it "gets the song currently being played" do
+      result = db.get_current_spin(@station.id)
+      expect(result.current_position).to eq(6)
+      db.record_spin_time({ spin_id: @spin3.id, played_at: Time.local(2014, 5, 9, 9, 36) })
+      expect(db.get_current_spin(@station.id).current_position).to eq(7)
+    end
+
+    it "moves a song backwards and adjusts the playlist around it" do
+      db.move_spin({ old_position: 9, new_position: 7, station_id: @station.id })
+      new_playlist = db.get_current_playlist(@station.id)
+      expect(new_playlist.map { |spin| spin.audio_block.id }).to eq([@song5.id,@song3.id,@song4.id,@song6.id])
+    end
+
+    it "moves a song forwards and adjusts the playlist around it" do
+      db.move_spin({ old_position: 7, new_position: 9, station_id: @station.id })
+      new_playlist = db.get_current_playlist(@station.id)
+      expect(new_playlist.map { |spin| spin.audio_block.id }).to eq([@song4.id,@song5.id,@song3.id,@song6.id])
     end
   end
 

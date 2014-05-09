@@ -32,9 +32,35 @@ describe 'a station' do
 
     it "extends the playlist by a week" do
       @station.generate_first_playlist
-      Timecop.travel(Time.local(2014, 5, 11, 10))
+      stubbed_current_time = Time.local(2014, 5, 11, 10)
+      Timecop.travel(stubbed_current_time)
+
+      playlist = PL::Database.db.get_full_playlist(@station.id)
+
+      1000.times do |i|
+        stubbed_current_time += 208
+        Timecop.travel(stubbed_current_time)
+        PL::Database.db.record_spin_time({ spin_id: playlist[i].id, played_at: Time.now })
+      end
+
+      expect(PL::Database.db.get_current_playlist(@station.id).size).to eq(1589)
       @station.generate_playlist
+
+      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(4601)
+
+      # go to tommorow and make sure running it again doesn't add anything -- it's already at the max
+      Timecop.travel(2014, 5, 14, 10)
+      @station.generate_playlist
+      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(4601)
+
+      # but another week from now and it will...
+      Timecop.travel(2014, 5, 15, 10)
+      @station.generate_playlist
+      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(7346)
+
+
     end
+
 
 
 

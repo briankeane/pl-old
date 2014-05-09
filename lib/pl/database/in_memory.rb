@@ -162,13 +162,36 @@ module PL
       end
 
       def record_spin_time(attrs)
-        @spins[attrs[:id]].played_at = attrs[:played_at]
-        @spins[attrs[:id]]
+        @spins[attrs[:spin_id]].played_at = attrs[:played_at]
+        @spins[attrs[:spin_id]]
       end
 
       def get_next_spin(station_id)
-        spins = self.get_current_playlist(station_id).first
+        self.get_current_playlist(station_id).first
       end
+
+      def get_current_spin(station_id)
+        self.get_past_spins(station_id).last
+      end
+
+      def move_spin(attrs)   #old_position, new_position, station_id
+        #if moving backwards
+        if attrs[:old_position] > attrs[:new_position]
+          playlist_slice = self.get_current_playlist(attrs[:station_id]).select { |spin| (spin.current_position >= attrs[:new_position]) && (spin.current_position <= attrs[:old_position]) }
+
+          playlist_slice.each { |spin| spin.current_position += 1 }
+
+          playlist_slice.last.current_position = attrs[:new_position]
+        elsif attrs[:old_position] < attrs[:new_position]
+          playlist_slice = self.get_current_playlist(attrs[:station_id]).select { |spin| (spin.current_position >= attrs[:old_position]) && (spin.current_position <= attrs[:new_position]) }
+
+          playlist_slice.each { |spin| spin.current_position -= 1 }
+
+          playlist_slice.first.current_position = attrs[:new_position]
+        end
+      end
+
+
 
 
       ##############
