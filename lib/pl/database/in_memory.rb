@@ -134,11 +134,18 @@ module PL
 
       def get_current_playlist(station_id)
         spins = @spins.values.select { |spin| spin.station_id == station_id }
-        spins.select { |spin| spin.current_position != nil }.sort_by { |x| x.current_position }
+        spins.select { |spin| spin.played_at == nil }.sort_by { |x| x.current_position }
       end
 
-      def get_full_platylist(station_id)
+      def get_full_playlist(station_id)
         @spins.values.select { |spin| spin.station_id == station_id }
+      end
+
+      def get_past_spins(station_id)
+        spins = @spins.values.select { |spin| spin.station_id == station_id }
+        spins.select! { |spin| spin.played_at != nil }
+        spins.sort_by! { |spin| spin.played_at }
+        spins
       end
 
       def schedule_spin(attrs) # :id, :audio_block, :station_id, :current_position, :played_at
@@ -154,9 +161,13 @@ module PL
         spins.find { |spin| spin.current_position == attrs[:current_position] }
       end
 
-      def mark_spin_as_played(attrs)
-        @spins[id].played_at = attrs[:played_at]
-        @spins[id]
+      def record_spin_time(attrs)
+        @spins[attrs[:id]].played_at = attrs[:played_at]
+        @spins[attrs[:id]]
+      end
+
+      def get_next_spin(station_id)
+        spins = self.get_current_playlist(station_id).first
       end
 
 

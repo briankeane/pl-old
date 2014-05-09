@@ -1,6 +1,3 @@
-require 'spec_helper'
-require 'pry-debugger'
-
 module PL
   class SeedDB
     def self.run
@@ -122,5 +119,10 @@ module PL
     def self.station1
       @@station1
     end
+
+    def self.song1
+      @@songs[0]
+    end
+
   end
 end

@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'timecop'
+require 'pry-debugger'
 
 describe 'a station' do
   it "is created with an id, user_id " do
@@ -7,10 +9,47 @@ describe 'a station' do
     expect(station.user_id).to eq(19)
   end
 
-  it "starts with a playlist that lasts through the next Thursday midnight" do
+  describe 'playlist generation' do
+    before do
+      Timecop.travel(Time.local(2014, 5, 9, 10))
+      PL::SeedDB.run
+      @station = PL::SeedDB.station1
+    end
+
+    it "creates a first playlist" do
+      #stub stuff
+      Array.any_instance.stub(:sample).and_return(PL::SeedDB.song1)
+      @station.generate_first_playlist
+      playlist = PL::Database.db.get_full_playlist(@station.id)
+      expect(playlist.size).to eq(2589)
+      expect(playlist[8].audio_block).to be_a(PL::CommercialBlock)
+    end
+
+    it "won't generate_first_playlist twice" do
+      @station.generate_first_playlist
+      expect(@station.generate_first_playlist).to eq(false)
+    end
+
+    it "extends the playlist by a week" do
+      @station.generate_first_playlist
+      Timecop.travel(Time.local(2014, 5, 11, 10))
+      @station.generate_playlist
+    end
 
 
 
+
+
+
+
+
+
+
+
+
+
+    after do
+      Timecop.return
+    end
   end
-
 end
