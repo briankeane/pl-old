@@ -87,7 +87,7 @@ module PL
                                          played_at: Time.now })
       end
 
-      binding.pry
+
     end
 
 
@@ -111,7 +111,7 @@ module PL
       formatted_playlist = []
 
 
-      while time_tracker < (air_time + 2100)    # 35 min past start_time (30 min past requested time)
+      while time_tracker < (air_time + 7500)    # 2 hrs 5 min past start_time (2 hrs past requested time)
         spin = playlist[(playlist_counter += 1)]
         spin.estimated_air_time = time_tracker
 

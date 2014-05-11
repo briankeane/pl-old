@@ -54,7 +54,7 @@ describe 'a station' do
     end
 
     it "gets the current playlist_estimated_end_time" do
-      expect(@station.playlist_estimated_end_time).to eq(Time.new(2014,5,30,0, 6, 42))
+      expect(@station.playlist_estimated_end_time.to_i).to eq(Time.new(2014,5,30,0, 6, 42).to_i)
     end
 
 
@@ -62,7 +62,10 @@ describe 'a station' do
 
     describe "get_playlist_by_air_time" do
       it "gets a playlist by it's airtime" do
-        expect(@station.get_playlist_by_air_time(Time.new(2014, 5, 19, 6, 55))).to eq([])
+        playlist = @station.get_playlist_by_air_time(Time.new(2014, 5, 19, 6, 55))
+        expect(playlist.size).to eq(34)
+        expect(playlist[0].current_position).to eq(3087)
+        expect(playlist.last.current_position).to eq(3116)
       end
     end
 
