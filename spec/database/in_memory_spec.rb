@@ -122,7 +122,7 @@ describe 'a badass database' do
     it "creates a station" do
       expect(@station.user_id).to eq(@user.id)
       expect(@station.id).to_not be_nil
-    sing_end
+    end
 
     it "gets a station" do
       expect(db.get_station(@station.id).user_id).to eq(@user.id)
