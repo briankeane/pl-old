@@ -2,18 +2,19 @@ require 'spec_helper'
 
 module PL
 
-  describe "GetNextSpin" do
-    it "calls bullshit if station is not found" do
-      user = PL::Database.db.create_user({ twitter: "Bob", password: "password" })
-      result = PL::CreateUser.run({ twitter: "Bob", password: "another" })
+  describe "GetCurrentSpin" do
+    it "calls bullshit if spin is not found" do
+      result = PL::GetCurrentSpin.run(99999)
       expect(result.success?).to eq(false)
-      expect(result.error).to eq(:twitter_taken)
+      expect(result.error).to eq(:spin_not_found)
     end
 
-    it "creates a user" do
-      result = PL::CreateUser.run({ twitter: "Alice", password: "password2" })
+    it "Gets the current spin" do
+      station = PL::Database.db.create_station({ user_id: 1 })
+      spin = PL::Database.db.schedule_spin({ station_id: station.id, played_at: Time.now })
+      result = PL::GetCurrentSpin.run(station.id)
       expect(result.success?).to eq(true)
-      expect(result.user.id).to_not be_nil
+      expect(result.current_spin.id).to eq(spin.id)
     end
   end
 end

@@ -87,7 +87,7 @@ module PL
       #   Station  #
       ##############
 
-      def create_station(attrs)
+      def create_station(attrs)    # (id), user_id, heavy, medium, light, seconds_of_commercial_per_hour
         id = (@station_id_counter += 1)
         attrs[:id] = id
         station = Station.new(attrs)

@@ -127,6 +127,13 @@ module PL
       playlist_counter = -1  # so 1st iteration will be 0
       commercial_block_counter = (air_time.to_f/1800.0).floor     # determines which 30 min block we're starting in
       current_spin = PL::Database.db.get_current_spin(@id)
+
+      # if there is no current spin (station not running), return false
+      if current_spin == nil
+        return false
+      end
+
+
       time_tracker = current_spin.played_at + (current_spin.audio_block.duration/1000)
       formatted_playlist = []
 

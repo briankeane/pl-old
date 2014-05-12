@@ -1,13 +1,12 @@
 module PL
   class GetNextSpin < UseCase
     def run(station_id)
-      user = PL::Database.db.get_(attrs[:twitter])
-      case
-      when user != nil
-        return failure(:twitter_taken)
+      next_spin = PL::Database.db.get_next_spin(station_id)
+      case next_spin
+      when nil
+        return failure(:spin_not_found)
       else
-        user = PL::Database.db.create_user({ twitter: attrs[:twitter], password: attrs[:password] })
-        return success :user => user
+        return success :next_spin => next_spin
       end
     end
   end
