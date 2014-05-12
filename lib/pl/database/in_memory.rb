@@ -59,6 +59,19 @@ module PL
         @users.values.find { |x| x.twitter == twitter }
       end
 
+      def update_user(attrs)
+        user = @users[attrs[:user_id]]
+        attrs.delete(:user_id)
+
+        # insert updated attributes
+        attrs.each do |attr_name, value|
+          setter = "#{attr_name}="
+          user.send(setter, value) if user.class.method_defined?(setter)
+        end
+
+        user
+      end
+
       ##############
       #   Songs    #
       ##############
@@ -83,6 +96,20 @@ module PL
         @songs.values.select { |song| song.artist.match(/^#{artist}/) }.sort_by { |x| x.title }
       end
 
+      def update_song(attrs)
+        song = @songs[attrs[:song_id]]
+        attrs.delete(:song_id)
+
+        # insert updated attributes
+        attrs.each do |attr_name, value|
+          setter = "#{attr_name}="
+          song.send(setter, value) if song.class.method_defined?(setter)
+        end
+
+        song
+      end
+
+
       ##############
       #   Station  #
       ##############
@@ -103,7 +130,7 @@ module PL
         @stations.values.find { |station| station.user_id == user_id }
       end
 
-      def update_station_a(station)
+      def update_station(station)
         # Grab the data by station.id
         attrs = @stations[station.id]
         attrs[:user_id] = station.user_id
@@ -182,13 +209,22 @@ module PL
           playlist_slice.each { |spin| spin.current_position += 1 }
 
           playlist_slice.last.current_position = attrs[:new_position]
+
+          # return true for successful move
+          return true
         elsif attrs[:old_position] < attrs[:new_position]
           playlist_slice = self.get_current_playlist(attrs[:station_id]).select { |spin| (spin.current_position >= attrs[:old_position]) && (spin.current_position <= attrs[:new_position]) }
 
           playlist_slice.each { |spin| spin.current_position -= 1 }
 
           playlist_slice.first.current_position = attrs[:new_position]
+
+          # return true for successful move
+          return true
         end
+
+        # return false if nothing was moved
+        return false
       end
 
 

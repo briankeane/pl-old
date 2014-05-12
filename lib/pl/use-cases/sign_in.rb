@@ -1,4 +1,3 @@
-require 'pry-debugger'
 module PL
   class SignIn < UseCase
     def run(attrs)

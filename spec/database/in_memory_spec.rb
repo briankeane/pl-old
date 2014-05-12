@@ -36,6 +36,14 @@ describe 'a badass database' do
       expect(db.get_user_by_twitter("bob").id).to eq(user.id)
       expect(db.get_user_by_twitter("billy")).to be_nil
     end
+
+    it 'updates a user' do
+      user = db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
+      db.update_user({ user_id: user.id, twitter: "bill" })
+      updated_user = db.get_user(user.id)
+      expect(updated_user.twitter).to eq("bill")
+    end
+
   end
 
   ##############
@@ -63,15 +71,15 @@ describe 'a badass database' do
 
 
     before do
-      song1 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+      @song1 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
-      song2 = db.create_song({ title: "Bar Nights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+      @song2 = db.create_song({ title: "Bar Nights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
-      song3 = db.create_song({ title: "Bar Brights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
+      @song3 = db.create_song({ title: "Bar Brights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
-      song4 = db.create_song({ title: "Bar First", artist: "Bob Dylan", duration: 226000, sing_start: 5000, sing_end: 208000,
+      @song4 = db.create_song({ title: "Bar First", artist: "Bob Dylan", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
-      song5 = db.create_song({ title: "Hell", artist: "Bob Dylan", duration: 226000, sing_start: 5000, sing_end: 208000,
+      @song5 = db.create_song({ title: "Hell", artist: "Bob Dylan", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
     end
 
@@ -88,6 +96,13 @@ describe 'a badass database' do
       expect(songlist[0].title).to eq("Bar Brights")
       expect(songlist[2].title).to eq("Bar Nights")
     end
+
+    it "updates a song" do
+      updated_song1 = db.update_song({ song_id: @song1.id, title: "Bar Days" })
+      expect(updated_song1.title).to eq("Bar Days")
+    end
+
+
   end
 
   ####################
