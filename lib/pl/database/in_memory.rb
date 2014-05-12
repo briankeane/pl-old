@@ -227,6 +227,24 @@ module PL
         return false
       end
 
+      ##################################################################
+      #     insert_spin                                                #
+      ##################################################################
+      #  This method inserts a spin into the playlist.  In order to    #
+      #  avoid rearranging the entire playlist, it deletes a song at   #
+      #  3am the next morning to even things out for the day.          #
+      ##################################################################
+      def insert_spin (attrs)   # takes :station_id, :insert_position
+        station = self.get_station(attr[:station_id])
+        playlist = get_current_playlist(station.id)
+        time_tracker = station.next_song_start_time
+        # seek to current time
+      end
+
+
+
+
+
 
 
 

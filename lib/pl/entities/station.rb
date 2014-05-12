@@ -197,6 +197,12 @@ module PL
       return time_tracker
     end
 
+    def next_song_start_time
+      current_spin = PL::Database.db.get_current_spin(@id)
+      current_spin.played_at + (current_spin.audio_block.duration/1000)
+    end
+
+
     def playlist
       PL::Database.db.get_current_playlist(@id)
     end

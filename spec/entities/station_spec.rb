@@ -65,6 +65,10 @@ describe 'a station' do
         expect(playlist[0].current_position).to eq(3087)
         expect(playlist.last.current_position).to eq(3116)
       end
+
+      it "gets the next_song_start_time" do
+        expect(@station.next_song_start_time.to_s).to eq('2014-05-13 19:50:26 -0500')
+      end
     end
 
     after (:all) do
