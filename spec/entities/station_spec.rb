@@ -38,7 +38,7 @@ describe 'a station' do
       end
 
       expect(PL::Database.db.get_current_playlist(@station.id).size).to eq(3675)
-      expect(@station.playlist_estimated_end_time.to_i).to eq(1400951516)
+      expect(@station.playlist_estimated_end_time.to_s).to eq('2014-05-24 12:11:56 -0500')
     end
 
     it "extends the playlist by a week" do
@@ -54,10 +54,8 @@ describe 'a station' do
     end
 
     it "gets the current playlist_estimated_end_time" do
-      expect(@station.playlist_estimated_end_time.to_i).to eq(Time.new(2014,5,30,0, 6, 42).to_i)
+      expect(@station.playlist_estimated_end_time.to_s).to eq(Time.new(2014,5,30,0, 6, 42).to_s)
     end
-
-
 
 
     describe "get_playlist_by_air_time" do
@@ -68,9 +66,6 @@ describe 'a station' do
         expect(playlist.last.current_position).to eq(3116)
       end
     end
-
-
-#
 
     after (:all) do
       Timecop.return

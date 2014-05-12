@@ -8,8 +8,8 @@ module PL
     SECONDS_IN_WEEK = MS_IN_WEEK/1000
     SECONDS_IN_DAY = 86400
 
-    attr_accessor :id, :user_id, :heavy, :medium, :light, :current_week, :station_start
-    attr_accessor :last_playlist_start_date, :seconds_of_commercial_per_hour
+    attr_accessor :id, :user_id, :heavy, :medium, :light
+    attr_accessor :seconds_of_commercial_per_hour
 
     def initialize(attrs)
       attrs[:heavy] ||= []
@@ -19,6 +19,14 @@ module PL
       super(attrs)
       @station_start = Time.now
     end
+
+    ##################################################################
+    #     create_sample_array                                        #
+    ##################################################################
+    #  This method creates an array of samples for the playlist      #
+    #  generator to randomly select from.  It populates each song    #
+    #  in the correct ratio.                                         #
+    ##################################################################
 
     def create_sample_array
       sample_array = []
@@ -43,6 +51,20 @@ module PL
       end
       sample_array
     end
+
+
+    ##################################################################
+    #     generate_playlist                                          #
+    ##################################################################
+    #  This method generates or extends the current playlist         #
+    #  through the following thursday at midnight.  It takes         #
+    #  commercial time into account but does not insert commercial   #
+    #  blocks or placeholders.  Currently it gets the ratios correct #
+    #  but later it should be ammended to account for:               #
+    #                                                                #
+    #     1) no repeats (spacing between same artist/song)           #
+    #     2) station ids                                             #
+    ##################################################################
 
     def generate_playlist
       # set up beginning and ending dates for comparison
@@ -86,18 +108,16 @@ module PL
         PL::Database.db.record_spin_time({ spin_id: first_spin.id,
                                          played_at: Time.now })
       end
-
-
     end
 
 
-    #################################################################
-    #     station.get_playlist_by_air_time                          #
-    #################################################################
-    #  This method returns 35 min of estimated_playlist for a given #
-    #  time.  It stores the 'estimated air_time' in the actual      #
-    #  Spin object, and returns an array of those objects.          #
-    #################################################################
+    ##################################################################
+    #     station.get_playlist_by_air_time                           #
+    ##################################################################
+    #  This method returns 125 min of estimated_playlist for a given #
+    #  time.  It stores the 'estimated air_time' in the actual       #
+    #  Spin object, and returns an array of those objects.           #
+    ##################################################################
 
     def get_playlist_by_air_time(air_time)
 
