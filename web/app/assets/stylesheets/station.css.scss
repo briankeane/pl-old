@@ -18,6 +18,18 @@
   list-style-type:none;
 }
 
+#songProgressbar {
+  height: 5px;
+  width: 100%
+}
+
+#elapsed_time {
+  float: left;
+}
+
+#time_remaining {
+  float: right;
+}
 
 .scroll{
     position: relative;
@@ -39,7 +51,7 @@
   background-color: yellow !important;
 }
 
-.song .title {
+.title {
   padding-top: 2px;
   padding-left: 10px;
   top: 0;
@@ -48,14 +60,15 @@
   float: left;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-weight: bold;
 }
 
-.song .artist {
+.artist {
   float: left;
   padding-left: 10px;
 }
 
-.song .estimated_air_time {
+.estimated_air_time {
   padding-top: 2px;
   padding-right: 10px;
   float: right;
@@ -63,4 +76,14 @@
   right: 0;
   text-align: right;
   height: 20px;
+}
+
+#now_playing {
+  background-color: #3EFF81 !important;
+  height: 70px;
+  width: 433;
+  border: 1px solid black;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  list-style-type:none;
 }

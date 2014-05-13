@@ -11,34 +11,22 @@ describe 'a station' do
 
   describe 'playlist functions' do
 
-    before (:all) do
-      Timecop.travel(Time.local(2014, 5, 9, 10))
-      PL::SeedDB.run
-      @station = PL::SeedDB.station1
+    before (:each) do
+      Timecop.freeze(Time.local(2014, 5, 9, 10))
+      @user = PL::Database.db.create_user({ twitter: "Bob", password: "password" })
+      @song = PL::Database.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000 })
+      @station = PL::Database.db.create_station({ user_id: @user.id, heavy: [@song] })
+      @station.generate_playlist
     end
 
     it "creates a first playlist" do
-      #stub stuff
-      Array.any_instance.stub(:sample).and_return(PL::SeedDB.song1)
-      @station.generate_playlist
       playlist = PL::Database.db.get_full_playlist(@station.id)
       expect(playlist.size).to eq(4675)
     end
 
-
     it "estimates the end of the current playlist" do
-      Timecop.travel(Time.local(2014, 5, 9, 10))
-      playlist = PL::Database.db.get_full_playlist(@station.id)
-      stubbed_current_time = Time.local(2014, 5, 11, 10)
-      Timecop.travel(stubbed_current_time)
-      1000.times do |i|
-        stubbed_current_time += 208
-        Timecop.travel(stubbed_current_time)
-        PL::Database.db.record_spin_time({ spin_id: playlist[i].id, played_at: Time.now })
-      end
-
-      expect(PL::Database.db.get_current_playlist(@station.id).size).to eq(3675)
-      expect(@station.playlist_estimated_end_time.to_s).to eq('2014-05-24 12:11:56 -0500')
+      expect(PL::Database.db.get_current_playlist(@station.id).size).to eq(4674)
+      expect(@station.playlist_estimated_end_time.to_s).to match("2014-05-23 00:05:10")
     end
 
     it "extends the playlist by a week" do
@@ -50,11 +38,12 @@ describe 'a station' do
       # but another week from now and it will...
       Timecop.travel(2014, 5, 15, 10)
       @station.generate_playlist
-      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(6566)
+      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(7083)
     end
 
-    it "gets the current playlist_estimated_end_time" do
-      expect(@station.playlist_estimated_end_time.to_s).to eq(Time.new(2014,5,30,0, 6, 42).to_s)
+    it "gets the new current playlist_estimated_end_time" do
+      #@station.generate_playlist
+      expect(@station.playlist_estimated_end_time.to_s).to match("2014-05-23 00:05:10")
     end
 
 
@@ -62,16 +51,16 @@ describe 'a station' do
       it "gets a playlist by it's airtime" do
         playlist = @station.get_playlist_by_air_time(Time.new(2014, 5, 19, 6, 55))
         expect(playlist.size).to eq(34)
-        expect(playlist[0].current_position).to eq(3087)
-        expect(playlist.last.current_position).to eq(3116)
+        expect(playlist[0].current_position).to eq(3773)
+        expect(playlist.last.current_position).to eq(3802)
       end
 
       it "gets the next_song_start_time" do
-        expect(@station.next_song_start_time.to_s).to eq('2014-05-13 19:50:26 -0500')
+        expect(@station.next_song_start_time.to_s).to match('2014-05-09 10:03:46')
       end
     end
 
-    after (:all) do
+    after(:all) do
       Timecop.return
     end
   end

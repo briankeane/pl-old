@@ -202,6 +202,48 @@ module PL
       current_spin.played_at + (current_spin.audio_block.duration/1000)
     end
 
+    #################################################################
+    #     artificially_update_playlist                              #
+    #################################################################
+    # This method simulates the streaming server having been run    #
+    # by updating all records before the current time as having     #
+    # been played.                                                  #
+    #################################################################
+
+    def artificially_update_playlist
+      air_time = Time.now
+      playlist = PL::Database.db.get_current_playlist(@id)
+
+      playlist_counter = -1  # so 1st iteration will be 0
+      commercial_block_counter = (air_time.to_f/1800.0).floor     # determines which 30 min block we're starting in
+      current_spin = PL::Database.db.get_current_spin(@id)
+
+      # if there is no current spin (station not running), return false
+      if current_spin == nil
+        return false
+      end
+
+
+      time_tracker = current_spin.played_at + (current_spin.audio_block.duration/1000)
+      formatted_playlist = []
+
+
+      while time_tracker < air_time    # seek the current time
+        spin = playlist[(playlist_counter += 1)]
+        spin.played_at = time_tracker
+
+        time_tracker += (spin.audio_block.duration/1000)
+
+        # if it's time for a commercial
+        if (time_tracker.to_f/1800.0).floor > commercial_block_counter
+          commercial_block = PL::CommercialBlock.new({ estimated_air_time: time_tracker,
+                                                                 duration: ((@seconds_of_commercial_per_hour/2) * 1000) })
+          formatted_playlist << commercial_block
+          commercial_block_counter += 1
+          time_tracker += (@seconds_of_commercial_per_hour/2)
+        end
+      end
+    end
 
     def playlist
       PL::Database.db.get_current_playlist(@id)

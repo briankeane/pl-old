@@ -6,7 +6,7 @@ module PL
     it "calls bullshit if spin is not found" do
       result = PL::GetNextSpin.run(99999)
       expect(result.success?).to eq(false)
-      expect(result.error).to eq(:user_not_logged_in)
+      expect(result.error).to eq(:spin_not_found)
     end
 
     it "creates a user" do

@@ -157,7 +157,6 @@ describe 'a badass database' do
 
     before do
       @user = db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
-      @station = db.create_station({ user_id: @user.id })
       @song1 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
       @song2 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
@@ -170,6 +169,7 @@ describe 'a badass database' do
                                    audio_id: 2 })
       @song6 = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
+      @station = db.create_station({ user_id: @user.id, heavy: [@song1], medium: [@song2], light: [@song3] })
 
       @playlist = db.get_current_playlist(@station.id)
       expect(@playlist.size).to eq(0)
@@ -233,10 +233,15 @@ describe 'a badass database' do
       new_playlist = db.get_current_playlist(@station.id)
       expect(new_playlist.map { |spin| spin.audio_block.id }).to eq([@song4.id,@song5.id,@song3.id,@song6.id])
     end
+
+    # it "inserts a spin" do
+    #   Timecop.travel(Time.local(2014, 5, 9, 9, 34))
+    #   @station.generate_playlist
+    #   db.insert_spin({ station_id: @station.id, insert_position: 55, audio_block: @song6 })
+    #   expect(db.get_current_playlist).to eq([])
+    #   Timecop.return
+    # end
   end
-
-
-
 
   ##############
   #  Sessions  #
@@ -249,15 +254,11 @@ describe 'a badass database' do
       expect(db.get_uid_from_sid(25)).to be_nil
     end
 
-
     it 'deletes a session' do
       session_id = db.create_session(5)
       expect(db.get_uid_from_sid(session_id)).to eq(5)
       db.delete_session(session_id)
       expect(db.get_uid_from_sid(session_id)).to be_nil
     end
-
   end
-
-
 end

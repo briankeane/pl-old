@@ -1,9 +1,10 @@
 require 'spec_helper'
 require 'Timecop'
+require 'pry-debugger'
 
 describe "MoveSpin" do
 
-  before(:all) do
+  before(:each) do
     @user = PL::Database.db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
     @station = PL::Database.db.create_station({ user_id: @user.id })
     @song1 = PL::Database.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
@@ -33,14 +34,13 @@ describe "MoveSpin" do
   end
 
   it "calls bullshit if not logged in" do
-    result = PL::MoveSpin.run({ pl_session_id: "BULLSHITID" })
+    result = PL::MoveSpin.run({ pl_session_id: "BULLSHIT_ID" })
     expect(result.success?).to eq(false)
     expect(result.error).to eq(:user_not_logged_in)
   end
 
   it "calls bullshit if old_position is invalid" do
-    user = PL::Database.db.get_user(@station.user_id)
-    session_id = PL::Database.db.create_session(user.id)
+    session_id = PL::Database.db.create_session(@user.id)
     result = PL::MoveSpin.run({ pl_session_id: session_id,
                                   old_position: 999,
                                   new_position: 7 })
@@ -49,8 +49,7 @@ describe "MoveSpin" do
   end
 
   it "calls bullshit if new_position is invalid" do
-    user = PL::Database.db.get_user(@station.user_id)
-    session_id = PL::Database.db.create_session(user.id)
+    session_id = PL::Database.db.create_session(@user.id)
     result = PL::MoveSpin.run({ pl_session_id: session_id,
                                   old_position: 7,
                                   new_position: 999 })
@@ -59,8 +58,7 @@ describe "MoveSpin" do
   end
 
   it "moves a spin" do
-    user = PL::Database.db.get_user(@station.user_id)
-    session_id = PL::Database.db.create_session(user.id)
+    session_id = PL::Database.db.create_session(@user.id)
     result = PL::MoveSpin.run({ pl_session_id: session_id,
                                   old_position: 7,
                                   new_position: 9 })

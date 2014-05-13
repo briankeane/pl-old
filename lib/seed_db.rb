@@ -114,6 +114,20 @@ module PL
       @@station3 = PL::Database.db.create_station({ user_id: @@user3.id })
       @@station4 = PL::Database.db.create_station({ user_id: @@user4.id })
       @@station5 = PL::Database.db.create_station({ user_id: @@user5.id })
+
+
+      # load up a station and make it so it's been playing a little while
+      Timecop.travel(Time.local(2014, 5, 9, 10))
+      Array.any_instance.stub(:sample).and_return(@@songs[0])
+      @@station1.generate_playlist
+      stubbed_current_time = Time.local(2014, 5, 11, 10)
+      Timecop.travel(stubbed_current_time)
+      playlist = PL::Database.db.get_full_playlist(@@station1.id)
+      1000.times do |i|
+        stubbed_current_time += 208
+        Timecop.travel(stubbed_current_time)
+        PL::Database.db.record_spin_time({ spin_id: playlist[i].id, played_at: Time.now })
+      end
     end
 
     def self.station1

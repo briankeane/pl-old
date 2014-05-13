@@ -3,9 +3,10 @@ require 'Timecop'
 
 describe "GetPlaylistByAirTime" do
 
-  before(:all) do
+  before(:each) do
     PL::SeedDB.run
     @station = PL::SeedDB.station1
+    @station.generate_playlist
   end
 
   it "calls bullshit if not logged in" do

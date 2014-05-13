@@ -5,7 +5,7 @@ module PL
   module Database
 
     def self.db
-      @@db ||= InMemory.new
+      @__db_instance ||= InMemory.new
     end
 
     class InMemory
@@ -235,18 +235,43 @@ module PL
       #  3am the next morning to even things out for the day.          #
       ##################################################################
       def insert_spin (attrs)   # takes :station_id, :insert_position
-        station = self.get_station(attr[:station_id])
+        station = self.get_station(attrs[:station_id])
         playlist = get_current_playlist(station.id)
         time_tracker = station.next_song_start_time
-        # seek to current time
+        position_tracker = playlist.first.current_position
+        binding.pry
+
+        # seek to proper position, updating playlist time along the way
+        while position_tracker < attrs[:insert_position]
+          playlist[position_tracker].estimated_air_time = time_tracker
+          time_tracker += (playlist[position_tracker].duration/1000)
+        end
+
+
+
+        # Make a new space by adding 1 to all current_positions until the next day
+        # if it's in the 3am hour, set marker to the following 2am
+        if time_tracker.hour == 3
+          change_hour = 2
+        else
+          change_hour = 3
+        end
+
+        # adjust current_position until 3am (or 2am tomorrow if it's past 3am today)
+        while time_tracker.hour != change_hour
+          @songs[playlist[position_tracker].id].current_position += 1
+          position_tracker += 1
+        end
+
+        # delete a late-night spin to preserve rest of the week order
+        @songs.delete([playlist[position_tracker].id])
+
+        # insert the new spin
+        self.schedule_spin({ station_id: attrs[:station_id],
+                       current_position: attrs[:insert_position],
+                       audio_block: attrs[:audio_block] })
+        binding.pry
       end
-
-
-
-
-
-
-
 
       ##############
       #  Sessions  #
