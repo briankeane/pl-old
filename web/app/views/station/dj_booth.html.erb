@@ -2,14 +2,27 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 
 <div class="span6" id="songlist_container">
+  <div class="span6" id="now_playing">
+
+  </div>
+
   <label><h3>Current Playlist</h3></label>
   <ul id="songlist" class="scroll">
 
-    <% 30.times do |i| %>
-      <% if current_station.playlist[i].audio_block.is_a?(PL::CommercialBlock) %>
-        <li class="scheduled_play commercial_block">Commercial Block</li>
+    <% @playlist.each do |spin| %>
+      <% if spin.is_a?(PL::CommercialBlock) %>
+        <li class="scheduled_play commercial_block">
+          <b>Commercial Block</b></li>
       <% else %>
-        <li class="scheduled_play song"><%= current_station.playlist[i].audio_block.title %></li>
+        <li class="scheduled_play song">
+          <div class="clearfix">
+            <div class="song title"><b><%= spin.audio_block.title %></b></div>
+            <div class="song estimated_air_time"><%= time_formatter(spin.estimated_air_time) %></div>
+          </div>
+
+          <div class="song artist"><%= spin.audio_block.artist %></div>
+        </li>
+
       <% end %>
     <% end %>
   </ul>
@@ -18,7 +31,7 @@
 <% content_for :javascript do %>
 <script type="text/javascript">
 
-  djBooth();
+  $(function() { djBooth(); });
 
 </script>
 <% end %>
