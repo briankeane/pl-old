@@ -155,7 +155,8 @@ module PL
         if (time_tracker.to_f/1800.0).floor > commercial_block_counter
           commercial_block = PL::CommercialBlock.new({ estimated_air_time: time_tracker,
                                                                  duration: ((@seconds_of_commercial_per_hour/2) * 1000) })
-          formatted_playlist << commercial_block
+          commercial_spin = PL::Spin.new({ station_id: @id, estimated_air_time: time_tracker, audio_block: commercial_block })
+          formatted_playlist << commercial_spin
           commercial_block_counter += 1
           time_tracker += (commercial_block.duration/1000)
         end

@@ -20,14 +20,17 @@ var djBooth = function () {
 
 
   $("#songlist").sortable({
-        items: ".scheduled_play",
-        forcePlaceholderSize: true
-    });
+                        items: ".scheduled_play",
+                        forcePlaceholderSize: true
+                          });
 
-    $("#songProgressbar").progressbar({
-      value: currentSpin,
-      max: currentSpin["audio_block"]["duration"]
-      });
+  $("#songProgressbar").progressbar({
+                            value: currentSpin,
+                            max: currentSpin["audio_block"]["duration"]
+                                    });
+
+  $("#options-tabs").tabs({ active: 1 });
+
 
 
   var updateCurrentSpins = function() {

@@ -1,41 +1,60 @@
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 
-  <label><h3>Now Playing</h3></label>
-  <div class="span6 scheduled_play" id="now_playing">
-    <div class="clearfix">
-      <div class="song title"><b><%= @current_spin.audio_block.title %></b></div>
-    </div>
-    <div class="song artist"><%= @current_spin.audio_block.artist %></div>
-    <div id="songProgressbar"></div>
-    <div id="songTimes">
-      <div id="elapsed_time"></div>
-      <div id="time_remaining"></div>
+<div class="row">
+  <div class="span6" id="schedule_container">
+    <label><h3>Now Playing</h3></label>
+    <div class="span6 scheduled_play" id="now_playing">
+      <div class="clearfix">
+        <div class="song title"><b><%= @current_spin.audio_block.title %></b></div>
+      </div>
+      <div class="song artist"><%= @current_spin.audio_block.artist %></div>
+      <div id="songProgressbar"></div>
+      <div id="songTimes">
+        <div id="elapsed_time"></div>
+        <div id="time_remaining"></div>
+      </div>
     </div>
 
+
+    <div class="span6" id="songlist_container">
+      <label><h3>Current Playlist</h3></label>
+      <ul id="songlist" class="scroll">
+
+        <% @playlist.each do |spin| %>
+          <% if spin.audio_block.is_a?(PL::CommercialBlock) %>
+            <li data-duration="<%= (current_station.seconds_of_commercial_per_hour/2) * 1000 %>"class="scheduled_play commercial_block">
+              <b>Commercial Block</b></li>
+          <% else %>
+            <li data-id="<%= spin.id %>" class="scheduled_play song">
+              <div class="clearfix">
+                <div class="song title"><b><%= spin.audio_block.title %></b></div>
+                <div class="song estimated_air_time"><%= time_formatter(spin.estimated_air_time) %></div>
+              </div>
+
+              <div class="song artist"><%= spin.audio_block.artist %></div>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
   </div>
 
-<div class="span6" id="songlist_container">
-  <label><h3>Current Playlist</h3></label>
-  <ul id="songlist" class="scroll">
-
-    <% @playlist.each do |spin| %>
-      <% if spin.is_a?(PL::CommercialBlock) %>
-        <li data-duration="<%= (current_station.seconds_of_commercial_per_hour/2) * 1000 %>"class="scheduled_play commercial_block">
-          <b>Commercial Block</b></li>
-      <% else %>
-        <li data-id="<%= spin.id %>" class="scheduled_play song">
-          <div class="clearfix">
-            <div class="song title"><b><%= spin.audio_block.title %></b></div>
-            <div class="song estimated_air_time"><%= time_formatter(spin.estimated_air_time) %></div>
-          </div>
-
-          <div class="song artist"><%= spin.audio_block.artist %></div>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
+  <div class="span6" id="options-tabs">
+    <ul>
+      <li><a href="#song-search">One</a></li>
+      <li><a href="#recorder">Recorder</a></li>
+    </ul>
+    <div id="song-search">
+      THIS IS WHERE THE SONG SEARCH IS GONNA GO
+    </div>
+    <div id="recorder">
+      THIS IS WHERE THE RECORDER IS GONNA GO
+    </div>
+  </div>
 </div>
+
+
 
 <% content_for :javascript do %>
 <script type="text/javascript">
@@ -48,6 +67,7 @@
   var currentSpin = <%= raw @current_spin.to_json %>;
   currentSpin["played_at"] = new Date(<%= @current_spin.played_at.to_i * 1000 %>);
   $(function() { djBooth(); });
+  $(function() { webAudio(); });
 
 </script>
 <% end %>
