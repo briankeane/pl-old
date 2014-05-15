@@ -2,38 +2,16 @@
 <html>
   <head>
     <title><%= full_title(yield(:title)) %></title>
-    <%= stylesheet_link_tag "application", media: "all",
-                                           "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= stylesheet_link_tag "application", media: "all" %>
     <%= csrf_meta_tags %>
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-  <body>
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="navbar-inner">
-        <div class="container">
-          <%= link_to "PlayolaRadio 1.0", '#', id: "logo" %>
-          <nav>
-            <ul class="nav pull-right">
-              <li><%= link_to "Home",    root_path %></li>
-              <li><%= link_to "About",   about_path %></li>
-              <% if signed_in? == false %>
-                <li><%= link_to "Sign In", sign_in_path %></li>
-              <% else %>
-                <li><%= link_to "Sign Out", sign_out_path %></li>
-              <% end %>
-              <% if signed_in? == false %>
-                <li><%= link_to "Sign Up", sign_up_path %></li>
-              <% end %>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
-    <div class="container">
+  <body class="<%= params[:controller] %> <%= params[:action] %>">
+    <%= render 'shared/header' %>
       <%= yield %>
-    </div>
+    <%= yield :javascript %>
+    <%= javascript_include_tag "application" %>
   </body>
 </html>

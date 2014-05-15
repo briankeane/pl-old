@@ -146,10 +146,9 @@ module PL
 
         time_tracker += (spin.audio_block.duration/1000)
 
-        # if it's past the air_time we're looking for, add it to the array
-        if spin.estimated_air_time > air_time
-          formatted_playlist << spin
-        end
+
+
+
 
         # if it's time for a commercial
         if (time_tracker.to_f/1800.0).floor > commercial_block_counter
@@ -160,6 +159,11 @@ module PL
           commercial_block_counter += 1
           time_tracker += (commercial_block.duration/1000)
         end
+        # if it's past the air_time we're looking for, add it to the array
+        if spin.estimated_air_time > air_time
+          formatted_playlist << spin
+        end
+
       end
 
       formatted_playlist

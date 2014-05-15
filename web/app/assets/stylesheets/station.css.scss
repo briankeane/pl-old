@@ -1,12 +1,70 @@
 // Place all the styles related to the station controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$grid-gutter-width: 90px;
+$grid-float-breakpoint: 768px;
 
-
-.songlist {
-  border: 5px;
-  margin-left: 10px;
+.chat-wrapper, .current-playlist {
+  height: 200px;
+  background: grey;
+  overflow-y: scroll;
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style: none;
+  }
 }
+
+.request-line {
+  .row {
+    margin: 0;
+  }
+  .request-light {
+    background: red;
+    height: 50px;
+    width: 50px;
+    -webkit-border-radius: 5px;
+    border-radius: 100%;
+    padding: 0;
+  }
+}
+
+.col-xs-4, .col-sm-4, .col-md-4, .col-lg-4,
+.col-xs-8, .col-sm-8, .col-md-8, .col-lg-8 {
+  &.no-gutter {
+    padding: 0;
+  }
+}
+
+// MY HACKY CSS HERE
+#elapsed_time {
+  float: left;
+  padding-left: 8px;
+}
+
+#time_remaining {
+  float: right;
+  padding-right: 8px;
+}
+
+.progress-bar, .progress  {
+  height: 7px;
+  width: 95%;
+  margin-bottom: 2px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#now_playing {
+  background-color: #3EFF81 !important;
+  border: 1px solid black;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  list-style-type:none;
+  overflow: auto;
+}
+
 
 #songlist li {
   background-color: #8FCFFF;
@@ -18,34 +76,6 @@
   list-style-type:none;
 }
 
-#songProgressbar {
-  height: 5px;
-  width: 100%
-}
-
-#elapsed_time {
-  float: left;
-}
-
-#time_remaining {
-  float: right;
-}
-
-.scroll{
-    position: relative;
-    overflow: scroll;
-    border:1px solid red;
-    height: 500px;
-}
-
-
-#songlist_container {
-  height:700px;
-}
-
-.container {
-  margin-left: 10px;
-}
 
 .commercial_block {
   background-color: yellow !important;
@@ -76,14 +106,4 @@
   right: 0;
   text-align: right;
   height: 20px;
-}
-
-#now_playing {
-  background-color: #3EFF81 !important;
-  height: 70px;
-  width: 433;
-  border: 1px solid black;
-  margin-bottom: 2px;
-  border-radius: 10px;
-  list-style-type:none;
 }
