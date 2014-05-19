@@ -13,7 +13,6 @@ class StationController < ApplicationController
   end
 
   def update_order
-    PL::MoveSpin.run({ atation_id: current_station.id, old_position: params[:swap]["oldPosition"],
-                    new_position: params[:swap]["newPosition"] })
+
   end
 end

@@ -65,6 +65,19 @@
           console.log("newPosition: " + movePositionData.newPosition);
 
           // make ajax request to update database
+          movePositionData._method = 'put';
+          $.ajax({
+              type: "POST",
+              dataType: "script",
+              url: 'station/update_order',
+              contentType: 'application/json',
+              data: JSON.stringify(movePositionData)
+          }).done(function( msg )
+              {
+                  alert( "Data Saved: " + msg );
+              });
+
+
           // update list
           currentPositionCounter = Math.min.apply(Math, currentPositions);
           $('#songlist li').each( function(index, data) {
@@ -102,9 +115,7 @@
 
 
   // update all clocks and timers
-  setInterval(function () { updateTimers() }, 200);
-
-  };
+  setInterval(function () { updateTimers() }, 200); };
 
 
 

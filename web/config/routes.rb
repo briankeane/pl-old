@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   match '/sign_up',       to:   'users#create',               via: 'post'
   match 'dj_booth',         to:   'station#dj_booth',          via: 'get'
   match 'playlist_editor',  to: 'station#playlist_editor',      via: 'get'
+  match 'station/update_order' => 'station#update_order',       via: 'post'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
