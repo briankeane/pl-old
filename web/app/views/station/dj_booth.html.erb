@@ -6,7 +6,7 @@
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-gutter">
       <div class="now-playing">
         <label><h4>Now Playing</h4></label>
-        <div class="scheduled_play" id="now_playing">
+        <div id="now_playing">
           <div class="clearfix">
             <div class="song title"><b><%= @current_spin.audio_block.title %></b></div>
           </div>
@@ -27,13 +27,13 @@
 
 
       <div class="current-playlist">
-        <ul id="songlist">
+        <ul id="songlist" >
           <% @playlist.each do |spin| %>
             <% if spin.audio_block.is_a?(PL::CommercialBlock) %>
               <li data-duration="<%= (current_station.seconds_of_commercial_per_hour/2) * 1000 %>"class="scheduled_play commercial_block">
                 <b>Commercial Block</b></li>
             <% else %>
-              <li data-id="<%= spin.id %>" class="scheduled_play song">
+              <li data-id="<%= spin.current_position %>" class="scheduled_play song">
                 <div class="clearfix">
                   <div class="song title"><b><%= spin.audio_block.title %></b></div>
                   <div class="song estimated_air_time"><%= time_formatter(spin.estimated_air_time) %></div>

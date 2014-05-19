@@ -1,6 +1,7 @@
 // Place all the styles related to the station controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
 $grid-gutter-width: 90px;
 $grid-float-breakpoint: 768px;
 
@@ -56,6 +57,14 @@ $grid-float-breakpoint: 768px;
   margin-left: auto;
 }
 
+.progress-bar {
+  -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
 #now_playing {
   background-color: #3EFF81 !important;
   border: 1px solid black;
@@ -66,7 +75,7 @@ $grid-float-breakpoint: 768px;
 }
 
 
-#songlist li {
+.scheduled_play {
   background-color: #8FCFFF;
   height: 50px;
   width: 433;
@@ -76,6 +85,18 @@ $grid-float-breakpoint: 768px;
   list-style-type:none;
 }
 
+#recording li.commentary {
+  margin-top: 15px;
+  padding-top: 10px;
+  text-align: center;
+  background-color: desaturate(red, 50%);
+  opacity: 0.8;
+}
+
+.commentary {
+  background-color: red;
+  opacity: 1.0;
+}
 
 .commercial_block {
   background-color: yellow !important;
@@ -106,4 +127,9 @@ $grid-float-breakpoint: 768px;
   right: 0;
   text-align: right;
   height: 20px;
+}
+
+audio {
+  width: 90%;
+  height: 50%;
 }

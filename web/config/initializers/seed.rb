@@ -1,3 +1,4 @@
+
 songs = []
 songs << PL::Database.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 60000, sing_start: 5000, sing_end: 208000, audio_id: 2 })
 songs << PL::Database.db.create_song({ title: "Eating For Two", artist: "Brian Keane", duration: 60000, sing_start: 5000, sing_end: 208000,audio_id: 2 })

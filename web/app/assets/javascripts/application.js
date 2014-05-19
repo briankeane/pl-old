@@ -17,3 +17,5 @@
 //= require react
 //= require format_time
 //= require dj_booth
+//= require dj_recorder
+//= require recorder

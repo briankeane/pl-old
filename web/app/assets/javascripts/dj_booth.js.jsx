@@ -65,7 +65,7 @@
           console.log("newPosition: " + movePositionData.newPosition);
 
           // make ajax request to update database
-          movePositionData._method = 'put';
+          movePositionData._method = 'POST';
           $.ajax({
               type: "POST",
               dataType: "script",
@@ -88,6 +88,10 @@
           });
         }
       });
+
+    $('#recording').sortable({
+              connectWith: "#songlist"
+    }).disableSelection();
 
     var updateCurrentSpins = function() {
       currentSpin = playlist.shift();

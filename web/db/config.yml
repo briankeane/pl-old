@@ -1,0 +1,11 @@
+development:
+  adapter: postgresql
+  database: ar-ex_dev
+  encoding: unicode
+  host: localhost
+
+production:
+  adapter: postgresql
+  database: ar-ex_prod
+  encoding: unicode
+  host: localhost

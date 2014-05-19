@@ -13,6 +13,9 @@ class StationController < ApplicationController
   end
 
   def update_order
-
+    result = PL::MoveSpin.run({ pl_session_id: session[:pl_session_id],
+                        old_position: params[:oldPosition],
+                        new_position: params[:newPosition] })
+    render :json => {request: params, usecaseResponse: result }
   end
 end
