@@ -80,7 +80,6 @@
     }
 
     function startRecording(button) {
-      alert('recording');
 
       // recorder
       recorder && recorder.record();
