@@ -133,3 +133,19 @@ audio {
   width: 90%;
   height: 50%;
 }
+
+.rotation {
+  height: 150px;
+  margin: 1px 0 1px 0;
+}
+
+.song-table {
+  padding-right: 0px;
+  padding-left: 0px;
+  overflow: auto;
+  border: 2px solid black;
+}
+
+.all-songs {
+  height: 350px;
+}

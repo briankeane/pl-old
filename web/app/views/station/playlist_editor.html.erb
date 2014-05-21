@@ -1,2 +1,32 @@
-<h1>Station#playlist_editor</h1>
-<p>Find me in app/views/station/playlist_editor.html.erb</p>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+<%= form_tag('/songs/create', class: "test", hidden: "true", :"data-type" => "json", multipart: true, remote: true) do %>
+  <input type="submit" value="add song">
+<% end %>
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter">
+      <div class="heavy rotation song-table">
+        <ul class="rotation" id="heavy">
+        </ul>
+      </div>
+      <div class="medium rotation song-table">
+        <ul class="rotation" id="medium">
+        </ul>
+      </div>
+      <div class="light rotation song-table">
+        <ul class="rotation" id="light">
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter">
+      <div class="all-songs song-table">
+        <ul class="song-table" id="all-songs">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -19,3 +19,4 @@
 //= require dj_booth
 //= require dj_recorder
 //= require recorder
+//= require playlist
