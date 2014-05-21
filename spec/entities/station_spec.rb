@@ -13,19 +13,19 @@ describe 'a station' do
 
     before (:each) do
       Timecop.freeze(Time.local(2014, 5, 9, 10))
-      @user = PL::Database.db.create_user({ twitter: "Bob", password: "password" })
-      @song = PL::Database.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000 })
-      @station = PL::Database.db.create_station({ user_id: @user.id, heavy: [@song] })
+      @user = PL.db.create_user({ twitter: "Bob", password: "password" })
+      @song = PL.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000 })
+      @station = PL.db.create_station({ user_id: @user.id, heavy: [@song] })
       @station.generate_playlist
     end
 
     it "creates a first playlist" do
-      playlist = PL::Database.db.get_full_playlist(@station.id)
+      playlist = PL.db.get_full_playlist(@station.id)
       expect(playlist.size).to eq(4675)
     end
 
     it "estimates the end of the current playlist" do
-      expect(PL::Database.db.get_current_playlist(@station.id).size).to eq(4674)
+      expect(PL.db.get_current_playlist(@station.id).size).to eq(4674)
       expect(@station.playlist_estimated_end_time.to_s).to match("2014-05-23 00:05:10")
     end
 
@@ -33,12 +33,12 @@ describe 'a station' do
       # go to tommorow and make sure running it again doesn't add anything -- it's already at the max
       Timecop.travel(2014, 5, 14, 10)
       @station.generate_playlist
-      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(4675)
+      expect(PL.db.get_full_playlist(@station.id).size).to eq(4675)
 
       # but another week from now and it will...
       Timecop.travel(2014, 5, 15, 10)
       @station.generate_playlist
-      expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(7083)
+      expect(PL.db.get_full_playlist(@station.id).size).to eq(7083)
     end
 
     it "gets the new current playlist_estimated_end_time" do

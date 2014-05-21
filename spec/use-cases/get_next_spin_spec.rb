@@ -10,9 +10,9 @@ module PL
     end
 
     it "creates a user" do
-      station = PL::Database.db.create_station({ user_id: 1 })
-      spin1 = PL::Database.db.schedule_spin({ played_at: Time.now, station_id: station.id })
-      spin2 = PL::Database.db.schedule_spin({ current_position: 3, station_id: station.id })
+      station = PL.db.create_station({ user_id: 1 })
+      spin1 = PL.db.schedule_spin({ played_at: Time.now, station_id: station.id })
+      spin2 = PL.db.schedule_spin({ current_position: 3, station_id: station.id })
       result = PL::GetNextSpin.run(station.id)
       expect(result.success?).to eq(true)
       expect(result.next_spin.id).to eq(spin2.id)

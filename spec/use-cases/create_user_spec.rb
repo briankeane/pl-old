@@ -4,7 +4,7 @@ module PL
 
   describe "CreateUser" do
     it "calls bullshit if twitter is taken" do
-      user = PL::Database.db.create_user({ twitter: "Bob", password: "password" })
+      user = PL.db.create_user({ twitter: "Bob", password: "password" })
       result = PL::CreateUser.run({ twitter: "Bob", password: "another" })
       expect(result.success?).to eq(false)
       expect(result.error).to eq(:twitter_taken)

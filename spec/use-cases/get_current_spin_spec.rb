@@ -10,8 +10,8 @@ module PL
     end
 
     it "Gets the current spin" do
-      station = PL::Database.db.create_station({ user_id: 1 })
-      spin = PL::Database.db.schedule_spin({ station_id: station.id, played_at: Time.now })
+      station = PL.db.create_station({ user_id: 1 })
+      spin = PL.db.schedule_spin({ station_id: station.id, played_at: Time.now })
       result = PL::GetCurrentSpin.run(station.id)
       expect(result.success?).to eq(true)
       expect(result.current_spin.id).to eq(spin.id)

@@ -1,7 +1,7 @@
 module PL
   class GetCurrentSpin < UseCase
     def run(station_id)
-      current_spin = PL::Database.db.get_current_spin(station_id)
+      current_spin = PL.db.get_current_spin(station_id)
       case current_spin
       when nil
         return failure(:spin_not_found)

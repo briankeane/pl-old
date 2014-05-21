@@ -16,8 +16,8 @@ describe "GetPlaylistByAirTime" do
   end
 
   it "calls bullshit if there's not playlist for the time selected" do
-    user = PL::Database.db.get_user(@station.user_id)
-    session_id = PL::Database.db.create_session(user.id)
+    user = PL.db.get_user(@station.user_id)
+    session_id = PL.db.create_session(user.id)
     result = PL::GetPlaylistByAirTime.run({ pl_session_id: session_id,
                                             air_time: Time.new(1945, 1, 1, 1) })
     expect(result.success?).to eq(false)
@@ -25,8 +25,8 @@ describe "GetPlaylistByAirTime" do
   end
 
   it "returns a good playlist for a specified time" do
-    user = PL::Database.db.get_user(@station.user_id)
-    session_id = PL::Database.db.create_session(user.id)
+    user = PL.db.get_user(@station.user_id)
+    session_id = PL.db.create_session(user.id)
     Timecop.travel(2014, 5, 14, 10)
     @station.generate_playlist
     result = PL::GetPlaylistByAirTime.run({ air_time: Time.new(2014, 5, 19, 6, 55),

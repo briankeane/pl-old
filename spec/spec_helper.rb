@@ -1,5 +1,6 @@
 require './lib/pl.rb'
 require './lib/seed_db.rb'
+require_relative 'shared/shared_database_spec.rb'
 
 
 RSpec.configure do |config|
@@ -7,4 +8,15 @@ RSpec.configure do |config|
   config.before(:each) do
     PL::Database.instance_variable_set(:@__db_instance, nil)
   end
+end
+
+RSpec.configure do |config|
+ # Use color in STDOUT
+   config.color_enabled = true
+
+ # Use color not only in STDOUT but also in pagers and files
+   config.tty = true
+
+ # Use the specified formatter
+   config.formatter = :documentation # :progress, :html, :textmate
 end

@@ -34,20 +34,20 @@ module PL
 
       # add songs to sample-array in correct ratios
       27.times do                           # for heavy rotation population
-        @heavy.each do |song|
-          sample_array.push(song)
+        @heavy.each do |song_id|
+          sample_array.push(PL.db.get_song(song_id))
         end
       end
 
       17.times do                        # for medium rotation population
-        @medium.each do |song|
-          sample_array.push(song)
+        @medium.each do |song_id|
+          sample_array.push(PL.db.get_song(song_id))
         end
       end
 
       2.times do                         # for light rotation population
-        @light.each do |song|
-          sample_array.push(song)
+        @light.each do |song_id|
+          sample_array.push(PL.db.get_song(song_id))
         end
       end
       sample_array
@@ -72,7 +72,7 @@ module PL
       # set up beginning and ending dates for comparison
       this_thursday_midnight = Chronic.parse('this thursday midnight')
       next_thursday_midnight = this_thursday_midnight + SECONDS_IN_WEEK
-      current_playlist = PL::Database.db.get_current_playlist(@id)
+      current_playlist = PL.db.get_current_playlist(@id)
 
       # set max_position and time_tracker initial values
       if current_playlist.size == 0
@@ -80,7 +80,7 @@ module PL
         time_tracker = Time.now
       else
         max_position = current_playlist.last.current_position
-        current_spin = PL::Database.db.get_current_spin(@id)
+        current_spin = PL.db.get_current_spin(@id)
         time_tracker = self.playlist_estimated_end_time
       end
 
@@ -91,7 +91,7 @@ module PL
 
       while time_tracker < next_thursday_midnight
         song = sample_array.sample
-        spin = PL::Database.db.schedule_spin({ station_id: @id,
+        spin = PL.db.schedule_spin({ station_id: @id,
                                               audio_block: song,
                                          current_position: (max_position += 1) })
 
@@ -105,9 +105,9 @@ module PL
       end  # endwhile
 
       #if it's the first playlist, start the station
-      if PL::Database.db.get_current_playlist(@id).size == PL::Database.db.get_full_playlist(@id).size
-        first_spin = PL::Database.db.get_current_playlist(@id).first
-        PL::Database.db.record_spin_time({ spin_id: first_spin.id,
+      if PL.db.get_current_playlist(@id).size == PL.db.get_full_playlist(@id).size
+        first_spin = PL.db.get_current_playlist(@id).first
+        PL.db.record_spin_time({ spin_id: first_spin.id,
                                          played_at: Time.now })
       end
     end
@@ -124,11 +124,11 @@ module PL
     def get_playlist_by_air_time(air_time)
 
       air_time = air_time - 600    #subtract 5 minutes so the playlist starts a little early
-      playlist = PL::Database.db.get_current_playlist(@id)
+      playlist = PL.db.get_current_playlist(@id)
 
       playlist_counter = -1  # so 1st iteration will be 0
       commercial_block_counter = (air_time.to_f/1800.0).floor     # determines which 30 min block we're starting in
-      current_spin = PL::Database.db.get_current_spin(@id)
+      current_spin = PL.db.get_current_spin(@id)
 
       # if there is no current spin (station not running), return false
       if current_spin == nil
@@ -180,8 +180,8 @@ module PL
     #################################################################
 
     def playlist_estimated_end_time
-      current_playlist = PL::Database.db.get_current_playlist(@id)
-      current_spin = PL::Database.db.get_current_spin(@id)
+      current_playlist = PL.db.get_current_playlist(@id)
+      current_spin = PL.db.get_current_spin(@id)
       # set time_tracker to the end of the current_spin
       time_tracker = current_spin.played_at + (current_spin.audio_block.duration/1000)
 
@@ -203,7 +203,7 @@ module PL
     end
 
     def next_song_start_time
-      current_spin = PL::Database.db.get_current_spin(@id)
+      current_spin = PL.db.get_current_spin(@id)
       current_spin.played_at + (current_spin.audio_block.duration/1000)
     end
 
@@ -217,11 +217,11 @@ module PL
 
     def artificially_update_playlist
       air_time = Time.now
-      playlist = PL::Database.db.get_current_playlist(@id)
+      playlist = PL.db.get_current_playlist(@id)
 
       playlist_counter = -1  # so 1st iteration will be 0
       commercial_block_counter = (air_time.to_f/1800.0).floor     # determines which 30 min block we're starting in
-      current_spin = PL::Database.db.get_current_spin(@id)
+      current_spin = PL.db.get_current_spin(@id)
 
       # if there is no current spin (station not running), return false
       if current_spin == nil
@@ -251,7 +251,7 @@ module PL
     end
 
     def playlist
-      PL::Database.db.get_current_playlist(@id)
+      PL.db.get_current_playlist(@id)
     end
   end
 end

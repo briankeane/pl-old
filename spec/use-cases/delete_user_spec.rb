@@ -9,10 +9,10 @@ describe "DeleteUser" do
   end
 
   it "creates a user" do
-    user = PL::Database.db.create_user({ twitter: "Alice", password: "password2" })
+    user = PL.db.create_user({ twitter: "Alice", password: "password2" })
     result = PL::DeleteUser.run({ user_id: user.id })
     expect(result.success?).to eq(true)
-    expect(PL::Database.db.get_user(user.id)).to be_nil
+    expect(PL.db.get_user(user.id)).to be_nil
   end
 end
 

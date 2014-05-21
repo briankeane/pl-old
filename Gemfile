@@ -10,3 +10,8 @@ gem 'chronic'
 # cron jobs schedule
 gem 'whenever', :require => false
 gem 'timecop'
+
+
+gem 'activerecord', '~> 4.1.0'
+gem 'active_record_tasks', '~> 1.0.4'
+gem 'pg'

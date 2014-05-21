@@ -4,13 +4,13 @@ require 'pry-debugger'
 module PL
   module Database
 
-    def self.db
-      @__db_instance ||= InMemory.new
-    end
+    # def self.db
+    #   @__db_instance ||= InMemory.new
+    # end
 
     class InMemory
 
-      def initialize(config=nil)
+      def initialize(env=nil)
         clear_everything
       end
 
@@ -60,8 +60,8 @@ module PL
       end
 
       def update_user(attrs)
-        user = @users[attrs[:user_id]]
-        attrs.delete(:user_id)
+        user = @users[attrs[:id]]
+        attrs.delete(:id)
 
         # insert updated attributes
         attrs.each do |attr_name, value|
@@ -97,8 +97,8 @@ module PL
       end
 
       def update_song(attrs)
-        song = @songs[attrs[:song_id]]
-        attrs.delete(:song_id)
+        song = @songs[attrs[:id]]
+        attrs.delete(:id)
 
         # insert updated attributes
         attrs.each do |attr_name, value|
@@ -183,7 +183,7 @@ module PL
         spin
       end
 
-      def get_spin(attrs)  # current_position, station_id
+      def get_spin_by_station_id_and_current_position(attrs)  # current_position, station_id
         spins = @spins.values.select { |spin| spin.station_id == attrs[:station_id] }
         spins.find { |spin| spin.current_position == attrs[:current_position] }
       end
@@ -239,7 +239,6 @@ module PL
         playlist = get_current_playlist(station.id)
         time_tracker = station.next_song_start_time
         position_tracker = playlist.first.current_position
-        binding.pry
 
         # seek to proper position, updating playlist time along the way
         while position_tracker < attrs[:insert_position]
@@ -270,7 +269,7 @@ module PL
         self.schedule_spin({ station_id: attrs[:station_id],
                        current_position: attrs[:insert_position],
                        audio_block: attrs[:audio_block] })
-        binding.pry
+
       end
 
       ##############
@@ -294,6 +293,52 @@ module PL
         else
           return false
         end
+      end
+
+      ###################
+      #  RotationLeveL  #
+      ###################
+      def create_rotation_level(attrs)   #station_id, song_id, level
+        case attrs[:level]
+        when "heavy"
+          if !@stations[attrs[:station_id]].heavy.include?(attrs[:song_id])
+            @stations[attrs[:station_id]].heavy.push(attrs[:song_id])
+            return true
+          end
+        when "medium"
+          if !@stations[attrs[:station_id]].medium.include?(attrs[:song_id])
+            @stations[attrs[:station_id]].medium.push(attrs[:song_id])
+            return true
+          end
+        when "light"
+          if !@stations[attrs[:station_id]].light.include?(attrs[:song_id])
+            @stations[attrs[:station_id]].light.push(attrs[:song_id])
+            return true
+          end
+        end
+
+      end
+
+      def delete_rotation_level(attrs)  #station_id, song_id, level
+        case attrs[:level]
+        when "heavy"
+          if @stations[attrs[:station_id]].heavy.include?(attrs[:song_id])
+            @stations[attrs[:station_id]].heavy.delete(attrs[:song_id])
+            return true
+          end
+        when "medium"
+          if @stations[attrs[:station_id]].medium.include?(attrs[:song_id])
+            @stations[attrs[:station_id]].medium.delete(attrs[:song_id])
+            return true
+          end
+        when "light"
+          if @stations[attrs[:station_id]].light.include?(attrs[:song_id])
+            @stations[attrs[:station_id]].light.delete(attrs[:song_id])
+            return true
+          end
+        end
+
+        return false
       end
     end
   end

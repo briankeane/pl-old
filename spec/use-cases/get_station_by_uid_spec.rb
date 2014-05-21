@@ -8,8 +8,8 @@ describe "GetStationByUID" do
   end
 
   it "gets an array of tours by artist" do
-    user = PL::Database.db.create_user({ twitter: 'billy', password: 'password', email: 'bob@bob.com' })
-    station = PL::Database.db.create_station({ user_id: user.id })
+    user = PL.db.create_user({ twitter: 'billy', password: 'password', email: 'bob@bob.com' })
+    station = PL.db.create_station({ user_id: user.id })
     result = PL::GetStationByUID.run(user.id)
     expect(result.success?).to eq(true)
     expect(result[:station].id).to eq(station.id)

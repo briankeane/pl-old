@@ -1,0 +1,69 @@
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema.define(version: 20140520142035) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "audio_blocks", force: true do |t|
+    t.integer "duration"
+    t.string  "audio_id"
+    t.string  "title"
+    t.string  "artist"
+    t.string  "album"
+    t.integer "sing_start"
+    t.integer "sing_end"
+    t.string  "type"
+  end
+
+  create_table "commercial_blocks", force: true do |t|
+    t.integer  "duration"
+    t.datetime "played_at"
+  end
+
+  create_table "rotation_levels", force: true do |t|
+    t.integer "station_id"
+    t.integer "song_id"
+    t.string  "level"
+  end
+
+  create_table "sessions", force: true do |t|
+    t.string  "session_id"
+    t.integer "user_id"
+  end
+
+  create_table "spins", force: true do |t|
+    t.string   "station_id"
+    t.string   "current_position"
+    t.datetime "played_at"
+    t.integer  "audio_block_id"
+    t.string   "audio_block_type"
+  end
+
+  create_table "stations", force: true do |t|
+    t.string   "seconds_of_commercial_per_hour"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "twitter"
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+end

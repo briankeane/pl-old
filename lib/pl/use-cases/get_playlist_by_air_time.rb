@@ -1,12 +1,12 @@
 module PL
   class GetPlaylistByAirTime < UseCase
     def run(attrs)
-      user_id = PL::Database.db.get_uid_from_sid(attrs[:pl_session_id])
+      user_id = PL.db.get_uid_from_sid(attrs[:pl_session_id])
       if user_id == nil
         return failure(:user_not_logged_in)
       end
 
-      station = PL::Database.db.get_station_by_uid(user_id)
+      station = PL.db.get_station_by_uid(user_id)
 
       if station == nil
         return failure(:station_not_found)

@@ -6,9 +6,9 @@ describe 'GeneratePlaylist' do
 
   before (:each) do
     Timecop.freeze(Time.local(2014, 5, 9, 10))
-    @user = PL::Database.db.create_user({ twitter: "Bob", password: "password" })
-    @song = PL::Database.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000 })
-    @station = PL::Database.db.create_station({ user_id: @user.id, heavy: [@song] })
+    @user = PL.db.create_user({ twitter: "Bob", password: "password" })
+    @song = PL.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000 })
+    @station = PL.db.create_station({ user_id: @user.id, heavy: [@song] })
   end
 
   it "calls bullshit if it can't find the station" do
@@ -18,9 +18,9 @@ describe 'GeneratePlaylist' do
   end
 
   it "generates a playlist" do
-    expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(0)
+    expect(PL.db.get_full_playlist(@station.id).size).to eq(0)
     result = PL::GeneratePlaylist.run(@station.id)
     expect(result.success?).to eq(true)
-    expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(4675)
+    expect(PL.db.get_full_playlist(@station.id).size).to eq(4675)
   end
 end

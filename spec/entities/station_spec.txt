@@ -20,7 +20,7 @@ describe 'a station' do
       #stub stuff
 
       @station.generate_playlist
-      playlist = PL::Database.db.get_full_playlist(@station.id)
+      playlist = PL.db.get_full_playlist(@station.id)
       expect(playlist.size).to eq(4675)
       expect(@station.playlist_estimated_end_time).to eq(Time.now)
     end
@@ -32,7 +32,7 @@ describe 'a station' do
       end
 
       it "estimates the end of the current playlist" do
-        expect(PL::Database.db.get_current_playlist(@station.id).size).to eq(2158)
+        expect(PL.db.get_current_playlist(@station.id).size).to eq(2158)
         expect(@station.playlist_estimated_end_time.to_s).to eq('2014-05-24 12:11:56 -0500')
       end
 
@@ -41,12 +41,12 @@ describe 'a station' do
         @station.generate_playlist
         Timecop.travel(2014, 5, 14, 10)
         @station.generate_playlist
-        expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(4157)
+        expect(PL.db.get_full_playlist(@station.id).size).to eq(4157)
 
         # but another week from now and it will...
         Timecop.travel(2014, 5, 15, 10)
         @station.generate_playlist
-        expect(PL::Database.db.get_full_playlist(@station.id).size).to eq(6566)
+        expect(PL.db.get_full_playlist(@station.id).size).to eq(6566)
       end
 
       it "gets the current playlist_estimated_end_time" do
