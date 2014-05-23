@@ -1,6 +1,8 @@
-<script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
-<%= form_tag('/songs/create', class: "test", hidden: "true", :"data-type" => "json", multipart: true, remote: true) do %>
-  <input type="submit" value="add song">
+
+<h2>Upload a new song:</h2>
+<%= form_tag 'songs/create', :method => "post", :multipart => true do %>
+    <%= file_field_tag "mp3file" %>
+    <%= submit_tag "Upload" %>
 <% end %>
 
 
@@ -21,12 +23,30 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter">
-      <div class="all-songs song-table">
-        <ul class="song-table" id="all-songs">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter" id="draganddrophandler">
+
+      Search: <input id="searchText">
+      <div class="all-songs song-table" >
+
+        <ul id="songlist">
+          <% @songs.each do |song| %>
+            <li data-searchString="<%= song[:title] + song[:artist] %>" data-id="<%= song[:id] %>" class="playlist-song">
+            <div class="clearfix">
+              <div class="title"><b><%= song[:title] %></b></div>
+              <div class="artist"><%= song[:artist] %></div>
+            </div>
+          </li>
+          <% end %>
         </ul>
+
+
       </div>
+      <form style="display: inline">
+          Add a Song to Our Library: <input type="file" id="file">
+          <input type="submit" id="songUpload" disabled="true">Upload</input>
+          <p id="songMessage"></p>
+      </form>
+      <div id="status"></div>
     </div>
   </div>
 </div>
-

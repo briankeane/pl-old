@@ -2,139 +2,144 @@
   // (controller, action)
   if ($('body.station.playlist_editor').length) {
 
+    /**
+     * Copyright (c) 2010 António Afonso, antonio.afonso gmail, http://www.aadsm.net/
+     * MIT License [http://www.opensource.org/licenses/mit-license.php]
+     *
+     */
 
-    // MUCH OF THIS CODE IS ADAPTED FROM hayageek.com/drag-and-drop-file-upload-jquery
+    (function(ns) {
+        ns["FileAPIReader"] = function(file, opt_reader) {
+            return function(url, fncCallback, fncError) {
+                var reader = opt_reader || new FileReader();
+
+                reader.onload = function(event) {
+                    var result = event.target.result;
+                    fncCallback(new BinaryFile(result));
+                };
+                reader.readAsBinaryString(file);
+            }
+        };
+    })(this);
 
 
 
-    function sendFileToServer(data, status) {
-      var request = $.ajax({
-        xhr: function() {
-          var xhrobj = $.ajaxSettings.xhr();
-          if (xhrobj.upload) {
-            xhrobj.upload.addEventListener('progress', function(event) {
-              var percent = 0;
-              var position = event.loaded || event.position;
-              var total = event.total;
-              if (event.lengthComputable) {
-                percent = Math.ceil(position / total * 100);
+    var louisQuery = function(e){return document.getElementById(e);};
+
+    function loadUrl(url, callback, reader) {
+        var startDate = new Date().getTime();
+        ID3.loadTags(url, function() {
+            var endDate = new Date().getTime();
+            if (typeof console !== "undefined") console.log("Time: " + ((endDate-startDate)/1000)+"s");
+            var tags = ID3.getAllTags(url);
+
+            var formattedTags = { "artist": tags.artist.toString(),
+                              "title": tags.title.toString(),
+                              "album": tags.album.toString() }
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: 'songs/check_for_song',
+              contentType: 'application/json',
+              data: (formattedTags),
+              success: function(obj) {
+                return obj;
+              },
+              error : function(error) {
+                console.log(error);
+                debugger;
               }
-              status.setProgress(percent);
-            }, false);
-          }
-        return xhrobj;
+            }).then(function(obj)
+              {
+                if (obj.exists == false) {
+                  $('#songUpload').removeAttr('disabled');
+                  $('#songMessage').text('');
+                } else {
+                  $('#songMessage').text('That song is already in the database');
+                }
+              });
+
+
+
+
+
+
+            callback(tags);
+            console.log(tags);
+            console.log(tags.artist.toString());
+            console.log(tags.title.toString());
+
+          // if( callback ) {  };
         },
-        url: 'song/create',
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function(receiveData){
-          status.setProgress(100);
-        }
-      });
-    status.setAbort(request);
+        {tags: ["artist", "title", "album", "year", "comment", "track", "genre", "lyrics", "picture"],
+         dataReader: reader});
     }
 
-    var rowCount = 0;
-    function createStatusBar(obj) {
-      rowCount++;
-      if (rowCount % 2 === 0) {
-        var row = "even";
-      } else {
-        var row = "odd";
-      }
-      this.statusBar = $("<div class='statusBar " + row + "'></div>");
-      this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
-      this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
-      this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
-      this.abort = $("<div class='abort'>Abort</div>").appendTo(this.statusbar);
-      obj.after(this.statusbar);
+    function loadFromLink(link) {
+        var loading = link.parentNode.getElementsByTagName("img")[0];
+        var url = link.href;
 
-      this.setFileNameSize = function(name, size) {
-        var sizeStr="";
-        var sizeKB = size/1024;
-        if (parseInt(sizeKB) > 1024) {
-          var sizeMB = sizeKB/1024;
-          sizeStr = sizeMB.toFixed(2) + " MB";
-        } else {
-          sizeStr = sizeKB.toFixed(2) + " KB";
-        }
-
-        this.filename.html(name);
-        this.size.html(sizeStr);
-      }
-      this.setProgress = function(progress){
-        var progressBarWidth = progress*this.progressBar.width()/100;
-        this.progressBar.find('div').animate({ width: progressBarWidth} , 10).html(progress + "% ");
-        if(parseInt(progress) >= 100) {
-          this.abort.hide();
-        }
-      }
-      this.setAbort = function(request) {
-        var sb = this.statusBar;
-        this.abort.click(function() {
-          request.abort();
-          sb.hide();
+        loading.style.display = "inline";
+        loadUrl(url, function() {
+            loading.style.display = "none";
         });
-      }
     }
 
-    function handleFileUpload(files, obj) {
-      for (var i=0; i < files.length; i++) {
-        var fd = new FormData();
-        fd.append('file', files[i]);
+    function loadFromFile(file) {
+        var url = file.urn ||file.name;
+        loadUrl(url, function(tags) {
 
-        var status = new createStatusBar(obj);
-        status.setFileNameSize(files[i].name, files[i].size);
-        sendFileToServer(fd, status);
-      }
+          console.log(tags["artist"]["[[PrimitiveValue]]"]);
+          alert('hi');
+
+
+
+        }, FileAPIReader(file));
     }
 
-    $(document).ready(function() {
-      var obj = $('.all-songs');
-      obj.on('dragenter', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).css('border', '5px solid #0B85a1');
-      });
+    function load(elem) {
+        if (elem.id === "file") {
+            loadFromFile(elem.files[0]);
+        } else {
+            loadFromLink(elem);
+        }
+    }
 
-      obj.on('dragover', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-      });
 
-      obj.on('drop', function(e) {
-        $(this).css('border', '2px solid black');
-        e.preventDefault();
-        debugger;
-        var files = e.originalEvent.dataTransfer.files;
+    $('#file').on('change', function(e) { load(this); });
+    $('#heavy').sortable();
+    $('#songlist').sortable({ connectWith: ["#heavy", "#medium", "#light"],
+                              dropOnEmpty: true });
+    $('#heavy').sortable({ connectWith: ["#songlist", "#medium", "#light"],
+                            dropOnEmpty: true });
+    $('#medium').sortable({ connectWith: ["#heavy", "#songlist", "#light"],
+                              dropOnEmpty: true });
+    $('#light').sortable({   connectWith: ["#heavy", "#medium", "#songlist"],
+                              dropOnEmpty: true,
+                              receive: function(event, ui) {
+                                ui.item.slice();
+                              } });
+    $('#searchText').keyup(function() {
+      var allListElements = $('li');
+      var fullList = $('#songlist li');
+      var searchString = $('#searchText').val().toLowerCase();
 
-        handleFileUpload(files, obj);
-      });
+      for (var i=0; i<fullList.length; i++) {
+        var attr = fullList.eq(i).attr('data-searchString');
+        if  (typeof attr !== 'undefined' && attr !== false) {
+          var targetString = fullList.eq(i).attr("data-searchString").toLowerCase();
 
-      $(document).on('dragenter', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-      });
+          if (targetString.indexOf(searchString) == -1) {
+            fullList.eq(i).hide();
+          } else {
+            fullList.eq(i).show();
+          }
 
-      $(document).on('dragover', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        obj.css('border', '2px dotted #0B85A1');
-      });
-
-      $(document).on('drop', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-      });
+        }
+      }
 
     });
 
   }
-
-
-
 
 })();

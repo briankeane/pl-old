@@ -18,5 +18,3 @@ gem 'whenever', :require => false
 gem 'activerecord', '~> 4.1.0'
 gem 'active_record_tasks', '~> 1.0.4'
 gem 'pg'
-
-gem 'ruby-mp3info', '~> 0.8.4'

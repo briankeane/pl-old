@@ -149,3 +149,25 @@ audio {
 .all-songs {
   height: 350px;
 }
+
+// **************************
+// *  Playlist Editor       *
+// **************************
+.playlist-song {
+  background-color: #8FCFFF;
+  height: 25px;
+  border: 1px solid black;
+  margin-bottom: 2px;
+  margin-left: 0;
+  width: 100%;
+  border-radius: 10px;
+  list-style-type:none;
+}
+
+#songlist {
+  padding: 0;
+}
+
+.rotation {
+
+}

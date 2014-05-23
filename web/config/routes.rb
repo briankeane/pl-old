@@ -3,8 +3,6 @@ Rails.application.routes.draw do
 
   get 'songs/new'
 
-  get 'songs/create'
-
   get 'songs/update'
 
   get 'songs/edit'
@@ -39,6 +37,8 @@ Rails.application.routes.draw do
   match 'dj_booth',         to:   'station#dj_booth',          via: 'get'
   match 'playlist_editor',  to: 'station#playlist_editor',      via: 'get'
   match 'station/update_order' => 'station#update_order',       via: 'post'
+  match 'songs/create',   to:   'songs#create',                 via: 'post'
+  match 'songs/check_for_song', to: 'songs#check_for_song',      via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
