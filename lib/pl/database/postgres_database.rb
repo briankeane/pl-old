@@ -126,9 +126,40 @@ module PL
       ##############
 
       def create_song(attrs)
+        #remove the song_file from attrs and store it
+        song_file = attrs.delete(:song_file)
+
+        # create the object
         ar_song = Song.create(attrs)
+
+        if song_file
+          new_name = ar_song.id.to_str.join(song_file.original_filename.split('.').last)
+
+          AWS.config({
+                        :access_key_id => ENV['S3_ACCESS_KEY_ID'],
+                        :secret_access_key => ENV['S3_SECRET_KEY']
+                    })
+
+          s3 = AWS::S3.new
+
+          #rename the song_file with the id
+          song_file.original_filename = song_id.to_s + '.' + song_file.original_filename.split('.').last
+          song_name = song_file.original_filename
+
+          sent_file = s3.buckets['playolaradio'].objects[song_file.original_filename].write(:file => song_file)
+        end
+
         PL::Song.new(ar_song.attributes)
       end
+
+      def song_exists?(attrs)  #title, artist, album
+        if Song.where(["title = ? and artist = ? and album = ?", attrs[:title], attrs[:artist], attrs[:album]]).size > 0
+          return true
+        else
+          return false
+        end
+      end
+
 
       def get_song(id)
         song = Song.find(id)
@@ -178,22 +209,22 @@ module PL
         light = attrs.delete(:light)
 
         if heavy
-          heavy.each do |song_id|
-            RotationLevel.new({ song_id: song_id, station_id: attrs[:station_id], level:
+          heavy.each do |song|
+            RotationLevel.new({ song_id: song.id, station_id: attrs[:station_id], level:
               'heavy' })
           end
         end
 
         if medium
-          medium.each do |song_id|
-            RotationLevel.new({ song_id: song_id, station_id: attrs[:station_id], level:
+          medium.each do |song|
+            RotationLevel.new({ song_id: song.id, station_id: attrs[:station_id], level:
               'medium' })
           end
         end
 
         if light
-          light.each do |song_id|
-            RotationLevel.new({ song_id: song_id, station_id: attrs[:station_id], level:
+          light.each do |song|
+            RotationLevel.new({ song_id: song.id, station_id: attrs[:station_id], level:
               'light' })
           end
         end
@@ -223,11 +254,11 @@ module PL
         station_rotation_levels.each do |rl|
           case rl.level
           when "heavy"
-            heavy << rl.song_id
+            heavy << self.get_song(rl.song_id)
           when "medium"
-            medium << rl.song_id
+            medium << self.get_song(rl.song_id)
           when "light"
-            light << rl.song_id
+            light << self.get_song(rl.song_id)
           end
         end
 

@@ -31,23 +31,22 @@ module PL
 
     def create_sample_array
       sample_array = []
-
       # add songs to sample-array in correct ratios
       27.times do                           # for heavy rotation population
-        @heavy.each do |song_id|
-          sample_array.push(PL.db.get_song(song_id))
+        @heavy.each do |song|
+          sample_array.push(song)
         end
       end
 
       17.times do                        # for medium rotation population
-        @medium.each do |song_id|
-          sample_array.push(PL.db.get_song(song_id))
+        @medium.each do |song|
+          sample_array.push(song)
         end
       end
 
       2.times do                         # for light rotation population
-        @light.each do |song_id|
-          sample_array.push(PL.db.get_song(song_id))
+        @light.each do |song|
+          sample_array.push(song)
         end
       end
       sample_array

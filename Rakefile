@@ -1,4 +1,8 @@
 require 'active_record_tasks'
+require 'dotenv/tasks'
+
+task :mytask => :dotenv do
+end
 
 
 ActiveRecordTasks.configure do |config|

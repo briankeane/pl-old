@@ -50,6 +50,13 @@ shared_examples 'a badass database' do
   #   Songs    #
   ##############
 
+  ############################################################################
+  #
+  #            TALK TO GILBERT -- NEED A WAY TO TEST CREATE_SONG FILE
+  #
+  #############################################################################
+
+
   describe 'Song' do
     it "is created with title, duration, sing_start, sing_end, artist, id, audio_id" do
       song = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
@@ -61,6 +68,16 @@ shared_examples 'a badass database' do
       expect(song.sing_end).to eq(208000)
       expect(song.id).to be_a(Fixnum)
       expect(song.audio_id).to eq(2)
+
+    end
+
+    it "finds out if a song exists" do
+      song = db.create_song({ title: "Bar Lights", artist: "Brian Keane", album: "Coming Home", duration: 226000, sing_start: 5000, sing_end: 208000,
+                                                          audio_id: 2 })
+      expect(db.song_exists?({ title: "Bar Lights", artist: "Brian Keane", album: "Coming Home"})).to eq(true)
+      expect(db.song_exists?({ title: "Bar Nights", artist: "Brian Keane", album: "Coming Home"})).to eq(false)
+      expect(db.song_exists?({ title: "Bar Lights", artist: "Krian Beane", album: "Coming Home"})).to eq(false)
+      expect(db.song_exists?({ title: "Bar Lights", artist: "Brian Keane", album: "Going falseHome"})).to eq(false)
     end
 
     it "gets a song" do
@@ -245,14 +262,14 @@ shared_examples 'a badass database' do
     ###################
     it 'creates a rotationLevel' do
       rotationlevel = db.create_rotation_level({ station_id: @station.id, song_id: @song1.id, level: "heavy" })
-      expect(db.get_station(@station.id).heavy.map { |song_id| song_id }.include?(@song1.id)).to eq(true)
+      expect(db.get_station(@station.id).heavy.map { |song| song.id }.include?(@song1.id)).to eq(true)
     end
 
     it 'deletes a rotationLevel' do
       rotationlevel = db.create_rotation_level({ station_id: @station.id, song_id: @song1.id, level: "heavy" })
-      expect(db.get_station(@station.id).heavy.map { |song_id| song_id }.include?(@song1.id)).to eq(true)
+      expect(db.get_station(@station.id).heavy.map { |song| song.id }.include?(@song1.id)).to eq(true)
       rotationlevel = db.delete_rotation_level({ station_id: @station.id, song_id: @song1.id, level: "heavy" })
-      expect(db.get_station(@station.id).heavy.map { |song_id| song_id }.include?(@song1.id)).to eq(false)
+      expect(db.get_station(@station.id).heavy.map { |song| song.id }.include?(@song1.id)).to eq(false)
     end
 
   end

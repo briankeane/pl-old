@@ -109,6 +109,18 @@ module PL
         song
       end
 
+      def song_exists?(attrs)  #title, artist, album
+        songs = @songs.values.select { |song| song.title == attrs[:title] &&
+                                              song.album == attrs[:album] &&
+                                              song.artist == attrs[:artist] }
+
+        if songs.size > 0
+          return true
+        else
+          return false
+        end
+      end
+
 
       ##############
       #   Station  #
@@ -301,18 +313,18 @@ module PL
       def create_rotation_level(attrs)   #station_id, song_id, level
         case attrs[:level]
         when "heavy"
-          if !@stations[attrs[:station_id]].heavy.include?(attrs[:song_id])
-            @stations[attrs[:station_id]].heavy.push(attrs[:song_id])
+          if !@stations[attrs[:station_id]].heavy.map { |song| song.id }.include?(self.get_song(attrs[:song_id]).id)
+            @stations[attrs[:station_id]].heavy.push(get_song(attrs[:song_id]))
             return true
           end
         when "medium"
-          if !@stations[attrs[:station_id]].medium.include?(attrs[:song_id])
-            @stations[attrs[:station_id]].medium.push(attrs[:song_id])
+          if !@stations[attrs[:station_id]].medium.map { |song| song.id }.include?(self.get_song(attrs[:song_id]).id)
+            @stations[attrs[:station_id]].medium.push(get_song(attrs[:song_id]))
             return true
           end
         when "light"
-          if !@stations[attrs[:station_id]].light.include?(attrs[:song_id])
-            @stations[attrs[:station_id]].light.push(attrs[:song_id])
+          if !@stations[attrs[:station_id]].light.map { |song| song.id }.include?(self.get_song(attrs[:song_id]).id)
+            @stations[attrs[:station_id]].light.push(get_song(attrs[:song_id]))
             return true
           end
         end
@@ -322,23 +334,27 @@ module PL
       def delete_rotation_level(attrs)  #station_id, song_id, level
         case attrs[:level]
         when "heavy"
-          if @stations[attrs[:station_id]].heavy.include?(attrs[:song_id])
-            @stations[attrs[:station_id]].heavy.delete(attrs[:song_id])
-            return true
-          end
-        when "medium"
-          if @stations[attrs[:station_id]].medium.include?(attrs[:song_id])
-            @stations[attrs[:station_id]].medium.delete(attrs[:song_id])
-            return true
-          end
-        when "light"
-          if @stations[attrs[:station_id]].light.include?(attrs[:song_id])
-            @stations[attrs[:station_id]].light.delete(attrs[:song_id])
-            return true
-          end
-        end
+          # get a list of the ids in rotation
+          ids = @stations[attrs[:station_id]].heavy.map { |song| song.id }
 
-        return false
+          # delete them
+          did_it_delete = @stations[attrs[:station_id]].heavy.reject! { |song| song.id == attrs[:song_id] }
+          return did_it_delete
+        when "medium"
+          # get a list of the ids in rotation
+          ids = @stations[attrs[:station_id]].medium.map { |song| song.id }
+
+          # delete them
+          did_it_delete = @stations[attrs[:station_id]].medium.reject! { |song| song.id == attrs[:song_id] }
+          return did_it_delete
+        when "light"
+          # get a list of the ids in rotation
+          ids = @stations[attrs[:station_id]].light.map { |song| song.id }
+
+          # delete them
+          did_it_delete = @stations[attrs[:station_id]].light.reject! { |song| song.id == attrs[:song_id] }
+          return did_it_delete
+        end
       end
     end
   end
