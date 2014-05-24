@@ -7,6 +7,17 @@ shared_examples 'a badass database' do
 
   before { db.clear_everything }
 
+
+
+  #############################
+  # Initialization Procedures #
+  #############################
+  describe 'Initialization Procedures' do
+    it 'adds stored songs to the database' do
+      db.add_stored_songs_to_db
+    end
+  end
+
   ##############
   #   Users    #
   ##############

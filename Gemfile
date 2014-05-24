@@ -19,4 +19,6 @@ gem 'activerecord', '~> 4.1.0'
 gem 'active_record_tasks', '~> 1.0.4'
 gem 'pg'
 
+gem 'aws-sdk'
 gem 'dotenv-rails', :groups => [:development, :test]
+gem 'id3tag'

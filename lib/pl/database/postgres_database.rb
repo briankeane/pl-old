@@ -23,6 +23,45 @@ module PL
         ActiveRecord::Base.subclasses.each(&:delete_all)
       end
 
+      def add_stored_songs_to_db
+        AWS.config ({
+                        :access_key_id     => ENV['S3_ACCESS_KEY_ID'],
+                        :secret_access_key =>  ENV['S3_SECRET_KEY']
+                        })
+
+        s3 = AWS::S3.new
+
+        bucket = 'playolasongs'
+
+        stored_songs = s3.buckets['playolasongs'].objects
+
+        stored_songs.each do |s3_song_file|
+
+          ar_song = Song.create({})
+
+          temp_song_file = Tempfile.new("temp_song_file")
+
+          temp_song_file.open()
+          temp_song_file.write(s3_song_file.read)
+
+          tag = ID3Tag.read(temp_song_file)
+
+          ar_song.artist = tag.artist
+          ar_song.title = tag.title
+          ar_song.album = tag.album
+
+          new_object = s3.buckets['playolasongs'].objects[(ar_song.id.to_s + '.' + s3_song_file_ext)]
+          s3_song_file.copy_to(new_object)
+          s3_song_file.delete
+          @songs[song.id] = song
+          ar_song.save
+          Song.new(ar_song.attributes)
+        end
+      end
+
+
+
+
 
       #######################
       # ActiveRecord Models #

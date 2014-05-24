@@ -1,5 +1,9 @@
 require 'securerandom'
 require 'pry-debugger'
+require 'tempfile'
+require 'aws-sdk'
+require 'dotenv'
+require 'id3tag'
 
 module PL
   module Database
@@ -26,9 +30,46 @@ module PL
         @spins = {}
         @sessions = {}
         @commercial_blocks = {}
-
       end
 
+      def add_stored_songs_to_db
+
+        AWS.config ({
+                        :access_key_id     => ENV['S3_ACCESS_KEY_ID'],
+                        :secret_access_key =>  ENV['S3_SECRET_KEY']
+                        })
+
+        s3 = AWS::S3.new
+
+        bucket = 'playolasongs'
+
+        stored_songs = s3.buckets['playolasongs'].objects
+
+        stored_songs.each do |s3_song_file|
+          id = (@song_id_counter += 1)
+
+          s3_song_file_ext = s3_song_file.key.split('.').last
+
+          song = Song.new({ id: id })
+
+          temp_song = Tempfile.new("temp_song")
+
+          temp_song.open()
+          temp_song.write(s3_song_file.read)
+
+
+          tag = ID3Tag.read(temp_song)
+
+          song.artist = tag.artist
+          song.title = tag.title
+          song.album = tag.album
+
+          new_object = s3.buckets['playolasongs'].objects[(song.id.to_s + '.' + s3_song_file_ext)]
+          s3_song_file.copy_to(new_object)
+          s3_song_file.delete
+          @songs[song.id] = song
+        end
+      end
 
       ##############
       #   Users    #
