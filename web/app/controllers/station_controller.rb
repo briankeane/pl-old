@@ -9,22 +9,20 @@ class StationController < ApplicationController
     @current_spin = result.current_spin
   end
 
-  def playlist_editor
-    @songs = [ { artist: "1", id: 1, title: "I'll Sing About Mine"},
-              { artist: "2", id: 2, title: "Today"},
-              { artist: "3", id: 3, title: "I"},
-              { artist: "4", id: 4, title: "Will" },
-              { artist: "5", id: 5, title: "Fucking" },
-              { artist: "6", id: 6, title: "Figure" },
-              { artist: "7", id: 7, title: "This"},
-              { artist: "8", id: 8, title: "Out"},
-              { artist: "9", id: 9, title: "I'll Sing About Mine"},
-              { artist: "10", id: 10, title: "I'll Sing About Mine"},
-              { artist: "11", id: 11, title: "I'll Sing About Mine"},
-              { artist: "12", id: 12, title: "I'll Sing About Mine"}
-              ]
-    end
+  def add_to_rotation
+    binding.pry
 
+    result = PL::CreateRotationLevel.run({ station_id: current_station.id,
+                                            song_id: params[:song_id],
+                                            level: params[:level] })
+
+    render :json => { success: true }
+  end
+
+
+  def playlist_editor
+    @songs = PL.db.get_all_songs
+  end
 
 
   def update_order

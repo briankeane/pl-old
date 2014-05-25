@@ -1,6 +1,6 @@
 
 <h2>Upload a new song:</h2>
-<%= form_tag 'songs/create', :method => "post", :multipart => true do %>
+<%= form_tag 'songs/create', :method => "post", :hidden => true, :multipart => true do %>
     <%= file_field_tag "mp3file" %>
     <%= submit_tag "Upload" %>
 <% end %>
@@ -30,10 +30,10 @@
 
         <ul id="songlist">
           <% @songs.each do |song| %>
-            <li data-searchString="<%= song[:title] + song[:artist] %>" data-id="<%= song[:id] %>" class="playlist-song">
+            <li data-searchString="<%= song.title + ' ' + song.artist %>" data-id="<%= song.id %>" class="playlist-song">
             <div class="clearfix">
-              <div class="title"><b><%= song[:title] %></b></div>
-              <div class="artist"><%= song[:artist] %></div>
+              <div class="title"><b><%= song.title %></b></div>
+              <div class="artist"><%= song.artist %></div>
             </div>
           </li>
           <% end %>
@@ -41,12 +41,14 @@
 
 
       </div>
+      <div id="status"></div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-gutter"?
       <form style="display: inline">
           Add a Song to Our Library: <input type="file" id="file">
           <input type="submit" id="songUpload" disabled="true">Upload</input>
           <p id="songMessage"></p>
       </form>
-      <div id="status"></div>
     </div>
   </div>
 </div>

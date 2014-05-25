@@ -7,23 +7,23 @@ class SongsController < ApplicationController
   def create
     file = params[:mp3file]
 
-     AWS.config({
-                    :access_key_id => ENV['S3_ACCESS_KEY_ID'],
-                    :secret_access_key => ENV['S3_SECRET_KEY']
-                })
+   AWS.config({
+                  :access_key_id => ENV['S3_ACCESS_KEY_ID'],
+                  :secret_access_key => ENV['S3_SECRET_KEY']
+              })
 
-      s3 = AWS::S3.new
+    s3 = AWS::S3.new
 
-      song_file = params[:song]
-      song_name = song_file.original_filename
+    song_file = params[:song]
+    song_name = song_file.original_filename
 
-      sent_file = s3.buckets['playolaradio'].objects[song_name].write(:file => song_file)
+    sent_file = s3.buckets['playolaradio'].objects[song_name].write(:file => song_file)
 
-      puts "#{sent_file.public_url}"
+    puts "#{sent_file.public_url}"
 
-      respond_to do |format|
-          format.js {render json: {data: sent_file.public_url}}
-        end
+    respond_to do |format|
+      format.js {render json: {data: sent_file.public_url}}
+    end
   end
 
 

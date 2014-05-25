@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   match 'station/update_order' => 'station#update_order',       via: 'post'
   match 'songs/create',   to:   'songs#create',                 via: 'post'
   match 'songs/check_for_song', to: 'songs#check_for_song',      via: 'get'
+  match 'station/add_to_rotation', to: 'station#add_to_rotation',   via: 'post'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

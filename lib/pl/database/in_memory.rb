@@ -69,6 +69,7 @@ module PL
           s3_song_file.delete
           @songs[song.id] = song
         end
+
       end
 
       ##############
@@ -161,6 +162,12 @@ module PL
           return false
         end
       end
+
+      def get_all_songs
+        all_songs = @songs.values.sort_by { |a| [a.artist, a.title] }
+        all_songs
+      end
+
 
 
       ##############
@@ -369,7 +376,6 @@ module PL
             return true
           end
         end
-
       end
 
       def delete_rotation_level(attrs)  #station_id, song_id, level

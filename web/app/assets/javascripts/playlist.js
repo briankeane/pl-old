@@ -36,6 +36,7 @@
             var formattedTags = { "artist": tags.artist.toString(),
                               "title": tags.title.toString(),
                               "album": tags.album.toString() }
+
             $.ajax({
               type: "GET",
               dataType: "json",
@@ -58,11 +59,6 @@
                   $('#songMessage').text('That song is already in the database');
                 }
               });
-
-
-
-
-
 
             callback(tags);
             console.log(tags);
@@ -105,19 +101,49 @@
         }
     }
 
+    function addToRotation(event, ui) {
+
+      var addToRotationObject = {
+                        "song_id": parseInt(ui.item.attr('data-id')),
+                        "level": event.target.id
+                                }
+      addToRotationObject._method = 'POST'
+
+      $.ajax({
+              type: "POST",
+              dataType: "json",
+              url: 'station/add_to_rotation',
+              contentType: 'application/json',
+              data: JSON.stringify(addToRotationObject),
+              success: function(obj) {
+                return obj;
+              },
+              error : function(error) {
+                console.log(error);
+              }
+            });
+    }
+
+
 
     $('#file').on('change', function(e) { load(this); });
     $('#heavy').sortable();
     $('#songlist').sortable({ connectWith: ["#heavy", "#medium", "#light"],
                               dropOnEmpty: true });
     $('#heavy').sortable({ connectWith: ["#songlist", "#medium", "#light"],
-                            dropOnEmpty: true });
+                            dropOnEmpty: true,
+                            receive: function(event, ui) {
+                                addToRotation(event, ui);
+                              } });
     $('#medium').sortable({ connectWith: ["#heavy", "#songlist", "#light"],
-                              dropOnEmpty: true });
+                              dropOnEmpty: true,
+                              receive: function(event, ui) {
+                                addToRotation(event, ui);
+                              } });
     $('#light').sortable({   connectWith: ["#heavy", "#medium", "#songlist"],
                               dropOnEmpty: true,
                               receive: function(event, ui) {
-                                ui.item.slice();
+                                addToRotation(event, ui);
                               } });
     $('#searchText').keyup(function() {
       var allListElements = $('li');
@@ -139,6 +165,8 @@
       }
 
     });
+
+
 
   }
 

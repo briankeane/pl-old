@@ -237,6 +237,18 @@ module PL
         Song.new(song.attributes)
       end
 
+      def get_all_songs
+        ar_songs = Song.all
+
+        songs = []
+        ar_songs.each do |song|
+          song = PL::Song.new(song.attributes)
+          songs << song
+        end
+        songs = songs.sort_by { |a| [a.artist, a.title] }
+
+        songs
+      end
 
       ##############
       #   Station  #

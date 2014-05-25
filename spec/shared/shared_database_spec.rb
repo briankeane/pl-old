@@ -13,7 +13,7 @@ shared_examples 'a badass database' do
   # Initialization Procedures #
   #############################
   describe 'Initialization Procedures' do
-    it 'adds stored songs to the database' do
+    xit 'adds stored songs to the database' do
       db.add_stored_songs_to_db
     end
   end
@@ -129,6 +129,17 @@ shared_examples 'a badass database' do
       updated_song1 = db.update_song({ id: @song1.id, title: "Bar Days" })
       expect(updated_song1.title).to eq("Bar Days")
     end
+
+    it "returns a list of all songs in the database in the proper order" do
+      all_songs = db.get_all_songs
+      expect(all_songs.size).to eq(5)
+      expect(all_songs[0].title).to eq("Bar First")
+      expect(all_songs[1].title).to eq("Hell")
+      expect(all_songs[2].title).to eq("Bar Brights")
+      expect(all_songs[3].title).to eq("Bar Lights")
+      expect(all_songs[4].title).to eq("Bar Nights")
+    end
+
 
 
   end

@@ -68,7 +68,7 @@
           movePositionData._method = 'POST';
           $.ajax({
               type: "POST",
-              dataType: "script",
+              dataType: "json",
               url: 'station/update_order',
               contentType: 'application/json',
               data: JSON.stringify(movePositionData)
