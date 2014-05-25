@@ -12,12 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui-1.10.4.custom.min
-//= require bootstrap
-//= require react
+//= require_tree ./essentials
 //= require_tree ./libraries
+//= require bootstrap
 //= require format_time
 //= require dj_booth
 //= require dj_recorder
-//= require recorder
 //= require playlist
