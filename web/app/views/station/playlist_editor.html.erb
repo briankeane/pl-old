@@ -10,25 +10,49 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter">
-      <div class="heavy rotation song-table">
-        <ul class="rotation" id="heavy">
+      <div class="heavy rotation song-list-container">
+        <ul class="rotation song-list" id="heavy">
+          <% @heavy.each do |song| %>
+            <li data-searchString="<%= song.title + ' ' + song.artist %>" data-id="<%= song.id %>" class="playlist-song">
+              <div class="clearfix">
+                <div class="title"><b><%= song.title %></b></div>
+                <div class="artist"><%= song.artist %></div>
+              </div>
+            </li>
+          <% end %>
         </ul>
       </div>
-      <div class="medium rotation song-table">
-        <ul class="rotation" id="medium">
+      <div class="medium rotation song-list-container">
+        <ul class="rotation song-list" id="medium">
+          <% @medium.each do |song| %>
+            <li data-searchString="<%= song.title + ' ' + song.artist %>" data-id="<%= song.id %>" class="playlist-song">
+              <div class="clearfix">
+                <div class="title"><b><%= song.title %></b></div>
+                <div class="artist"><%= song.artist %></div>
+              </div>
+            </li>
+          <% end %>
         </ul>
       </div>
-      <div class="light rotation song-table">
-        <ul class="rotation" id="light">
+      <div class="light rotation song-list-container">
+        <ul class="rotation song-list" id="light">
+          <% @light.each do |song| %>
+            <li data-searchString="<%= song.title + ' ' + song.artist %>" data-id="<%= song.id %>" class="playlist-song">
+              <div class="clearfix">
+                <div class="title"><b><%= song.title %></b></div>
+                <div class="artist"><%= song.artist %></div>
+              </div>
+            </li>
+          <% end %>
         </ul>
       </div>
     </div>
     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter" id="draganddrophandler">
 
       Search: <input id="searchText">
-      <div class="all-songs song-table" >
+      <div class="all-songs song-list-container" >
 
-        <ul id="songlist">
+        <ul id="all-songs-list" class="song-list">
           <% @songs.each do |song| %>
             <li data-searchString="<%= song.title + ' ' + song.artist %>" data-id="<%= song.id %>" class="playlist-song">
             <div class="clearfix">

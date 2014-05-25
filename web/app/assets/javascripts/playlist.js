@@ -124,30 +124,67 @@
             });
     }
 
+    function deleteFromRotation(event, ui) {
+
+      var deleteFromRotationObject = {
+                        "song_id": parseInt(ui.item.attr('data-id')),
+                        "level": event.target.id
+                                }
+      deleteFromRotationObject._method = 'POST'
+
+      $.ajax({
+              type: "DELETE",
+              dataType: "json",
+              url: 'station/delete_from_rotation',
+              contentType: 'application/json',
+              data: JSON.stringify(deleteFromRotationObject),
+              success: function(obj) {
+                return obj;
+              },
+              error : function(error) {
+                console.log(error);
+              }
+            });
+    }
+
 
 
     $('#file').on('change', function(e) { load(this); });
     $('#heavy').sortable();
-    $('#songlist').sortable({ connectWith: ["#heavy", "#medium", "#light"],
+    $('#all-songs-list').sortable({ connectWith: ["#heavy", "#medium", "#light"],
                               dropOnEmpty: true });
-    $('#heavy').sortable({ connectWith: ["#songlist", "#medium", "#light"],
+    $('#heavy').sortable({ connectWith: ["#all-songs-list", "#medium", "#light"],
                             dropOnEmpty: true,
                             receive: function(event, ui) {
                                 addToRotation(event, ui);
-                              } });
-    $('#medium').sortable({ connectWith: ["#heavy", "#songlist", "#light"],
+                              },
+                              remove: function(event, ui) {
+                                deleteFromRotation(event, ui)
+                              }  });
+    $('#medium').sortable({ connectWith: ["#heavy", "#all-songs-list", "#light"],
                               dropOnEmpty: true,
                               receive: function(event, ui) {
                                 addToRotation(event, ui);
-                              } });
-    $('#light').sortable({   connectWith: ["#heavy", "#medium", "#songlist"],
+                              },
+                              remove: function(event, ui) {
+                                deleteFromRotation(event, ui)
+                              }
+                              });
+    $('#light').sortable({   connectWith: ["#heavy", "#medium", "#all-songs-list"],
                               dropOnEmpty: true,
+
                               receive: function(event, ui) {
                                 addToRotation(event, ui);
-                              } });
+                              },
+
+                              remove: function(event, ui) {
+                                deleteFromRotation(event, ui)
+                              }
+
+                              });
     $('#searchText').keyup(function() {
       var allListElements = $('li');
-      var fullList = $('#songlist li');
+      var fullList = $('#all-songs-list li');
       var searchString = $('#searchText').val().toLowerCase();
 
       for (var i=0; i<fullList.length; i++) {

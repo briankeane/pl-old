@@ -139,7 +139,7 @@ audio {
   margin: 1px 0 1px 0;
 }
 
-.song-table {
+.song-list {
   padding-right: 0px;
   padding-left: 0px;
   overflow: auto;
@@ -153,8 +153,7 @@ audio {
 // **************************
 // *  Playlist Editor       *
 // **************************
-.playlist-song {
-  background-color: #8FCFFF;
+.song-list li {
   height: 25px;
   border: 1px solid black;
   margin-bottom: 2px;
@@ -164,10 +163,22 @@ audio {
   list-style-type:none;
 }
 
-#songlist {
+#all-songs-list li {
+  background-color: #8FCFFF;
+}
+
+.light .rotation li {
+  background-color: #FFE0FC;
+}
+
+.medium .rotation li {
+  background-color: #5EFF6B;
+}
+
+.heavy .rotation li {
+  background-color: #FF807B;
+}
+.song-list-container {
   padding: 0;
 }
 
-.rotation {
-
-}
