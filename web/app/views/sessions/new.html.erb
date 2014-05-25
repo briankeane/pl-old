@@ -1,22 +1,27 @@
 <% provide(:title, 'Sign In') %>
-<h1>Sign In</h1>
 
-<div class="row">
-  <div class="span6 offset3">
-      <% if flash[:notice] %>
-        <h2 color="red">
-        <%= flash[:notice] %>
-        </h2>
-      <% end %>
+<div class="container welcome-pages-container">
+  <div class="jumbotron">
+    <h4>Sign In</h4>
 
-    <%= form_tag sign_in_path do %>
-      <%= label_tag :twitter %>
-      <%= text_field_tag :twitter %>
+    <div class="row">
+      <div class="span6 offset3">
+          <% if flash[:notice] %>
+            <h2 color="red">
+            <%= flash[:notice] %>
+            </h2>
+          <% end %>
 
-      <%= label_tag :password %>
-      <%= password_field_tag :password %>
+        <%= form_tag sign_in_path :class => 'form-signin' do %>
+          <%= label_tag :twitter %>
+          <%= text_field_tag :twitter %>
 
-      <%= submit_tag "Sign In", class: "btn btn-large btn-primary" %>
-    <% end %>
+          <%= label_tag :password %>
+          <%= password_field_tag :password %>
+
+          <%= submit_tag "Sign In", class: "btn btn-large btn-primary" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

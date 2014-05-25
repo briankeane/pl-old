@@ -13,4 +13,5 @@
  *= require bootstrap_main
  *= require station
  *= require_self
+ *= require welcome_pages
  */

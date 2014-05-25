@@ -21,4 +21,6 @@ gem 'pg'
 
 gem 'aws-sdk'
 gem 'dotenv-rails', :groups => [:development, :test]
-gem 'id3tag'
+
+
+gem 'ruby-mp3info', '~> 0.8.4'

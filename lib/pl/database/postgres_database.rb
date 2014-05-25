@@ -3,6 +3,7 @@ require 'pry-debugger'
 require 'active_record'
 require 'yaml'
 require 'bcrypt'
+require 'mp3info'
 
 module PL
   module Database
@@ -45,11 +46,15 @@ module PL
           temp_song_file.open()
           temp_song_file.write(s3_song_file.read)
 
-          tag = ID3Tag.read(temp_song_file)
+          mp3 = ''
+          Mp3Info.open(temp_song_file) do |song_tags|
+            mp3 = song_tags
+          end
 
-          ar_song.artist = tag.artist
-          ar_song.title = tag.title
-          ar_song.album = tag.album
+          ar_song.artist = mp3.tag.artist
+          ar_song.title = mp3.tag.title
+          ar_song.album = mp3.tag.album
+          ar_song.duration = (mp3.tag.length * 1000).to_i
 
           new_key = (ar_song.id.to_s + '_' + ar_song.artist + '_' + ar_song.title + '.' + s3_song_file_ext)
           # change the name to the new key if the old key doesn't match it

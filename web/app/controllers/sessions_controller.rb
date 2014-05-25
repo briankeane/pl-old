@@ -3,14 +3,21 @@ class SessionsController < ApplicationController
   end
 
   def create
-    result = PL::SignIn.run({ twitter: params[:twitter], password: params[:password] })
-    if result.success?
-      session[:pl_session_id] = result.session_id
-      return redirect_to dj_booth_path
-    else
-      flash[:notice] = "you messed up somewhere, mf"
-      return redirect_to sign_in_path
-    end
+
+    raise env["omniauth.auth"].to_yaml
+
+
+
+
+
+    # result = PL::SignIn.run({ twitter: params[:twitter], password: params[:password] })
+    # if result.success?
+    #   session[:pl_session_id] = result.session_id
+    #   return redirect_to dj_booth_path
+    # else
+    #   flash[:notice] = "you messed up somewhere, mf"
+    #   return redirect_to sign_in_path
+    # end
   end
 
   def destroy
@@ -18,5 +25,12 @@ class SessionsController < ApplicationController
     reset_session
     return redirect_to root_path
   end
+
+  protected
+
+  def auth_hash
+    request.env['omniauth.auth']
+  end
+
 
 end

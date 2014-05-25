@@ -25,6 +25,9 @@ Rails.application.routes.draw do
 
   get 'users/show'
 
+
+  get '/auth/twitter/callback', to: 'sessions#create'
+
   root :to => 'welcome_pages#home'
   match '/about',         to:   'welcome_pages#about',        via: 'get'
 
@@ -41,6 +44,7 @@ Rails.application.routes.draw do
   match 'songs/check_for_song', to: 'songs#check_for_song',      via: 'get'
   match 'station/add_to_rotation', to: 'station#add_to_rotation',   via: 'post'
   match 'station/delete_from_rotation', to: 'station#delete_from_rotation', via: 'delete'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

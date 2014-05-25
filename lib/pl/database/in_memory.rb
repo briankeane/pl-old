@@ -3,7 +3,7 @@ require 'pry-debugger'
 require 'tempfile'
 require 'aws-sdk'
 require 'dotenv'
-require 'id3tag'
+require 'mp3info'
 
 module PL
   module Database
@@ -57,12 +57,17 @@ module PL
           temp_song.open()
           temp_song.write(s3_song_file.read)
 
+          #tag = ID3Tag.read(temp_song)
 
-          tag = ID3Tag.read(temp_song)
+          mp3 = ''
+          Mp3Info.open(temp_song) do |song_tags|
+            mp3 = song_tags
+          end
 
-          song.artist = tag.artist
-          song.title = tag.title
-          song.album = tag.album
+          song.artist = mp3.tag.artist
+          song.title = mp3.tag.title
+          song.album = mp3.tag.album
+          song.duration = (mp3.tag.length * 1000).to_i
 
           new_key = (song.id.to_s + '_' + song.artist + '_' + song.title + '.' + s3_song_file_ext)
           # change the name to the new key if necessary
