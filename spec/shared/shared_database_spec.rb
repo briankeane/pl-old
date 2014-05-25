@@ -13,7 +13,7 @@ shared_examples 'a badass database' do
   # Initialization Procedures #
   #############################
   describe 'Initialization Procedures' do
-    xit 'adds stored songs to the database' do
+    it 'adds stored songs to the database' do
       db.add_stored_songs_to_db
     end
   end

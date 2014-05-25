@@ -38,6 +38,7 @@ module PL
         stored_songs.each do |s3_song_file|
 
           ar_song = Song.create({})
+           s3_song_file_ext = s3_song_file.key.split('.').last
 
           temp_song_file = Tempfile.new("temp_song_file")
 
@@ -50,16 +51,17 @@ module PL
           ar_song.title = tag.title
           ar_song.album = tag.album
 
-          new_object = s3.buckets['playolasongs'].objects[(ar_song.id.to_s + '.' + s3_song_file_ext)]
-          s3_song_file.copy_to(new_object)
-          s3_song_file.delete
-          @songs[song.id] = song
+          new_key = (ar_song.id.to_s + '_' + ar_song.artist + '_' + ar_song.title + '.' + s3_song_file_ext)
+          # change the name to the new key if the old key doesn't match it
+          if !stored_songs[new_key].exists?
+            new_object = s3.buckets['playolasongs'].objects[new_key]
+            s3_song_file.copy_to(new_object)
+            s3_song_file.delete
+          end
+
           ar_song.save
-          Song.new(ar_song.attributes)
         end
       end
-
-
 
 
 

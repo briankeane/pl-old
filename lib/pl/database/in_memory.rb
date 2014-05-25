@@ -64,9 +64,14 @@ module PL
           song.title = tag.title
           song.album = tag.album
 
-          new_object = s3.buckets['playolasongs'].objects[(song.id.to_s + '.' + s3_song_file_ext)]
-          s3_song_file.copy_to(new_object)
-          s3_song_file.delete
+          new_key = (song.id.to_s + '_' + song.artist + '_' + song.title + '.' + s3_song_file_ext)
+          # change the name to the new key if necessary
+          if !stored_songs[new_key].exists?
+            new_object = s3.buckets['playolasongs'].objects[new_key]
+            s3_song_file.copy_to(new_object)
+            s3_song_file.delete
+          end
+
           @songs[song.id] = song
         end
 
