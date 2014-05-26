@@ -18,6 +18,12 @@
           ui.item.startPos = ui.item.index();
           console.log($('#songlist').toArray());
         },
+        receive: function(event, ui) {
+          var audioLink = ui.item.children('audio').attr('src');
+          convertWavToMp3(audioLink, ui);
+
+          debugger;
+        },
         stop: function(event, ui) {
 
           console.log("Start position: " + ui.item.startPos);
