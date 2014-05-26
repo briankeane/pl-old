@@ -6,10 +6,13 @@
 
     $('#startRecording').click(function() {
       startRecording();
+      recordButton.attr("disabled", "true");
+      stopButton.removeAttr("disabled");
     });
 
     $('#stopRecording').click(function() {
       stopRecording();
+      stopButton.attr("disabled", "true");
     });
 
 
@@ -79,15 +82,12 @@
 
       // recorder
       recorder && recorder.record();
-      recordButton.attr("disabled", "true");
-      stopButton.removeAttr("disabled");
+
       console.log('Recording...');
     }
 
     function stopRecording(button) {
       recorder && recorder.stop();
-      stopButton.attr("disabled", "true");
-      recordButton.removeAttr("disabled");
       console.log('Stopped recording.');
 
       // create WAV download link using audio data blob

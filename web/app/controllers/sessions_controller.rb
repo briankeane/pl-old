@@ -1,3 +1,5 @@
+require 'pry-debugger'
+
 class SessionsController < ApplicationController
   def new
   end
@@ -14,11 +16,16 @@ class SessionsController < ApplicationController
   end
 
   def create_with_twitter
-
-    result = PL::SignIn.run({ })
+    auth = request.env['omniauth.auth']
+    result = PL::SignInWithTwitter.run({ twitter: auth["info"]["nickname"], twitter_uid: auth['uid'] })
     if result.success?
       session[:pl_session_id] = result.session_id
-      raise env["omniauth.auth"].to_yaml
+      return redirect_to dj_booth_path
+    else
+      redirect_to sign_in_path
+    end
+
+
   end
 
 

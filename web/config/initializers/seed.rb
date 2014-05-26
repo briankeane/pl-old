@@ -68,11 +68,11 @@ songs <<  PL.db.create_song({ title: "Trouble", artist: "Wade Bowen", duration: 
 songs <<  PL.db.create_song({ title: "If We Ever Make it Home", artist: "Wade Bowen", duration: 60000, sing_start: 5000, sing_end: 208000, audio_id: 2 })
 songs <<  PL.db.create_song({ title: "Nobody's Fool", artist: "Wade Bowen", duration: 60000, sing_start: 5000, sing_end: 208000, audio_id: 2 })
 songs <<  PL.db.create_song({ title: "Mood Ring", artist: "Wade Bowen", duration: 60000, sing_start: 5000, sing_end: 208000, audio_id: 2 })
-user1 = PL.db.create_user({ twitter: 'bob', password: 'password', email: 'bob@bob.com' })
+user1 = PL.db.create_user({ twitter: 'BrianKeaneTunes', password: 'password', email: 'bob@bob.com' })
 user2 = PL.db.create_user({ twitter: 'bob', password: 'password', email: 'bob@bob.com' })
-user3 = PL.db.create_user({ twitter: 'bob', password: 'password', email: 'bob@bob.com' })
-user4 = PL.db.create_user({ twitter: 'bob', password: 'password', email: 'bob@bob.com' })
-user5 = PL.db.create_user({ twitter: 'bob', password: 'password', email: 'bob@bob.com' })
+user3 = PL.db.create_user({ twitter: 'bob1', password: 'password', email: 'bob@bob.com' })
+user4 = PL.db.create_user({ twitter: 'bob2', password: 'password', email: 'bob@bob.com' })
+user5 = PL.db.create_user({ twitter: 'bob3', password: 'password', email: 'bob@bob.com' })
 station1 = PL.db.create_station({ user_id: user1.id })
 
 
