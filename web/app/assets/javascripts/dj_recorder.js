@@ -103,15 +103,17 @@
         var au = document.createElement('audio');
         var hf = document.createElement('a');
         var recordingList = $('#recording');
+        var template = $('#recording li').html();
 
         au.controls = true;
         au.src = url;
         hf.href = url;
-        hf.download = new Date().toISOString() + '.wav';
-        //hf.innerHTML = hf.download;
+        //hf.download = new Date().toISOString() + '.wav';
+        hf.innerHTML = hf.download;
         li.append(au);
         li.append(hf);
-        recordingList.append(li);
+        recordingList.append(template);
+
       });
     }
 

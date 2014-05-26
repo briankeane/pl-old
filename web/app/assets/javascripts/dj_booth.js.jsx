@@ -90,7 +90,12 @@
       });
 
     $('#recording').sortable({
-              connectWith: "#songlist"
+              connectWith: "#songlist",
+              remove: function(event, ui) {
+                $('#recording').append('<li class="commentary" opacity="0.3">Your Recording</li>');
+                $('#startRecording').removeAttr('disabled');
+              }
+
     }).disableSelection();
 
     var updateCurrentSpins = function() {
