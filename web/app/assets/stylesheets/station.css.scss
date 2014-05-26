@@ -4,6 +4,25 @@
 
 $grid-gutter-width: 90px;
 $grid-float-breakpoint: 768px;
+$heavy-rotation: steelblue;
+$medium-rotation: #147EFF;
+$light-rotation: #11BAFF;
+$main-background: #00647F;
+$header-background: #00C8FF;
+$main-font: white;
+$commentary-color: red;
+
+
+
+
+body {
+  background-color: $main-background;
+  color: main-font;
+}
+
+.navbar {
+  background-color: $header-background;
+}
 
 .chat-wrapper, .current-playlist {
   height: 400px;
@@ -69,32 +88,38 @@ $grid-float-breakpoint: 768px;
   background-color: #3EFF81 !important;
   border: 1px solid black;
   margin-bottom: 2px;
-  border-radius: 10px;
+  border-radius: 3px;
   list-style-type:none;
   overflow: auto;
 }
 
 
-.scheduled_play {
+#songlist li {
   background-color: #8FCFFF;
   height: 50px;
   width: 433;
   border: 1px solid black;
   margin-bottom: 2px;
-  border-radius: 10px;
+  border-radius: 2px;
   list-style-type:none;
+}
+#songlist li.commentary {
+  background-color: red;
 }
 
 #recording li.commentary {
   margin-top: 15px;
-  padding-top: 10px;
+  padding: 10px;
   text-align: center;
   background-color: desaturate(red, 50%);
   opacity: 0.8;
+  border-radius: 3px;
+  border: 1px solid #333;
+
 }
 
 .commentary {
-  background-color: red;
+  background-color: $commentary-color;
   opacity: 1.0;
 }
 
@@ -176,9 +201,23 @@ audio {
 }
 
 .heavy .rotation li {
-  background-color: #FF807B;
+  background-color: $heavy-rotation;
 }
 .song-list-container {
   padding: 0;
+}
+#recording {
+  padding: 0;
+  list-style-type: none;
+}
+
+#record {
+
+}
+
+#volumeMeter {
+  border: 1px solid black;
+  height: 25px;
+  width: 200px;
 }
 

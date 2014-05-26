@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   get 'users/show'
 
 
-  get '/auth/twitter/callback', to: 'sessions#create'
+  get '/auth/twitter/callback', to: 'sessions#create_with_twitter'
 
   root :to => 'welcome_pages#home'
   match '/about',         to:   'welcome_pages#about',        via: 'get'

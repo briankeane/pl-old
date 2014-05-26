@@ -2,10 +2,13 @@ require 'bcrypt'
 
 module PL
   class User < Entity
-    attr_accessor :twitter, :email, :id, :password_digest
+    attr_accessor :twitter, :email, :id, :password_digest, :twitter_uid
 
     def initialize(attrs)
-      @password_digest = BCrypt::Password.create(attrs.delete(:password))
+      if attrs[:password]
+        @password_digest = BCrypt::Password.create(attrs.delete(:password))
+      end
+
       super(attrs)
     end
 

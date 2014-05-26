@@ -46,9 +46,9 @@
         volumeAnalyser.getByteFrequencyData(array);
         var average = getAverageVolume(array);
 
-        ctx.clearRect(0,0,60,130);
+        ctx.clearRect(0,0,300,100);
         ctx.fillStyle="gradient";
-        ctx.fillRect(0,130-average, 25, 130);
+        ctx.fillRect(0,0, average*2, 100);
       }
 
 
@@ -65,10 +65,6 @@
         average = values/length;
         return average;
       }
-
-
-
-
 
 
 
@@ -137,13 +133,6 @@
 
         console.log("This is running");
         startUserMedia(stream);
-
-
-
-
-
-
-
 
       }, function(e) {
         console.log('No live audio input: ' + e);

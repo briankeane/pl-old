@@ -11,7 +11,15 @@
  * file per style scope.
  *
  *= require bootstrap_main
- *= require station
  *= require_self
+ *= require station
  *= require welcome_pages
  */
+
+$grid-gutter-width: 90px;
+$grid-float-breakpoint: 768px;
+$heavy-rotation: steelblue;
+$medium-rotation: #147EFF;
+$light-rotation: #11BAFF;
+$main-background: #0B2640;
+

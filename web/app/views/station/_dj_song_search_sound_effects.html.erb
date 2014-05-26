@@ -1,6 +1,6 @@
 <h4>SONG SEARCH SECTION</h4>
 <div class="tabbable">
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-pills nav-stacked">
     <li class="active"><a href="#pane1" data-toggle="tab">Song Search</a></li>
     <li><a href="#record" data-toggle="tab">Record</a></li>
     <li><a href="#pane3" data-toggle="tab">Sound Effects</a></li>
@@ -14,14 +14,14 @@
       <h4>Song Search</h4>
       <pre>Code here ...</pre>
     </div>
-    <div id="record" class="tab-pane col-lg-10 col-md-10 col-sm-10 col-xs-10 no-gutter">
+    <div id="record" class="tab-pane">
       <h4>Record</h4>
-      <button id="startRecording">record</button>
+      <button id="startRecording" class="glyphicon glyphicon-">record</button>
       <button id="stopRecording" disabled="true">stop</button>
       <canvas id="volumeMeter"></canvas>
 
     <ul id="recording">
-      <li class="scheduled_play commentary" opacity="0.3">
+      <li class="commentary" opacity="0.3">
       Your Recording
       </li>
     </ul>

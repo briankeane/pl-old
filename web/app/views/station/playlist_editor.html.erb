@@ -1,5 +1,3 @@
-
-<h2>Upload a new song:</h2>
 <%= form_tag 'songs/create', :method => "post", :hidden => true, :multipart => true do %>
     <%= file_field_tag "mp3file" %>
     <%= submit_tag "Upload" %>
@@ -8,6 +6,27 @@
 
 
 <div class="container-fluid">
+
+  <% if @station_set_up %>
+    <div class="row">
+      <div class="jumbotron">
+        <h2> Set Up Your Station </h2>
+        <p class="lead"> Please choose the songs that will be played on your station.  Heavy songs will be played frequently, and light songs will be played occasionally.  Just drag the songs you want into a bin on the left.  When you're finished, push the 'create my station' button.</p>
+      </div>
+    </div>
+  <% end %>
+
+
+
+
+
+  <div class="row verticle-center-row">
+    <div class="searchbox center col-lg-12">
+      Search: <input id="searchText">
+    </div>
+  </div>
+
+
   <div class="row">
     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter">
       <div class="heavy rotation song-list-container">
@@ -49,7 +68,6 @@
     </div>
     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-gutter" id="draganddrophandler">
 
-      Search: <input id="searchText">
       <div class="all-songs song-list-container" >
 
         <ul id="all-songs-list" class="song-list">
