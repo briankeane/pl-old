@@ -45,6 +45,7 @@ module PL
 
         stored_songs = s3.buckets['playolasongs'].objects
 
+
         stored_songs.each do |s3_song_file|
           id = (@song_id_counter += 1)
 
@@ -52,24 +53,33 @@ module PL
 
           song = Song.new({ id: id })
 
-          temp_song = Tempfile.new("temp_song")
+          # If metadata has not yet been stored, download the entire file and store it
+          if !s3_song_file.metadata[:pl_duration]
+            temp_song_file = Tempfile.new("temp_song_file")
 
-          temp_song.open()
-          temp_song.write(s3_song_file.read)
+            temp_song_file.open()
+            temp_song_file.write(s3_song_file.read)
 
-          #tag = ID3Tag.read(temp_song)
+            #tag = ID3Tag.read(temp_song)
 
-          mp3 = ''
-          Mp3Info.open(temp_song) do |song_tags|
-            mp3 = song_tags
+            mp3 = ''
+            Mp3Info.open(temp_song_file) do |song_tags|
+              mp3 = song_tags
+            end
+
+            s3_song_file.metadata[:pl_artist] =  mp3.tag.artist
+            s3_song_file.metadata[:pl_title] = mp3.tag.title
+            s3_song_file.metadata[:pl_album] = mp3.tag.album
+            s3_song_file.metadata[:pl_duration] = (mp3.length * 1000).to_i
           end
 
-          song.artist = mp3.tag.artist
-          song.title = mp3.tag.title
-          song.album = mp3.tag.album
-          song.duration = (mp3.tag.length * 1000).to_i
+          song.artist = s3_song_file.metadata[:pl_artist]
+          song.title = s3_song_file.metadata[:pl_title]
+          song.album = s3_song_file.metadata[:pl_album]
+          song.duration = s3_song_file.metadata[:pl_duration]
 
           new_key = (song.id.to_s + '_' + song.artist + '_' + song.title + '.' + s3_song_file_ext)
+
           # change the name to the new key if necessary
           if !stored_songs[new_key].exists?
             new_object = s3.buckets['playolasongs'].objects[new_key]

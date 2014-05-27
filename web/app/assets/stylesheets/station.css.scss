@@ -157,6 +157,8 @@ body {
 audio {
   width: 90%;
   height: 50%;
+  margin-top: 12px;
+  margin-left: 10px;
 }
 
 .rotation {
@@ -211,8 +213,8 @@ audio {
   list-style-type: none;
 }
 
-#record {
-
+#recording li {
+  height: 55px;
 }
 
 #volumeMeter {

@@ -92,7 +92,7 @@
     $('#recording').sortable({
               connectWith: "#songlist",
               remove: function(event, ui) {
-                $('#recording').append('<li class="commentary" opacity="0.3">Your Recording</li>');
+                $('#recording').append('<li class="commentary" opacity="0.3"></li>');
                 $('#startRecording').removeAttr('disabled');
               }
 
