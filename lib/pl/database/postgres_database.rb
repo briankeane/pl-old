@@ -25,60 +25,6 @@ module PL
         ActiveRecord::Base.subclasses.each(&:delete_all)
       end
 
-      def add_stored_songs_to_db
-        AWS.config ({
-                        :access_key_id     => ENV['S3_ACCESS_KEY_ID'],
-                        :secret_access_key =>  ENV['S3_SECRET_KEY']
-                        })
-
-        s3 = AWS::S3.new
-
-        bucket = 'playolasongs'
-
-        stored_songs = s3.buckets['playolasongs'].objects
-
-        stored_songs.each do |s3_song_file|
-
-          ar_song = Song.create({})
-           s3_song_file_ext = s3_song_file.key.split('.').last
-
-
-          if !s3_song_file.metadata[:pl_duration]
-            temp_song_file = Tempfile.new("temp_song_file")
-
-            temp_song_file.open()
-            temp_song_file.write(s3_song_file.read)
-
-            mp3 = ''
-            Mp3Info.open(temp_song_file) do |song_tags|
-              mp3 = song_tags
-            end
-
-            s3_song_file.metadata[:pl_artist] = mp3.tag.artist
-            s3_song_file.metadata[:pl_title] = mp3.tag.title
-            s3_song_file.metadata[:pl_album] = mp3.tag.album
-            s3_song_file.metadata[:pl_duration] = (mp3.length * 1000).to_i
-          end
-
-          ar_song.artist = s3_song_file.metadata[:pl_artist]
-          ar_song.title = s3_song_file.metadata[:pl_title]
-          ar_song.album = s3_song_file.metadata[:pl_album]
-          ar_song.duration = s3_song_file.metadata[:pl_duration]
-
-
-          new_key = (ar_song.id.to_s + '_' + ar_song.artist + '_' + ar_song.title + '.' + s3_song_file_ext)
-          # change the name to the new key if the old key doesn't match it
-          if !stored_songs[new_key].exists?
-            new_object = s3.buckets['playolasongs'].objects[new_key]
-            s3_song_file.copy_to(new_object)
-            s3_song_file.delete
-          end
-
-          ar_song.save
-        end
-      end
-
-
 
       #######################
       # ActiveRecord Models #
@@ -121,9 +67,6 @@ module PL
       class Session < ActiveRecord::Base
         belongs_to :user
       end
-
-
-
 
 
 
@@ -222,7 +165,7 @@ module PL
         PL::Song.new(song.attributes)
       end
 
-############################################################### COME BACK TO THIS
+
       def get_songs_by_title(title)
         ar_songs = Song.find_by title: title
         ar_songs = Song.where('title LIKE ?', title + "%").order('title ASC')

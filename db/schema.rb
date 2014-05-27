@@ -44,15 +44,15 @@ ActiveRecord::Schema.define(version: 20140520142035) do
   end
 
   create_table "spins", force: true do |t|
-    t.string   "station_id"
-    t.string   "current_position"
+    t.integer  "station_id"
+    t.integer  "current_position"
     t.datetime "played_at"
     t.integer  "audio_block_id"
     t.string   "audio_block_type"
   end
 
   create_table "stations", force: true do |t|
-    t.string   "seconds_of_commercial_per_hour"
+    t.integer  "seconds_of_commercial_per_hour"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"

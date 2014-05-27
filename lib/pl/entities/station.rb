@@ -53,7 +53,6 @@ module PL
     end
 
 
-
     ##################################################################
     #     generate_playlist                                          #
     ##################################################################
@@ -205,6 +204,7 @@ module PL
       current_spin = PL.db.get_current_spin(@id)
       current_spin.played_at + (current_spin.audio_block.duration/1000)
     end
+
 
     #################################################################
     #     artificially_update_playlist                              #

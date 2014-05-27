@@ -2,11 +2,8 @@ module PL
   class SignInWithTwitter < UseCase
     def run(attrs)
       user = PL.db.get_user_by_twitter(attrs[:twitter])
-
-
       new_user = false
-      case
-      when user == nil
+      if user == nil
         # create the user if there's no user
         user = PL.db.create_user({ twitter: attrs[:twitter], twitter_uid: attrs[:twitter_uid] })
         new_user = true
