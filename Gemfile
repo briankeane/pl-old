@@ -20,7 +20,7 @@ gem 'active_record_tasks', '~> 1.1.0'
 gem 'pg'
 
 gem 'aws-sdk'
-gem 'dotenv-rails', :groups => [:development, :test]
+gem 'dotenv'
 
 
 gem 'ruby-mp3info', '~> 0.8.4'

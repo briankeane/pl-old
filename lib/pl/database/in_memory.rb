@@ -1,7 +1,6 @@
 require 'securerandom'
 require 'tempfile'
 require 'aws-sdk'
-require 'dotenv'
 require 'mp3info'
 
 module PL

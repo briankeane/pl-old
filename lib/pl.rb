@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load
+
 require 'active_model'
 require 'active_record'
 require 'active_record_tasks'
@@ -32,4 +35,3 @@ require_relative 'pl/entities/station.rb'
 require_relative 'pl/entities/user.rb'
 Dir[File.dirname(__FILE__) + '/pl/use-cases/*.rb'].each {|file| require_relative file }
 
-Dotenv.load
