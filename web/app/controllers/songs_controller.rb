@@ -1,5 +1,3 @@
-require "taglib"
-
 class SongsController < ApplicationController
   def new
   end
@@ -43,10 +41,7 @@ class SongsController < ApplicationController
 
   def check_for_song
     render :json => { exists: false, parameters: params }
-    TagLib::FileRef.open(file.path) do |fileref|
-      tag = fileref.tag
-      @title = fileref
-      # @artist = tag.artist
+    # add id3reader back in
     end
   end
 
