@@ -68,8 +68,6 @@ GEM
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
-    dotenv-rails (0.11.1)
-      dotenv (= 0.11.1)
     erubis (2.7.0)
     execjs (2.0.2)
     fssm (0.2.10)
@@ -197,7 +195,7 @@ DEPENDENCIES
   chronic
   coffee-rails (~> 4.0.0)
   compass-rails
-  dotenv-rails
+  dotenv
   jbuilder (~> 2.0)
   jquery-rails
   omniauth-twitter
