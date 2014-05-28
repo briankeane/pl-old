@@ -11,9 +11,4 @@ development:
   host: localhost
 
 production:
-  adapter: postgresql
-  database: pl_prod
-  encoding: unicode
-  host: localhost
-  username: rails
-  password: <%= ENV['DB_PASS'] %>
+  url: <%= ENV['DATABASE_URL'] %>

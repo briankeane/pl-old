@@ -15,7 +15,7 @@ GEM
       activesupport (= 4.1.0)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active_record_tasks (1.0.4)
+    active_record_tasks (1.1.0)
       activerecord (>= 4.0)
       rainbow
       rake
@@ -189,7 +189,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_record_tasks (~> 1.0.4)
+  active_record_tasks (~> 1.1.0)
   activerecord (~> 4.1.0)
   aws-sdk
   bcrypt

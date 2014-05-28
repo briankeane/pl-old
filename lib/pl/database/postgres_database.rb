@@ -15,10 +15,10 @@ module PL
 
     class PostgresDatabase
       def initialize(env)
-          #TO DO: edit this to work
-        # config_path = File.join(File.dirname(__FILE__), '../../../db/config.yml')
+        config_path = File.join(File.dirname(__FILE__), '../../../db/config.yml')
+        db_config = YAML.load ERB.new(File.read 'db/config.yml').result
         # puts "USING: #{env} - #{YAML.load_file(config_path)[env]}"
-        ActiveRecord::Base.establish_connection(YAML.load_file('db/config.yml')[env])
+        ActiveRecord::Base.establish_connection(db_config[env])
       end
 
       def clear_everything
