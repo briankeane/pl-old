@@ -16,7 +16,7 @@ gem 'whenever', :require => false
 
 
 gem 'activerecord', '~> 4.1.0'
-gem 'active_record_tasks', '~> 1.0.4'
+gem 'active_record_tasks', '~> 1.1.0'
 gem 'pg'
 
 gem 'aws-sdk'

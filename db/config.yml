@@ -15,3 +15,5 @@ production:
   database: pl_prod
   encoding: unicode
   host: localhost
+  username: rails
+  password: <%= ENV['DB_PASS'] %>

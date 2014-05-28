@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    active_record_tasks (1.0.4)
+    active_record_tasks (1.1.0)
       activerecord (>= 4.0)
       rainbow
       rake
@@ -78,7 +78,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_record_tasks (~> 1.0.4)
+  active_record_tasks (~> 1.1.0)
   activerecord (~> 4.1.0)
   aws-sdk
   bcrypt
