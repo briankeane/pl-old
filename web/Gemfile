@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 # include Gemfile
 app_gemfile_path = File.expand_path('../../Gemfile', __FILE__)
