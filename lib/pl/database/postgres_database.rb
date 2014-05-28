@@ -1,5 +1,4 @@
 require 'securerandom'
-require 'pry-debugger'
 require 'active_record'
 require 'yaml'
 require 'bcrypt'

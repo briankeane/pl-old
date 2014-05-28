@@ -1,4 +1,3 @@
-require 'pry-debugger'
 require 'chronic'
 
 module PL

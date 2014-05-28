@@ -1,7 +1,6 @@
 require 'active_model'
 require 'active_record'
 require 'active_record_tasks'
-require 'pry-debugger'
 require 'yaml'
 
 module PL

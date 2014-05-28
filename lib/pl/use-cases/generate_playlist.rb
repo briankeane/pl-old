@@ -1,5 +1,3 @@
-require 'pry-debugger'
-
 module PL
   class GeneratePlaylist < UseCase
     def run(station_id)

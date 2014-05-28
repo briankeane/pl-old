@@ -23,7 +23,6 @@ task :load_app do
   # [code to require and set up your application would go here]
   require_relative './lib/pl.rb'
   require 'securerandom'
-  require 'pry-debugger'
   require 'active_record'
   require 'mp3info'
   require 'aws-sdk'

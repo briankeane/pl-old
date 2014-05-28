@@ -1,5 +1,4 @@
 require 'securerandom'
-require 'pry-debugger'
 require 'tempfile'
 require 'aws-sdk'
 require 'dotenv'

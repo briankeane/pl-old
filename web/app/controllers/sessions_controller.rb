@@ -1,5 +1,3 @@
-require 'pry-debugger'
-
 class SessionsController < ApplicationController
   def new
   end

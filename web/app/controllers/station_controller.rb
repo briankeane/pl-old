@@ -1,5 +1,3 @@
-require 'pry-debugger'
-
 class StationController < ApplicationController
 
   def dj_booth

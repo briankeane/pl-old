@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'timecop'
-require 'pry-debugger'
 
 describe 'a station' do
   it "is created with an id, user_id " do
