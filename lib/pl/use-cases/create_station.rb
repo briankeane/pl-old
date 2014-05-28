@@ -7,6 +7,7 @@ module PL
         return failure(:user_not_found)
       else
         station = PL.db.create_station(attrs)
+        station.generate_playlist
         return success :station => station
       end
     end

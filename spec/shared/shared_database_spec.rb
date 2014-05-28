@@ -159,15 +159,21 @@ shared_examples 'a badass database' do
   describe 'a station' do
     before do
       @user = db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
-      @station = db.create_station({ user_id: @user.id })
       @song = db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,
                                    audio_id: 2 })
+      @station = db.create_station({ user_id: @user.id, heavy: [@song], medium: [@song], light: [@song] })
 
     end
 
     it "creates a station" do
       expect(@station.user_id).to eq(@user.id)
       expect(@station.id).to_not be_nil
+    end
+
+    it "updates the song rotation list" do
+      expect(db.get_station(@station.id).heavy[0].id).to eq(@song.id)
+      expect(db.get_station(@station.id).medium[0].id).to eq(@song.id)
+      expect(db.get_station(@station.id).light[0].id).to eq(@song.id)
     end
 
     it "gets a station" do

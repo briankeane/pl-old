@@ -65,7 +65,6 @@
               },
               error : function(error) {
                 console.log(error);
-                debugger;
               }
             }).then(function(obj)
               {
@@ -231,7 +230,7 @@
         moveAnimate(allSongsList.eq(Math.floor((Math.random()) * allSongsList.length)), $('#heavy'));
       }
 
-      while ($('#medium li').length < 13) {
+      while ($('#medium li').length < 30) {
         var allSongsList = $('#all-songs-list li');
         moveAnimate(allSongsList.eq(Math.floor((Math.random()) * allSongsList.length)), $('#medium'));
       }
@@ -240,15 +239,57 @@
         var allSongsList = $('#all-songs-list li');
         moveAnimate(allSongsList.eq(Math.floor((Math.random()) * allSongsList.length)), $('#light'));
       }
-
-
-
-
-
     });
 
+    $('#create').on('click', function() {
+      if ($('#heavy li').length < 13) {
+        alert('Please add ' + ((13 - $('#heavy li').length)).toString() + ' songs to the heavy bin.');
+      } else if ($('#medium li').length < 13) {
+        alert('Please add ' + ((29 - $('#medium li').length)).toString() + ' songs to the medium bin.');
+      } else if ($('#light li').length < 5) {
+        alert('Please add ' + ((13 - $('#light li').length)).toString() + ' songs to the light bin.');
+      } else {
+
+        var heavyElements = $('#heavy li')
+        var mediumElements = $('#heavy li')
+        var lightElements = $('#heavy li')
+        var heavyIds = [];
+        var mediumIds = [];
+        var lightIds = [];
+
+        for (var i in heavyElements) {
+          heavyIds.push(heavyElements.eq(i).attr('data-id'));
+        }
+        for (var i in mediumElements) {
+          mediumIds.push(mediumElements.eq(i).attr('data-id'));
+        }
+        for (var i in lightElements) {
+          lightIds.push(lightElements.eq(i).attr('data-id'));
+        }
+
+        createStationInfo = {
+          heavy: heavyIds,
+          medium: mediumIds,
+          light: lightIds
+        };
 
 
+
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: '/station/create',
+          contentType: 'application/json',
+          data: JSON.stringify(createStationInfo),
+          success: function(obj) {
+            window.location = '/dj_booth';
+          },
+          error : function(error) {
+            console.log(error);
+          }
+        });
+      }
+    });
   }
 
 })();
