@@ -34,7 +34,6 @@ class StationController < ApplicationController
     (@heavy + @medium + @light).each do |song_a|
       @songs.delete_if { |song_b| song_a.id == song_b.id }
     end
-
   end
 
 
@@ -44,5 +43,21 @@ class StationController < ApplicationController
                         new_position: params[:newPosition] })
     render :json => {request: params, usecaseResponse: result }
   end
+
+  def new
+    @songs = PL.db.get_all_songs
+    @heavy = []
+    @medium = []
+    @light = []
+  end
+
+  def create
+    result = PL::CreateStation.run({ user_id: current_user.id,
+                                      heavy: params[:heavy],
+                                      medium: params[:medium],
+                                      light: params[:light] })
+
+  end
+
 end
 

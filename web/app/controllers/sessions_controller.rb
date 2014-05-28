@@ -19,8 +19,12 @@ class SessionsController < ApplicationController
     auth = request.env['omniauth.auth']
     result = PL::SignInWithTwitter.run({ twitter: auth["info"]["nickname"], twitter_uid: auth['uid'] })
     if result.success?
-      session[:pl_session_id] = result.session_id
-      return redirect_to dj_booth_path
+      if result.new_user
+        redirect_to station_new_path
+      else
+        session[:pl_session_id] = result.session_id
+        return redirect_to dj_booth_path
+      end
     else
       redirect_to sign_in_path
     end

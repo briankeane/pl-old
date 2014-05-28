@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140520142035) do
+ActiveRecord::Schema.define(version: 20140527204250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140520142035) do
     t.integer "sing_start"
     t.integer "sing_end"
     t.string  "type"
+    t.string  "key"
   end
 
   create_table "commercial_blocks", force: true do |t|

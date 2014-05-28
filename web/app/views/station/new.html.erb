@@ -4,19 +4,16 @@
 <% end %>
 
 
-
 <div class="container-fluid">
 
-  <% if @station_set_up %>
     <div class="row">
       <div class="jumbotron">
         <h2> Set Up Your Station </h2>
         <p class="lead"> Please choose the songs that will be played on your station.  Heavy songs will be played frequently, and light songs will be played occasionally.  Just drag the songs you want into a bin on the left.  When you're finished, push the 'create my station' button.</p>
         <button id='create' class='btn'>Create Station</button>
+        <button class='btn' id='random'>Generate Randomly</button>
       </div>
     </div>
-  <% end %>
-
 
   <div class="row verticle-center-row">
     <div class="searchbox center col-lg-12">
@@ -91,9 +88,4 @@
       </form>
     </div>
   </div>
-  <% if @station_set_up %>
-    <div id="row">
-      <button class='btn' id='random'>Generate Randomly</button>
-    </div>
-  <% end %>
-</div>
+

@@ -129,6 +129,9 @@ shared_examples 'a badass database' do
       expect(all_songs[4].title).to eq("Bar Nights")
     end
 
+    xit "returns the audio file for a song" do
+    end
+
 
 
   end

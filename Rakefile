@@ -79,9 +79,10 @@ namespace :db do
       ar_song.album = s3_song_file.metadata[:pl_album]
       ar_song.duration = s3_song_file.metadata[:pl_duration]
 
-      #rename the s3 file if necessary
+      #rename the s3 file if necessary, and store the key in the database
       s3_song_file_ext = s3_song_file.key.split('.').last
       new_key = (('0' * (5 - ar_song.id.to_s.size)) +  ar_song.id.to_s + '_' + ar_song.artist + '_' + ar_song.title + '.' + s3_song_file_ext)
+      ar_song.key = s3_song_file.key
 
       if !stored_songs[new_key].exists?
         new_object = s3.buckets['playolasongs'].objects[new_key]

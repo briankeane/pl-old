@@ -29,21 +29,22 @@ Rails.application.routes.draw do
   get '/auth/twitter/callback', to: 'sessions#create_with_twitter'
 
   root :to => 'welcome_pages#home'
-  match '/about',         to:   'welcome_pages#about',        via: 'get'
+  match '/about',                       to:   'welcome_pages#about',          via: 'get'
 
-  match '/sign_in',       to:   'sessions#new',               via: 'get'
-  match '/sign_in',       to:   'sessions#create',            via: 'post'
-  match '/sign_out',      to:   'sessions#destroy',           via: 'get'
+  match '/sign_in',                     to:   'sessions#new',                 via: 'get'
+  match '/sign_in',                     to:   'sessions#create',              via: 'post'
+  match '/sign_out',                    to:   'sessions#destroy',             via: 'get'
 
-  match '/sign_up',       to:   'users#new',                  via: 'get'
-  match '/sign_up',       to:   'users#create',               via: 'post'
-  match 'dj_booth',         to:   'station#dj_booth',          via: 'get'
-  match 'playlist_editor',  to: 'station#playlist_editor',      via: 'get'
-  match 'station/update_order' => 'station#update_order',       via: 'post'
-  match 'songs/create',   to:   'songs#create',                 via: 'post'
-  match 'songs/check_for_song', to: 'songs#check_for_song',      via: 'get'
-  match 'station/add_to_rotation', to: 'station#add_to_rotation',   via: 'post'
-  match 'station/delete_from_rotation', to: 'station#delete_from_rotation', via: 'delete'
+  match '/sign_up',                     to:   'users#new',                    via: 'get'
+  match '/sign_up',                     to:   'users#create',                 via: 'post'
+  match 'dj_booth',                     to:   'station#dj_booth',             via: 'get'
+  match 'playlist_editor',              to: 'station#playlist_editor',        via: 'get'
+  match 'station/update_order'          => 'station#update_order',            via: 'post'
+  match 'songs/create',                 to:   'songs#create',                 via: 'post'
+  match 'songs/check_for_song',         to: 'songs#check_for_song',           via: 'get'
+  match 'station/add_to_rotation',      to: 'station#add_to_rotation',        via: 'post'
+  match 'station/delete_from_rotation', to: 'station#delete_from_rotation',   via: 'delete'
+  match 'station/new',                  to: 'station#new',                    via: 'get'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

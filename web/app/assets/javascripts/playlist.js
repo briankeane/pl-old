@@ -1,6 +1,6 @@
 (function(){
   // (controller, action)
-  if ($('body.station.playlist_editor').length) {
+  if ($('body.station.playlist_editor').length || $('body.station.new').length) {
 
     /**
      * Copyright (c) 2010 António Afonso, antonio.afonso gmail, http://www.aadsm.net/
@@ -22,6 +22,23 @@
         };
     })(this);
 
+    // this function taken from http://stackoverflow.com/questions/12098120/jquery-ui-sortable-move-item-automatically
+    function moveAnimate(element, newParent){
+      var oldOffset = element.offset();
+      element.appendTo(newParent);
+      var newOffset = element.offset();
+
+      var temp = element.clone().appendTo('body');
+      temp    .css('position', 'absolute')
+              .css('left', oldOffset.left)
+              .css('top', oldOffset.top)
+              .css('zIndex', 1000);
+      element.hide();
+      temp.animate( {'top': newOffset.top, 'left':newOffset.left}, 'slow', function(){
+         element.show();
+         temp.remove();
+      });
+    }
 
 
     var louisQuery = function(e){return document.getElementById(e);};
@@ -109,19 +126,21 @@
                                 }
       addToRotationObject._method = 'POST'
 
-      $.ajax({
-              type: "POST",
-              dataType: "json",
-              url: 'station/add_to_rotation',
-              contentType: 'application/json',
-              data: JSON.stringify(addToRotationObject),
-              success: function(obj) {
-                return obj;
-              },
-              error : function(error) {
-                console.log(error);
-              }
-            });
+      if ($('body.station.playlist_editor').length) {
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: 'station/add_to_rotation',
+          contentType: 'application/json',
+          data: JSON.stringify(addToRotationObject),
+          success: function(obj) {
+            return obj;
+          },
+          error : function(error) {
+            console.log(error);
+          }
+        });
+      }
     }
 
     function deleteFromRotation(event, ui) {
@@ -132,19 +151,22 @@
                                 }
       deleteFromRotationObject._method = 'POST'
 
-      $.ajax({
-              type: "DELETE",
-              dataType: "json",
-              url: 'station/delete_from_rotation',
-              contentType: 'application/json',
-              data: JSON.stringify(deleteFromRotationObject),
-              success: function(obj) {
-                return obj;
-              },
-              error : function(error) {
-                console.log(error);
-              }
-            });
+      // if it's not the first station visit
+      if ($('body.station.playlist_editor').length) {
+        $.ajax({
+          type: "DELETE",
+          dataType: "json",
+          url: 'station/delete_from_rotation',
+          contentType: 'application/json',
+          data: JSON.stringify(deleteFromRotationObject),
+          success: function(obj) {
+            return obj;
+          },
+          error : function(error) {
+            console.log(error);
+          }
+        });
+      }
     }
 
 
@@ -200,6 +222,28 @@
 
         }
       }
+
+    });
+
+    $('#random').on('click', function() {
+      while ($('#heavy li').length < 13) {
+        var allSongsList = $('#all-songs-list li');
+        moveAnimate(allSongsList.eq(Math.floor((Math.random()) * allSongsList.length)), $('#heavy'));
+      }
+
+      while ($('#medium li').length < 13) {
+        var allSongsList = $('#all-songs-list li');
+        moveAnimate(allSongsList.eq(Math.floor((Math.random()) * allSongsList.length)), $('#medium'));
+      }
+
+      while ($('#light li').length < 13) {
+        var allSongsList = $('#all-songs-list li');
+        moveAnimate(allSongsList.eq(Math.floor((Math.random()) * allSongsList.length)), $('#light'));
+      }
+
+
+
+
 
     });
 

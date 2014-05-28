@@ -210,6 +210,24 @@ module PL
         songs
       end
 
+      def get_song_audio(id)
+        AWS.config ({
+                    :access_key_id     => ENV['S3_ACCESS_KEY_ID'],
+                    :secret_access_key =>  ENV['S3_SECRET_KEY']
+                    })
+
+        s3 = AWS::S3.new
+
+        bucket = 'playolasongs'
+        temp_song_file = Tempfile.new("temp_song_file")
+
+        s3_song_file = s3.buckets[bucket].objects[self.get_song(id).key]
+        temp_song_file.open()
+        temp_song_file.write(s3_song_file.read)
+        temp_song_file
+      end
+
+
       ##############
       #   Station  #
       ##############
