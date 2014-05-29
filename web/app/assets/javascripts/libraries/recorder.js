@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 if ($('body.station.dj_booth').length) {
   (function(window){
 
-    var WORKER_PATH = 'assets/libraries/recorderWorker.js';
+    var WORKER_PATH = 'https://s3.amazonaws.com/playolaradio/recorderWorker.js';
 
     var Recorder = function(source, cfg){
       var config = cfg || {};
