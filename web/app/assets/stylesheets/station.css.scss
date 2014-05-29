@@ -188,6 +188,7 @@ audio {
   width: 100%;
   border-radius: 10px;
   list-style-type:none;
+  z-index: 1;
 }
 
 #all-songs-list li {
@@ -237,3 +238,38 @@ audio {
   list-style-type:none;
 }
 
+#heavy:before {
+  content: 'Heavy Rotation';
+  font-size: 30px;
+  text-align: center;
+  left: 50%;
+  position: absolute;
+  z-index: -100;
+  margin-left: -100px;
+  line-height: 140px;
+  vertical-align: middle;
+}
+
+#medium:before {
+  content: 'Medium Rotation';
+  font-size: 30px;
+  text-align: center;
+  left: 50%;
+  position: absolute;
+  z-index: -100;
+  margin-left: -100px;
+  line-height: 140px;
+  vertical-align: middle;
+}
+
+#light:before {
+  content: 'Light Rotation';
+  font-size: 30px;
+  text-align: center;
+  left: 50%;
+  position: absolute;
+  z-index: -100;
+  margin-left: -100px;
+  line-height: 140px;
+  vertical-align: middle;
+}
