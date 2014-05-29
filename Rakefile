@@ -89,4 +89,8 @@ namespace :db do
       ar_song.save
     end
   end
+
+  task :clear_users do
+  end
+
 end
