@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 if ($('body.station.dj_booth').length) {
   (function(window){
 
-    var WORKER_PATH = 'http://raw.githubusercontent.com/nusofthq/Recordmp3js/master/js/recorderWorker.js';
+    var WORKER_PATH = 'assets/libraries/recorderWorker.js';
 
     var Recorder = function(source, cfg){
       var config = cfg || {};
