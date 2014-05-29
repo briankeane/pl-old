@@ -74,7 +74,7 @@
               data: JSON.stringify(movePositionData)
           }).done(function( msg )
               {
-                  alert( "Data Saved: " + msg );
+                  console.log( "Data Saved: " + msg );
               });
 
 
