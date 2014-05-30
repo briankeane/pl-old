@@ -1,6 +1,6 @@
 require './lib/pl.rb'
 require './lib/seed_db.rb'
-require_relative 'shared/shared_database_spec.rb'
+require_relative 'shared/shared_database.rb'
 
 
 RSpec.configure do |config|
