@@ -16,7 +16,6 @@ class SessionsController < ApplicationController
   def create_with_twitter
     auth = request.env['omniauth.auth']
     result = PL::SignInWithTwitter.run({ twitter: auth["info"]["nickname"], twitter_uid: auth['uid'] })
-    binding.pry
     if result.success?
       if result.new_user
         session[:pl_session_id] = result.session_id

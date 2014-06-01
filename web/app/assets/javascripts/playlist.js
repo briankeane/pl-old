@@ -78,10 +78,12 @@
 
             callback(tags);
             console.log(tags);
-            console.log(tags.artist.toString());
-            console.log(tags.title.toString());
+            if (obj["exists"] === true) {
+              $('#songMessage').value('That song is already in the database');
+            } else {
+              $('#songUpload').removeAttr('disabled');
+            }
 
-          // if( callback ) {  };
         },
         {tags: ["artist", "title", "album", "year", "comment", "track", "genre", "lyrics", "picture"],
          dataReader: reader});
@@ -101,8 +103,7 @@
         var url = file.urn ||file.name;
         loadUrl(url, function(tags) {
 
-          console.log(tags["artist"]["[[PrimitiveValue]]"]);
-          alert('hi');
+          alert(tags["artist"].toString());
 
 
 

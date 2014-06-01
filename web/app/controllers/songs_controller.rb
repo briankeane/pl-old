@@ -40,8 +40,15 @@ class SongsController < ApplicationController
   end
 
   def check_for_song
+
+
     render :json => { exists: false, parameters: params }
     # add id3reader back in
+
+
+
+
+
   end
 
 end
