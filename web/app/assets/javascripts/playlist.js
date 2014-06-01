@@ -61,28 +61,19 @@
               contentType: 'application/json',
               data: (formattedTags),
               success: function(obj) {
-                return obj;
-              },
-              error : function(error) {
-                console.log(error);
-              }
-            }).then(function(obj)
-              {
                 if (obj.exists == false) {
                   $('#songUpload').removeAttr('disabled');
                   $('#songMessage').text('');
                 } else {
                   $('#songMessage').text('That song is already in the database');
+                  $('#songUpload').attr('disabled', 'true')
                 }
-              });
-
-            callback(tags);
-            console.log(tags);
-            if (obj["exists"] === true) {
-              $('#songMessage').value('That song is already in the database');
-            } else {
-              $('#songUpload').removeAttr('disabled');
-            }
+                return obj;
+              },
+              error : function(error) {
+                console.log(error);
+              }
+            });
 
         },
         {tags: ["artist", "title", "album", "year", "comment", "track", "genre", "lyrics", "picture"],
