@@ -1,3 +1,7 @@
+<% content_for :javascript do %>
+  <%= javascript_include_tag "playlist-editor" %>
+<% end %>
+
 <%= form_tag 'songs/create', :method => "post", :hidden => true, :multipart => true do %>
     <%= file_field_tag "mp3file" %>
     <%= submit_tag "Upload" %>

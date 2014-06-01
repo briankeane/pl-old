@@ -10,8 +10,9 @@
   </head>
   <body class="<%= params[:controller] %> <%= params[:action] %>">
     <%= render 'shared/header' %>
-      <%= yield %>
-    <%= yield :javascript %>
+    <%= yield %>
+    <%= yield :javascript_data %>
     <%= javascript_include_tag "application" %>
+    <%= yield :javascript %>
   </body>
 </html>
