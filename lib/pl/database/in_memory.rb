@@ -170,7 +170,6 @@ module PL
       end
 
       def song_exists?(attrs)  #title, artist, album
-        binding.pry
         songs = @songs.values.select { |song| song.title == attrs[:title] &&
                                               song.album == attrs[:album] &&
                                               song.artist == attrs[:artist] }

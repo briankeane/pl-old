@@ -31,7 +31,7 @@ namespace :db do
     # [code to migrate database would go here]
   end
 
-  task :load_songs => [:migrate, :load_app] do
+  task :load_songs => [:load_app] do
     PL.db.clear_everything
 
     puts "Seeding database"
@@ -46,8 +46,12 @@ namespace :db do
     bucket = 'playolasongs'
     stored_songs = s3.buckets['playolasongs'].objects
 
-    stored_songs.each do |s3_song_file|
+    # store count so S3 isn't queried every time
+    count = stored_songs.count
 
+
+    stored_songs.each_with_index do |s3_song_file, i|
+      print "\rsong #{i + 1} of #{count}"
       #create a song object
       ar_song = PL::Database::PostgresDatabase::Song.create({})
 

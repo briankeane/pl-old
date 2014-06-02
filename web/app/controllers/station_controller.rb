@@ -1,6 +1,10 @@
 class StationController < ApplicationController
 
   def dj_booth
+    if !PL.db.get_station_by_uid(current_user.id)
+      redirect_to new_station_path
+    end
+
     current_station.artificially_update_playlist
     @playlist = current_station.get_playlist_by_air_time(Time.now)
     result = PL::GetCurrentSpin.run(current_station.id)
@@ -25,6 +29,9 @@ class StationController < ApplicationController
 
 
   def playlist_editor
+    if !PL.db.get_station_by_uid(current_user.id)
+      redirect_to new_station_path
+    end
     @songs = PL.db.get_all_songs
     @heavy = current_station.heavy
     @medium = current_station.medium
