@@ -32,6 +32,8 @@ namespace :db do
   end
 
   task :load_songs => [:migrate, :load_app] do
+    PL.db.clear_everything
+
     puts "Seeding database"
     # configure s3
     AWS.config ({
