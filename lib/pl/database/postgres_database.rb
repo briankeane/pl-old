@@ -4,6 +4,8 @@ require 'yaml'
 require 'bcrypt'
 require 'mp3info'
 require 'aws-sdk'
+require 'pry-debugger'
+
 
 module PL
   module Database
@@ -151,7 +153,6 @@ module PL
       end
 
       def song_exists?(attrs)  #title, artist, album
-        binding.pry
         if Song.where(["title = ? and artist = ? and album = ?", attrs[:title], attrs[:artist], attrs[:album]]).size > 0
           return true
         else

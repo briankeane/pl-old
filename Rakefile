@@ -71,24 +71,31 @@ namespace :db do
         s3_song_file.metadata[:pl_duration] = (mp3.length * 1000).to_i
       end
 
+
       # finish creating the song object
       ar_song.artist = s3_song_file.metadata[:pl_artist]
       ar_song.title = s3_song_file.metadata[:pl_title]
       ar_song.album = s3_song_file.metadata[:pl_album]
       ar_song.duration = s3_song_file.metadata[:pl_duration]
 
-      #rename the s3 file if necessary, and store the key in the database
-      s3_song_file_ext = s3_song_file.key.split('.').last
-      new_key = (('0' * (5 - ar_song.id.to_s.size)) +  ar_song.id.to_s + '_' + ar_song.artist + '_' + ar_song.title + '.' + s3_song_file_ext)
-      ar_song.key = s3_song_file.key
-
-      if !stored_songs[new_key].exists?
-        new_object = s3.buckets['playolasongs'].objects[new_key]
-        s3_song_file.copy_to(new_object)
+      #IF the song already exists in the db, delete it from s3
+      if PL.db.song_exists?({ artist: ar_song.artist, title: ar_song.title, album: ar_song.album })
         s3_song_file.delete
-      end
 
-      ar_song.save
+      else
+        #rename the s3 file if necessary, and store the key in the database
+        s3_song_file_ext = s3_song_file.key.split('.').last
+        new_key = (('0' * (5 - ar_song.id.to_s.size)) +  ar_song.id.to_s + '_' + ar_song.artist + '_' + ar_song.title + '.' + s3_song_file_ext)
+        ar_song.key = s3_song_file.key
+
+        if !stored_songs[new_key].exists?
+          new_object = s3.buckets['playolasongs'].objects[new_key]
+          s3_song_file.copy_to(new_object)
+          s3_song_file.delete
+        end
+
+        ar_song.save
+      end
     end
   end
 
