@@ -41,7 +41,6 @@ class SongsController < ApplicationController
 
   def check_for_song
     result = PL.db.song_exists?(artist: params[:artist], title: params[:title], album: params[:album])
-
     render :json => { exists: result, parameters: params }
   end
 

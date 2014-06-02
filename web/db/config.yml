@@ -1,11 +1,14 @@
+test:
+  adapter: postgresql
+  database: pl_test
+  encoding: unicode
+  host: localhost
+
 development:
   adapter: postgresql
-  database: ar-ex_dev
+  database: pl_dev
   encoding: unicode
   host: localhost
 
 production:
-  adapter: postgresql
-  database: ar-ex_prod
-  encoding: unicode
-  host: localhost
+  url: <%= ENV['DATABASE_URL'] %>
