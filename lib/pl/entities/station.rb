@@ -1,5 +1,4 @@
 require 'chronic'
-require 'pry-debugger'
 
 module PL
   class Station < Entity
@@ -103,10 +102,6 @@ module PL
 
         time_tracker += (song.duration/1000)
 
-        if (time_tracker > next_thursday_midnight - 1000) && (pried == false)
-          binding.pry
-          pried = true
-        end
       end  # endwhile
 
       #if it's the first playlist, start the station

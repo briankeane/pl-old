@@ -86,6 +86,8 @@
             }
             currentPositionCounter++;
           });
+
+          // update variables
         }
       });
 
@@ -120,6 +122,15 @@
       }
       $('.progress-bar').attr("aria-valuenow", msElapsed);
       $('.progress-bar').css("width", (((+new Date() - +currentSpin["played_at"])/currentSpin["audio_block"]["duration"]) * 100) + "%");
+    }
+
+    var updatePlaylistTimes = function() {
+      var playList = $('#songlist li');
+      var playListTimes = $('#songlist li .estimated_air_time');
+
+      for (i in playList) {
+
+      }
     }
 
 
