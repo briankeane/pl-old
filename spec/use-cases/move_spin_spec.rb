@@ -29,8 +29,8 @@ describe "MoveSpin" do
     @spin4 = PL.db.schedule_spin({ station_id: @station.id, audio_block: @song4, current_position: 8 })
     @spin5 = PL.db.schedule_spin({ station_id: @station.id, audio_block: @song5, current_position: 9 })
     @spin6 = PL.db.schedule_spin({ station_id: @station.id, audio_block: @song6, current_position: 10 })
-    @spin1.played_at = Time.local(2014, 5, 9, 9, 30)
-    @spin2.played_at = Time.local(2014, 5, 9, 9, 33)
+    PL.db.record_spin_time({ spin_id: @spin1.id, played_at: Time.local(2014, 5, 9, 9, 30)})
+    PL.db.record_spin_time({ spin_id: @spin2.id, played_at: Time.local(2014, 5, 9, 9, 33)})
   end
 
   it "calls bullshit if not logged in" do
