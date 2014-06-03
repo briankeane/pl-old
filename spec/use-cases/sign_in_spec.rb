@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe 'SignIn' do
+
+  before(:all) do
+    PL.db.clear_everything
+  end
+
+
   it "calls bullshit if the twitter doesn't exist" do
     result = PL::SignIn.run({ twitter: "123", password: "123" })
     expect(result.success?).to eq(false)

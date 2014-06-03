@@ -2,7 +2,8 @@ require 'bcrypt'
 
 module PL
   class User < Entity
-    attr_accessor :twitter, :email, :id, :password_digest, :twitter_uid
+    attr_accessor :twitter, :email, :id, :twitter_uid
+    attr_reader :password_digest
 
     def initialize(attrs)
       if attrs[:password]
@@ -14,6 +15,10 @@ module PL
 
     def password_correct?(password)
       @password_digest == password
+    end
+
+    def password_digest=(password_digest)
+      @password_digest = BCrypt::Password.new(password_digest)
     end
   end
 end

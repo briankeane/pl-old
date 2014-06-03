@@ -4,7 +4,7 @@ require 'pry-debugger'
 
 describe "MoveSpin" do
 
-  before(:each) do
+  before(:all) do
     @user = PL.db.create_user ({ twitter: "bob", password: "password", email: "bob@bob.com" })
     @station = PL.db.create_station({ user_id: @user.id })
     @song1 = PL.db.create_song({ title: "Bar Lights", artist: "Brian Keane", duration: 226000, sing_start: 5000, sing_end: 208000,

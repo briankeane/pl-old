@@ -79,7 +79,8 @@ module PL
         password_digest = BCrypt::Password.create(attrs.delete(:password))
         attrs[:password_digest] = password_digest
         ar_user = User.create(attrs)
-        PL::User.new(ar_user.attributes)
+        user = PL::User.new(ar_user.attributes)
+        user
       end
 
       def get_user(id)
@@ -276,6 +277,10 @@ module PL
       end
 
       def get_station(id)
+        if !Station.exists?(id)
+          return nil
+        end
+
         ar_station = Station.find(id)
         station = PL::Station.new({ id: ar_station.id,
                       user_id: ar_station.user_id,
