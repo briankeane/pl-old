@@ -3,9 +3,11 @@ require 'Timecop'
 
 describe "GetPlaylistByAirTime" do
 
-  before(:each) do
-    PL::SeedDB.run
-    @station = PL::SeedDB.station1
+  before(:all) do
+    Timecop.freeze(Time.local(2014, 5, 9, 10))
+    @user = PL.db.create_user({ twitter: "Bob", password: "password" })
+    @song = PL.db.create_song({ title: "Bar Lights", artist: "Brian Keane", album: "Coming Home", duration: 226000 })
+    @station = PL.db.create_station({ user_id: @user.id, heavy: [@song], medium: [@song], light: [@song] })
     @station.generate_playlist
   end
 
@@ -33,6 +35,9 @@ describe "GetPlaylistByAirTime" do
                                             pl_session_id: session_id })
     expect(result.success?).to eq(true)
     expect(result.playlist.size).to eq(34)
+  end
+
+  after(:all) do
     Timecop.return
   end
 end

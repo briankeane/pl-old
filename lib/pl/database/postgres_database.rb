@@ -311,6 +311,11 @@ module PL
 
       def get_station_by_uid(user_id)
         station = Station.find_by user_id: user_id
+
+        if !station
+          return nil
+        end
+
         self.get_station(station.id)
       end
 
