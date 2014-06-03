@@ -1,6 +1,10 @@
 require 'spec_helper'
 
-describe 'SignIn' do
+describe 'SignInWithTwitter' do
+  before(:all) do
+    PL.db.clear_everything
+  end
+
   it "creates a user if they don't exist yet" do
     result = PL::SignInWithTwitter.run({ twitter: "123", twitter_uid: 456 })
     expect(result.success?).to eq(true)
