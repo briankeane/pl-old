@@ -245,6 +245,7 @@ module PL
 
         ar_station = Station.create(attrs)
 
+
         if heavy
           heavy.each do |song|
             rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
