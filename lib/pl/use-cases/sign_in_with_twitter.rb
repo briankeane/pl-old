@@ -1,7 +1,6 @@
 module PL
   class SignInWithTwitter < UseCase
     def run(attrs)
-      binding.pry
       user = PL.db.get_user_by_twitter(attrs[:twitter])
       new_user = false
       if user == nil

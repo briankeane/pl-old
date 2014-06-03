@@ -25,7 +25,7 @@ describe 'a station' do
 
     it "estimates the end of the current playlist" do
       expect(PL.db.get_current_playlist(@station.id).size).to eq(4674)
-      expect(@station.playlist_estimated_end_time.local.to_s).to match("2014-05-23 00:05:10")
+      expect(@station.playlist_estimated_end_time.to_s).to match("2014-05-23 05:05:10 UTC")
     end
 
     it "extends the playlist by a week" do
@@ -42,7 +42,7 @@ describe 'a station' do
 
     it "gets the new current playlist_estimated_end_time" do
       #@station.generate_playlist
-      expect(@station.playlist_estimated_end_time.local.to_s).to match("2014-05-23 00:05:10")
+      expect(@station.playlist_estimated_end_time.to_s).to match("2014-05-30 05:03:18 UTC")
     end
 
 
@@ -55,7 +55,7 @@ describe 'a station' do
       end
 
       it "gets the next_song_start_time" do
-        expect(@station.next_song_start_time.local.to_s).to match('2014-05-09 10:03:46')
+        expect(@station.next_song_start_time.to_s).to match('2014-05-09 15:03:46 UTC')
       end
     end
 
