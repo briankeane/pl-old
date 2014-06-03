@@ -1,5 +1,6 @@
 require './lib/pl.rb'
 require './lib/seed_db.rb'
+require 'rspec'
 require_relative 'shared/shared_database.rb'
 
 
@@ -12,7 +13,7 @@ end
 
 RSpec.configure do |config|
  # Use color in STDOUT
-   config.color_enabled = true
+   #config.color_enabled = true
 
  # Use color not only in STDOUT but also in pagers and files
    config.tty = true

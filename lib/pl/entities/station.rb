@@ -1,4 +1,5 @@
 require 'chronic'
+require 'pry-debugger'
 
 module PL
   class Station < Entity
@@ -86,7 +87,15 @@ module PL
 
       sample_array = self.create_sample_array
 
+        pried = false
       while time_tracker < next_thursday_midnight
+        #if it's time for a commercial, move time-tracker over it's block
+
+        if (time_tracker.to_f/1800.0).floor > commercial_block_counter
+          commercial_block_counter += 1
+          time_tracker += (@seconds_of_commercial_per_hour/2)
+        end
+
         song = sample_array.sample
         spin = PL.db.schedule_spin({ station_id: @id,
                                               audio_block: song,
@@ -94,10 +103,9 @@ module PL
 
         time_tracker += (song.duration/1000)
 
-        #if it's time for a commercial, move time-tracker over it's block
-        if (time_tracker.to_f/1800.0).floor > commercial_block_counter
-          commercial_block_counter += 1
-          time_tracker += (@seconds_of_commercial_per_hour/2)
+        if (time_tracker > next_thursday_midnight - 1000) && (pried == false)
+          binding.pry
+          pried = true
         end
       end  # endwhile
 
@@ -138,15 +146,6 @@ module PL
 
 
       while time_tracker < (air_time + 7500)    # 2 hrs 5 min past start_time (2 hrs past requested time)
-        spin = playlist[(playlist_counter += 1)]
-        spin.estimated_air_time = time_tracker
-
-        time_tracker += (spin.audio_block.duration/1000)
-
-
-
-
-
         # if it's time for a commercial
         if (time_tracker.to_f/1800.0).floor > commercial_block_counter
           commercial_block = PL::CommercialBlock.new({ estimated_air_time: time_tracker,
@@ -156,6 +155,12 @@ module PL
           commercial_block_counter += 1
           time_tracker += (commercial_block.duration/1000)
         end
+
+        spin = playlist[(playlist_counter += 1)]
+        spin.estimated_air_time = time_tracker
+
+        time_tracker += (spin.audio_block.duration/1000)
+
         # if it's past the air_time we're looking for, add it to the array
         if spin.estimated_air_time > air_time
           formatted_playlist << spin

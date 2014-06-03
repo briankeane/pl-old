@@ -101,10 +101,9 @@ module PL
       end
 
       def get_user_by_twitter(twitter)
-        user = User.find_by twitter: twitter
-        if user
-          PL::User.new(user.attributes)
-          return user
+        if User.exists?(twitter: twitter)
+          user = User.find_by(twitter: twitter)
+          return PL::User.new(user.attributes)
         else
           return nil
         end
@@ -162,8 +161,13 @@ module PL
 
 
       def get_song(id)
-        song = Song.find(id)
-        PL::Song.new(song.attributes)
+        if Song.exists?(id)
+          ar_song = Song.find(id)
+          song = PL::Song.new(ar_song.attributes)
+          return song
+        else
+          return nil
+        end
       end
 
 
@@ -238,28 +242,29 @@ module PL
         medium = attrs.delete(:medium)
         light = attrs.delete(:light)
 
+        ar_station = Station.create(attrs)
+
         if heavy
           heavy.each do |song|
-            RotationLevel.new({ song_id: song.id, station_id: attrs[:station_id], level:
+            rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
               'heavy' })
           end
         end
 
         if medium
           medium.each do |song|
-            RotationLevel.new({ song_id: song.id, station_id: attrs[:station_id], level:
+            rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
               'medium' })
           end
         end
 
         if light
           light.each do |song|
-            RotationLevel.new({ song_id: song.id, station_id: attrs[:station_id], level:
+            rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
               'light' })
           end
         end
 
-        ar_station = Station.create(attrs)
         # add the heavy medium and light back in to attr for the Entity
         attrs[:heavy] = heavy
         attrs[:medium] = medium
@@ -280,6 +285,7 @@ module PL
         heavy = []
         medium = []
         light = []
+
 
         station_rotation_levels.each do |rl|
           case rl.level

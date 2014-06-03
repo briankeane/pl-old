@@ -10,11 +10,11 @@ describe 'a station' do
 
   describe 'playlist functions' do
 
-    before (:each) do
+    before (:all) do
       Timecop.freeze(Time.local(2014, 5, 9, 10))
       @user = PL.db.create_user({ twitter: "Bob", password: "password" })
       @song = PL.db.create_song({ title: "Bar Lights", artist: "Brian Keane", album: "Coming Home", duration: 226000 })
-      @station = PL.db.create_station({ user_id: @user.id, heavy: [@song] })
+      @station = PL.db.create_station({ user_id: @user.id, heavy: [@song], medium: [@song], light: [@song] })
       @station.generate_playlist
     end
 

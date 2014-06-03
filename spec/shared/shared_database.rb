@@ -286,7 +286,6 @@ shared_examples 'a badass database' do
     end
 
     it 'deletes a rotationLevel' do
-      rotationlevel = db.create_rotation_level({ station_id: @station.id, song_id: @song1.id, level: "heavy" })
       expect(db.get_station(@station.id).heavy.map { |song| song.id }.include?(@song1.id)).to eq(true)
       rotationlevel = db.delete_rotation_level({ station_id: @station.id, song_id: @song1.id, level: "heavy" })
       expect(db.get_station(@station.id).heavy.map { |song| song.id }.include?(@song1.id)).to eq(false)
