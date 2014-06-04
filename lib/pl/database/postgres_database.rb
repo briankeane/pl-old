@@ -79,6 +79,7 @@ module PL
         password_digest = BCrypt::Password.create(attrs.delete(:password))
         attrs[:password_digest] = password_digest
         ar_user = User.create(attrs)
+        ar_user.save
         user = PL::User.new(ar_user.attributes)
         user
       end
@@ -112,9 +113,9 @@ module PL
 
       def update_user(attrs)
         if User.exists?(attrs[:id])
-          user = User.find(attrs.delete(:id))
-          user.update_attributes(attrs)
-          user.save
+          ar_user = User.find(attrs.delete(:id))
+          ar_user.update_attributes(attrs)
+          ar_user.save
           return self.get_user(user.id)
         else
           return nil
@@ -148,7 +149,7 @@ module PL
 
           sent_file = s3.buckets['playolaradio'].objects[song_file.original_filename].write(:file => song_file)
         end
-
+        ar_song.save
         PL::Song.new(ar_song.attributes)
       end
 
@@ -250,6 +251,7 @@ module PL
           heavy.each do |song|
             rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
               'heavy' })
+            rl.save
           end
         end
 
@@ -257,6 +259,7 @@ module PL
           medium.each do |song|
             rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
               'medium' })
+            rl.save
           end
         end
 
@@ -264,6 +267,7 @@ module PL
           light.each do |song|
             rl = RotationLevel.create({ song_id: song.id, station_id: ar_station.id, level:
               'light' })
+            rl.save
           end
         end
 
@@ -273,6 +277,7 @@ module PL
         attrs[:light] = light
 
         station = PL::Station.new(attrs)
+        ar_station.save
         station.id = ar_station.id
         return station
       end
@@ -334,6 +339,7 @@ module PL
 
       def create_commercial_block(attrs = {})
         ar_commercial_block = CommercialBlock.create(attrs)
+        ar_commercial_bloc.save
         CommercialBlock.new(ar_commercial_block.attributes)
       end
 
@@ -386,6 +392,7 @@ module PL
 
         attrs[:audio_block_id] = audio_block.id
         ar_spin = Spin.create(attrs)
+        ar_spin.save
 
         spin = PL::Spin.new(ar_spin.attributes)
         spin.audio_block = audio_block
@@ -527,6 +534,7 @@ module PL
       ####################
       def create_rotation_level(attrs)    # station_id, song_id, level
         rotationlevel = RotationLevel.create(attrs)
+        rotationlevel.save
         station = get_station(attrs[:station_id])
       end
 

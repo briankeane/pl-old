@@ -46,6 +46,7 @@ class StationController < ApplicationController
     result = PL::MoveSpin.run({ pl_session_id: session[:pl_session_id],
                         old_position: params[:oldPosition],
                         new_position: params[:newPosition] })
+    binding.pry
     render :json => {request: params, usecaseResponse: result }
   end
 
@@ -61,7 +62,6 @@ class StationController < ApplicationController
     heavy = params[:heavy].map { |id| PL::db.get_song(id.to_i) }
     medium = params[:medium].map { |id| PL::db.get_song(id.to_i) }
     light = params[:light].map { |id| PL::db.get_song(id.to_i) }
-
 
     result = PL::CreateStation.run({ user_id: current_user.id, heavy: heavy, medium: medium, light: light })
     render :json => { result: result }
