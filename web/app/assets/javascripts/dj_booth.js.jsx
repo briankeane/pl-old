@@ -16,12 +16,8 @@
     $('#songlist').sortable({
         start: function(event, ui) {
           ui.item.startPos = ui.item.index();
-          console.log($('#songlist').toArray());
         },
         stop: function(event, ui) {
-
-          console.log("Start position: " + ui.item.startPos);
-          console.log("New position: " + ui.item.index());
 
           // return if order did not change
           if (ui.item.startPos === ui.item.index()) { return; }
@@ -34,12 +30,8 @@
               currentPositions.push(parseInt($(this).attr("data-id")));
             }
           });
-          console.log(currentPositions);
 
           var movePositionData = getMovePositions(currentPositions);
-
-          console.log("oldPosition: " + movePositionData.oldPosition);
-          console.log("newPosition: " + movePositionData.newPosition);
 
           // make ajax request to update database
           movePositionData._method = 'POST';
@@ -61,7 +53,6 @@
             currentPositionCounter++;
           });
 
-          // update variables
         }
       });
 
