@@ -1,4 +1,4 @@
-# Ploayola
+# Playola
 [description]
 
 ## Getting Started
